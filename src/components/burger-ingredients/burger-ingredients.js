@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ingredientsPropTypes } from '../../utils/types';
 import styles from './burger-ingredients.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import IngredientsElement from '../ingredients-element/ingredients-element';
@@ -25,18 +26,18 @@ class BurgerIngredients extends React.Component {
         <CellEmpty height="mt-10"/>
         <h1 className="text text_type_main-large">Соберите бургер</h1>
         <CellEmpty height="mt-5"/>
-        <div style={{ display: 'flex' }}>
-          <a href="#bun" style={{fontSize: 0, textDecoration: 'none'}}>
+        <div className={styles.links}>
+          <a href="#bun" className={styles.link}>
             <Tab value="Булки" active={this.state.current === 'Булки'} onClick={this.setCurrent}>
               Булки
             </Tab>
           </a>
-          <a href="#sauce" style={{fontSize: 0, textDecoration: 'none'}}>
+          <a href="#sauce" className={styles.link}>
             <Tab value="Соусы" active={this.state.current === 'Соусы'} onClick={this.setCurrent}>
               Соусы
             </Tab>
           </a>
-          <a href="#main" style={{fontSize: 0, textDecoration: 'none'}}>
+          <a href="#main" className={styles.link}>
             <Tab value="Начинки" active={this.state.current === 'Начинки'} onClick={this.setCurrent}>
               Начинки
             </Tab>
@@ -48,12 +49,11 @@ class BurgerIngredients extends React.Component {
           <CellEmpty height="mt-6"/>
           <ul className={styles['ingredients-type']}>
             {bun.map((item) => (
-              <li className={styles['ingredients-item']}>
+              <li className={styles['ingredients-item']} key={item._id}>
                 <IngredientsElement
                   text={item.name}
                   price={item.price}
                   thumbnail={item.image}
-                  key={item._id}
                 />
               </li>
             ))}
@@ -63,12 +63,11 @@ class BurgerIngredients extends React.Component {
           <CellEmpty height="mt-6"/>
           <ul className={styles['ingredients-type']}>
             {sauce.map((item) => (
-              <li className={styles['ingredients-item']}>
+              <li className={styles['ingredients-item']} key={item._id}>
                 <IngredientsElement
                   text={item.name}
                   price={item.price}
                   thumbnail={item.image}
-                  key={item._id}
                 />
               </li>
             ))}
@@ -78,12 +77,11 @@ class BurgerIngredients extends React.Component {
           <CellEmpty height="mt-6"/>
           <ul className={styles['ingredients-type']}>
             {main.map((item) => (
-              <li className={styles['ingredients-item']}>
+              <li className={styles['ingredients-item']} key={item._id}>
                 <IngredientsElement
                   text={item.name}
                   price={item.price}
                   thumbnail={item.image}
-                  key={item._id}
                 />
               </li>
             ))}
@@ -96,20 +94,7 @@ class BurgerIngredients extends React.Component {
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    proteins: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    carbohydrates: PropTypes.number.isRequired,
-    calories: PropTypes.number.isRequired,
-    price: PropTypes.number.isRequired,
-    image: PropTypes.string.isRequired,
-    image_mobile: PropTypes.string.isRequired,
-    image_large: PropTypes.string.isRequired,
-    __v: PropTypes.number.isRequired
-  }).isRequired).isRequired
+  data: PropTypes.arrayOf(ingredientsPropTypes.isRequired).isRequired
 };
 
 export default BurgerIngredients;

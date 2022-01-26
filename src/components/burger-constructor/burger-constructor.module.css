@@ -8,6 +8,12 @@
   align-items: flex-end;
 }
 
+.buns {
+  margin-right: 16px;
+  width: 536px;
+  display: flex;
+}
+
 .content {
   display: flex;
   flex-direction: column;

@@ -23,6 +23,15 @@
   background-color: #8585ad;
 }
 
+.links {
+  display: flex;
+}
+
+.link {
+  font-size: 0;
+  text-decoration: none;
+}
+
 .ingredients-type {
   list-style: none;
   padding: 0;
