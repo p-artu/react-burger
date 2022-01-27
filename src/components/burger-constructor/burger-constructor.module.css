@@ -1,0 +1,58 @@
+.construct {
+  max-width: 600px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.buns {
+  margin-right: 16px;
+  width: 536px;
+  display: flex;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 464px;
+  overflow: auto;
+  scrollbar-color: #8585ad #2f2f37;
+	scrollbar-width: thin;
+}
+
+.content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content::-webkit-scrollbar-track {
+  background-color: #2f2f37;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+}
+
+.element {
+  display: flex;
+  align-items: center;
+  padding: 0 8px 0 0;
+}
+
+.order {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.total {
+  display: flex;
+  align-items: center;
+}
+
+.icon svg {
+  height: 33px;
+  width: 33px;
+}

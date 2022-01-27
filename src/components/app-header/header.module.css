@@ -1,0 +1,30 @@
+.header {
+  height: 88px;
+  width: 100%;
+  background-color: #1c1c21;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.links {
+  display: flex;
+}
+
+.menu {
+  display: flex;
+  cursor: pointer;
+}
+
+.logo {
+  font-size: 0;
+  position: absolute;
+  left: calc(50% - 145px);
+}

@@ -1,0 +1,24 @@
+.ingredient {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.image {
+  width: 240px;
+  height: 120px;
+  margin: 0 16px 4px;
+}
+
+.price {
+  display: flex;
+  margin: 0 auto 4px;
+}
+
+.number {
+  margin-right: 9px;
+}
+
+.text {
+  text-align: center;
+}
