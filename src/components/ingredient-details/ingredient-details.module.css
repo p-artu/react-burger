@@ -1,0 +1,41 @@
+.ingredientDetails {
+  color: #f2f2f3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  align-self: flex-start;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  max-width: 580px;
+}
+
+.image {
+  composes: mb-4 from global;
+  width: 480px;
+  height: 240px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 60px 0;
+  display: flex;
+}
+
+.item {
+  box-sizing: border-box;
+  min-width: 112px;
+  margin: 0 20px 0 0;
+  padding: 0 2.5px 0 2.5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.item:last-of-type {
+  margin: 0;
+}
