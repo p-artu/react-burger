@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ingredientsPropTypes } from '../../utils/types';
+import { INGREDIENTS_PROPTYPES } from '../../utils/types';
 import styles from './burger-ingredients.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import IngredientsElement from '../ingredients-element/ingredients-element';
@@ -97,7 +97,7 @@ class BurgerIngredients extends React.Component {
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientsPropTypes.isRequired).isRequired
+  data: PropTypes.arrayOf(INGREDIENTS_PROPTYPES.isRequired).isRequired
 };
 
 export default BurgerIngredients;

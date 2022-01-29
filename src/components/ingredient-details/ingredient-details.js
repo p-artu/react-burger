@@ -1,13 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styles from './ingredient-details.module.css';
-import { ingredientsPropTypes } from '../../utils/types';
+import { INGREDIENTS_PROPTYPES } from '../../utils/types';
 
 class IngredientDetails extends React.Component {
   render() {
     return (
       <div className={styles.ingredientDetails}>
-        <h2 className={`text text_type_main-large mt-10 ml-10 ${styles.title}`}>Детали ингредиента</h2>
         <img className={styles.image} src={this.props.data.image_large} alt={this.props.data.name}/>
         <p className="text text_type_main-medium mb-8">{this.props.data.name}</p>
         <ul className={styles.list}>
@@ -34,7 +32,7 @@ class IngredientDetails extends React.Component {
 };
 
 IngredientDetails.propTypes = {
-  data: ingredientsPropTypes.isRequired
+  data: INGREDIENTS_PROPTYPES.isRequired
 };
 
 

@@ -1,2 +1,2 @@
-export const baseUrl = 'https://norma.nomoreparties.space/api/ingredients';
-export const orderID = '034536';
+export const BASE_URL = 'https://norma.nomoreparties.space/api';
+export const ORDER_ID = '034536';

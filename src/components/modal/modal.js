@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ingredientsPropTypes } from '../../utils/types';
 
 const modalRoot = document.getElementById('react-modals');
 
@@ -27,14 +26,20 @@ class Modal extends React.Component {
 
   render() {
     return ReactDOM.createPortal(
-      (<ModalOverlay closePopup={this.closePopup}>
+      (<div className={styles.container}>
         <div className={styles.modal}>
           <button className={styles.exit} onClick={this.closePopup}>
             <CloseIcon type="primary" />
           </button>
+          {!!this.props.children.props.data.name ?
+            (<h2 className={`text text_type_main-large mt-10 ml-10 ${styles.title}`}>Детали ингредиента</h2>)
+            :
+            (<h2 className={`text text_type_digits-large mt-30 mb-8 ${styles.id}`}>{this.props.children.props.data}</h2>)
+          }
           {this.props.children}
         </div>
-      </ModalOverlay>), modalRoot
+        <ModalOverlay closePopup={this.closePopup}/>
+      </div>), modalRoot
     );
   }
 };

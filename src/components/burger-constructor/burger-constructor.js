@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ingredientsPropTypes } from '../../utils/types';
+import { INGREDIENTS_PROPTYPES } from '../../utils/types';
 import styles from './burger-constructor.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -83,7 +83,7 @@ class BurgerConstructor extends React.Component {
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientsPropTypes.isRequired).isRequired
+  data: PropTypes.arrayOf(INGREDIENTS_PROPTYPES.isRequired).isRequired
 };
 
 export default BurgerConstructor;

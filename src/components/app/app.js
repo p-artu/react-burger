@@ -8,7 +8,7 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import {orderID} from '../../utils/constants';
+import {ORDER_ID} from '../../utils/constants';
 
 class App extends React.Component {
   state = {
@@ -53,7 +53,7 @@ class App extends React.Component {
         <CellEmpty height="mb-3"/>
         {this.state.visible &&
           <Modal closePopup={this.handleCloseModal}>
-            {this.state.modalData.name ? <IngredientDetails data={this.state.modalData}/> : <OrderDetails data={orderID}/>}
+            {this.state.modalData.name ? <IngredientDetails data={this.state.modalData}/> : <OrderDetails data={ORDER_ID}/>}
           </Modal>
         }
       </div>

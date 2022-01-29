@@ -1,4 +1,4 @@
-import {baseUrl} from './constants';
+import {BASE_URL} from './constants';
 
 class Api {
   constructor(options) {
@@ -21,7 +21,7 @@ class Api {
 }
 
 export const IngredientsApi = new Api({
-  baseUrl: baseUrl,
+  baseUrl: `${BASE_URL}/ingredients`,
   headers: {
     'Content-Type': 'application/json'
   }

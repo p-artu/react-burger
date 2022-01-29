@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './modal-overlay.module.css';
-import { ingredientsPropTypes } from '../../utils/types';
 
 class ModalOverlay extends React.Component {
   closePopup = (e) => {
@@ -12,16 +11,13 @@ class ModalOverlay extends React.Component {
 
   render() {
     return (
-      <div className={styles.modalOverlay} onClick={this.closePopup}>
-        {this.props.children}
-      </div>
+      <div className={styles.modalOverlay} onClick={this.closePopup}></div>
     );
   }
 };
 
 ModalOverlay.propTypes = {
-  closePopup: PropTypes.func.isRequired,
-  children: PropTypes.element.isRequired
+  closePopup: PropTypes.func.isRequired
 };
 
 export default ModalOverlay;

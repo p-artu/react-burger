@@ -5,14 +5,6 @@
   align-items: center;
 }
 
-.title {
-  align-self: flex-start;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  max-width: 580px;
-}
-
 .image {
   composes: mb-4 from global;
   width: 480px;
