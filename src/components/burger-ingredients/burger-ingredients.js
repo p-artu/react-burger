@@ -16,11 +16,14 @@ class BurgerIngredients extends React.Component {
     this.setState({ current: e });
   };
 
+  openModal = (data) => {
+    this.props.openModal(data);
+  }
+
   render() {
     const bun = this.props.data.filter((item) => item.type === 'bun');
     const sauce = this.props.data.filter((item) => item.type === 'sauce');
     const main = this.props.data.filter((item) => item.type === 'main');
-
     return (
       <div className={styles.construct}>
         <CellEmpty height="mt-10"/>
@@ -49,7 +52,7 @@ class BurgerIngredients extends React.Component {
           <CellEmpty height="mt-6"/>
           <ul className={styles['ingredients-type']}>
             {bun.map((item) => (
-              <li className={styles['ingredients-item']} key={item._id}>
+              <li className={styles['ingredients-item']} key={item._id} onClick={() => this.openModal(item)}>
                 <IngredientsElement
                   text={item.name}
                   price={item.price}
@@ -63,7 +66,7 @@ class BurgerIngredients extends React.Component {
           <CellEmpty height="mt-6"/>
           <ul className={styles['ingredients-type']}>
             {sauce.map((item) => (
-              <li className={styles['ingredients-item']} key={item._id}>
+              <li className={styles['ingredients-item']} key={item._id} onClick={() => this.openModal(item)}>
                 <IngredientsElement
                   text={item.name}
                   price={item.price}
@@ -77,7 +80,7 @@ class BurgerIngredients extends React.Component {
           <CellEmpty height="mt-6"/>
           <ul className={styles['ingredients-type']}>
             {main.map((item) => (
-              <li className={styles['ingredients-item']} key={item._id}>
+              <li className={styles['ingredients-item']} key={item._id} onClick={() => this.openModal(item)}>
                 <IngredientsElement
                   text={item.name}
                   price={item.price}

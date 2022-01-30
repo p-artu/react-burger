@@ -11,6 +11,10 @@ class BurgerConstructor extends React.Component {
     this.data = props.data;
   }
 
+  openModal = () => {
+    this.props.openModal();
+  }
+
   render() {
     return (
       <div className={styles.construct}>
@@ -68,7 +72,7 @@ class BurgerConstructor extends React.Component {
             </div>
           </div>
           <CellEmpty height="ml-10"/>
-          <Button type="primary" size="large">
+          <Button type="primary" size="large" onClick={this.openModal}>
             Оформить заказ
           </Button>
           <CellEmpty height="ml-4"/>
