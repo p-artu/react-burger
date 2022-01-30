@@ -31,10 +31,10 @@ class Modal extends React.Component {
           <button className={styles.exit} onClick={this.closePopup}>
             <CloseIcon type="primary" />
           </button>
-          {!!this.props.children.props.data.name ?
-            (<h2 className={`text text_type_main-large mt-10 ml-10 ${styles.title}`}>Детали ингредиента</h2>)
+          {this.props.title === 'Детали ингредиента' ?
+            (<h2 className={`text text_type_main-large mt-10 ml-10 ${styles.title}`}>{this.props.title}</h2>)
             :
-            (<h2 className={`text text_type_digits-large mt-30 mb-8 ${styles.id}`}>{this.props.children.props.data}</h2>)
+            (<h2 className={`text text_type_digits-large mt-30 mb-8 ${styles.id}`}>{this.props.title}</h2>)
           }
           {this.props.children}
         </div>
@@ -45,6 +45,7 @@ class Modal extends React.Component {
 };
 
 Modal.propTypes = {
+  title: PropTypes.string.isRequired,
   closePopup: PropTypes.func.isRequired,
   children: PropTypes.element.isRequired
 };

@@ -12,7 +12,7 @@ class Api {
     return Promise.reject(`Ошибка: ${res.status}`)
   }
   getIngredients() {
-    return fetch(`${this._baseUrl}`, {
+    return fetch(`${this._baseUrl}/ingredients`, {
       headers: this._headers,
       method: 'GET',
     })
@@ -21,7 +21,7 @@ class Api {
 }
 
 export const IngredientsApi = new Api({
-  baseUrl: `${BASE_URL}/ingredients`,
+  baseUrl: BASE_URL,
   headers: {
     'Content-Type': 'application/json'
   }

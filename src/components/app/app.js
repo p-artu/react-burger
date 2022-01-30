@@ -14,7 +14,8 @@ class App extends React.Component {
   state = {
     data: [],
     visible: false,
-    modalData: {}
+    currentIngredient: {},
+    modalTitle: ''
   };
 
   componentDidMount() {
@@ -30,15 +31,14 @@ class App extends React.Component {
     });
   }
 
-  handleOpenModal = (data) => {
-    if (data.type === 'submit') {
-      this.setState({ ...this.state, visible: true, modalData: {} });
-    } else {
-      this.setState({ ...this.state, visible: true, modalData: data });
-    }
+  handleOpenIngredientModal = (data) => {
+    this.setState({ ...this.state, visible: true, currentIngredient: data, modalTitle: 'Детали ингредиента' });
+  }
+  handleOpenOrderModal = () => {
+    this.setState({ ...this.state, visible: true, modalTitle: ORDER_ID });
   }
   handleCloseModal = () => {
-    this.setState({ ...this.state, visible: false, modalData: {} });
+    this.setState({ ...this.state, visible: false, currentIngredient: {}, modalTitle: '' });
   }
 
   render() {
@@ -47,13 +47,13 @@ class App extends React.Component {
         <AppHeader />
         {!!this.state.data.length &&
           <main className={app.main}>
-            <BurgerIngredients openModal={this.handleOpenModal} data={this.state.data}/>
-            <BurgerConstructor openModal={this.handleOpenModal} data={this.state.data}/>
+            <BurgerIngredients openModal={this.handleOpenIngredientModal} data={this.state.data}/>
+            <BurgerConstructor openModal={this.handleOpenOrderModal} data={this.state.data}/>
           </main>}
         <CellEmpty height="mb-3"/>
         {this.state.visible &&
-          <Modal closePopup={this.handleCloseModal}>
-            {this.state.modalData.name ? <IngredientDetails data={this.state.modalData}/> : <OrderDetails data={ORDER_ID}/>}
+          <Modal title={this.state.modalTitle} closePopup={this.handleCloseModal}>
+            {this.state.currentIngredient.name ? <IngredientDetails data={this.state.currentIngredient}/> : <OrderDetails/>}
           </Modal>
         }
       </div>

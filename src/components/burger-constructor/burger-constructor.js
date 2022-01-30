@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { INGREDIENTS_PROPTYPES } from '../../utils/types';
+import { ingredientsPropTypes } from '../../utils/types';
 import styles from './burger-constructor.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -11,8 +11,8 @@ class BurgerConstructor extends React.Component {
     this.data = props.data;
   }
 
-  openModal = (e) => {
-    this.props.openModal(e.target);
+  openModal = () => {
+    this.props.openModal();
   }
 
   render() {
@@ -72,7 +72,7 @@ class BurgerConstructor extends React.Component {
             </div>
           </div>
           <CellEmpty height="ml-10"/>
-          <Button type="primary" size="large" onClick={(e) => this.openModal(e)}>
+          <Button type="primary" size="large" onClick={this.openModal}>
             Оформить заказ
           </Button>
           <CellEmpty height="ml-4"/>
@@ -83,7 +83,7 @@ class BurgerConstructor extends React.Component {
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(INGREDIENTS_PROPTYPES.isRequired).isRequired
+  data: PropTypes.arrayOf(ingredientsPropTypes.isRequired).isRequired
 };
 
 export default BurgerConstructor;

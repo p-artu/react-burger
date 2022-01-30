@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './ingredient-details.module.css';
-import { INGREDIENTS_PROPTYPES } from '../../utils/types';
+import { ingredientsPropTypes } from '../../utils/types';
 
 class IngredientDetails extends React.Component {
   render() {
@@ -32,7 +32,7 @@ class IngredientDetails extends React.Component {
 };
 
 IngredientDetails.propTypes = {
-  data: INGREDIENTS_PROPTYPES.isRequired
+  data: ingredientsPropTypes.isRequired
 };
 
 
