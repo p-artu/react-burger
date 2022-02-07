@@ -1,6 +1,6 @@
 import React from 'react';
 import app from './app.module.css';
-import {IngredientsApi} from '../../utils/IngredientsApi.js';
+import {BurgersApi} from '../../utils/BurgersApi.js';
 import CellEmpty from '../cell-empty/cell-empty';
 import AppHeader from '../app-header/app-header';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
@@ -8,57 +8,71 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import {ORDER_ID} from '../../utils/constants';
+import { IngredientsContext } from '../../contexts/ingredientsContext.js';
 
-class App extends React.Component {
-  state = {
-    data: [],
-    visible: false,
-    currentIngredient: {},
-    modalTitle: ''
-  };
+function App() {
+  const [data, setData] = React.useState([]);
+  const [visible, setVisible] = React.useState(false);
+  const [currentIngredient, setCurrentIngredient] = React.useState({});
+  const [modalTitle, setModalTitle] = React.useState('');
 
-  componentDidMount() {
-    IngredientsApi.getIngredients()
+  React.useEffect(() => {
+    BurgersApi.getIngredients()
     .then(({data}) => {
-      this.setState({
-        ...this.state,
-        data: data
-      });
+      setData(data);
+    })
+    .catch(err => {
+      console.error(err);
+    });
+  }, []);
+
+  function handleOpenIngredientModal(data) {
+    setVisible(true);
+    setCurrentIngredient(data);
+    setModalTitle('Детали ингредиента');
+  }
+  function handleOpenOrderModal(dataId) {
+    // try {
+    //   const id = await BurgersApi.getNumber(dataId);
+    //   setModalTitle(id.order.number.toString());
+    // } catch(err) {
+    //   console.error(err);
+    // } finally {
+    //   setVisible(true);
+    // }
+    BurgersApi.getNumber(dataId)
+    .then((id) => {
+      setModalTitle(id.order.number.toString());
+      setVisible(true);
     })
     .catch(err => {
       console.error(err);
     });
   }
-
-  handleOpenIngredientModal = (data) => {
-    this.setState({ ...this.state, visible: true, currentIngredient: data, modalTitle: 'Детали ингредиента' });
-  }
-  handleOpenOrderModal = () => {
-    this.setState({ ...this.state, visible: true, modalTitle: ORDER_ID });
-  }
-  handleCloseModal = () => {
-    this.setState({ ...this.state, visible: false, currentIngredient: {}, modalTitle: '' });
+  function handleCloseModal() {
+    setVisible(false);
+    setCurrentIngredient({});
+    setModalTitle('');
   }
 
-  render() {
-    return (
+  return (
+    <IngredientsContext.Provider value={data}>
       <div className={app.page}>
         <AppHeader />
-        {!!this.state.data.length &&
+        {!!data.length &&
           <main className={app.main}>
-            <BurgerIngredients openModal={this.handleOpenIngredientModal} data={this.state.data}/>
-            <BurgerConstructor openModal={this.handleOpenOrderModal} data={this.state.data}/>
+            <BurgerIngredients openModal={handleOpenIngredientModal} data={data}/>
+            <BurgerConstructor openModal={handleOpenOrderModal}/>
           </main>}
         <CellEmpty height="mb-3"/>
-        {this.state.visible &&
-          <Modal title={this.state.modalTitle} closePopup={this.handleCloseModal}>
-            {this.state.currentIngredient.name ? <IngredientDetails data={this.state.currentIngredient}/> : <OrderDetails/>}
+        {visible &&
+          <Modal title={modalTitle} closePopup={handleCloseModal}>
+            {currentIngredient.name ? <IngredientDetails data={currentIngredient}/> : <OrderDetails/>}
           </Modal>
         }
       </div>
-    );
-  }
+    </IngredientsContext.Provider>
+  );
 }
 
 export default App;

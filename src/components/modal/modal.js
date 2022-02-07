@@ -7,41 +7,39 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const modalRoot = document.getElementById('react-modals');
 
-class Modal extends React.Component {
-  handleEscClose = (e) => {
+function Modal(props) {
+  function handleEscClose(e) {
     if (e.key === 'Escape') {
-      this.props.closePopup();
+      props.closePopup();
     }
   }
-  closePopup = () => {
-    this.props.closePopup();
+  function closePopup() {
+    props.closePopup();
   }
 
-  componentDidMount() {
-    document.addEventListener('keydown', this.handleEscClose);
-  }
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.handleEscClose);
-  }
+  React.useEffect(() => {
+    document.addEventListener('keydown', handleEscClose);
+    return () => {
+      document.removeEventListener('keydown', handleEscClose);
+    }
+  }, []);
 
-  render() {
-    return ReactDOM.createPortal(
-      (<div className={styles.container}>
-        <div className={styles.modal}>
-          <button className={styles.exit} onClick={this.closePopup}>
-            <CloseIcon type="primary" />
-          </button>
-          {this.props.title === 'Детали ингредиента' ?
-            (<h2 className={`text text_type_main-large mt-10 ml-10 ${styles.title}`}>{this.props.title}</h2>)
-            :
-            (<h2 className={`text text_type_digits-large mt-30 mb-8 ${styles.id}`}>{this.props.title}</h2>)
-          }
-          {this.props.children}
-        </div>
-        <ModalOverlay closePopup={this.closePopup}/>
-      </div>), modalRoot
-    );
-  }
+  return ReactDOM.createPortal(
+    (<div className={styles.container}>
+      <div className={styles.modal}>
+        <button className={styles.exit} onClick={closePopup}>
+          <CloseIcon type="primary" />
+        </button>
+        {props.title === 'Детали ингредиента' ?
+          (<h2 className={`text text_type_main-large mt-10 ml-10 ${styles.title}`}>{props.title}</h2>)
+          :
+          (<h2 className={`text text_type_digits-large mt-30 mb-8 ${styles.id}`}>{props.title}</h2>)
+        }
+        {props.children}
+      </div>
+      <ModalOverlay closePopup={closePopup}/>
+    </div>), modalRoot
+  );
 };
 
 Modal.propTypes = {
