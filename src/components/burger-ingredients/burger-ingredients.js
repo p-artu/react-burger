@@ -1,21 +1,37 @@
-import React from 'react';
+import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { ingredientsPropTypes } from '../../utils/types';
 import styles from './burger-ingredients.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import IngredientsElement from '../ingredients-element/ingredients-element';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import { IngredientsContext } from '../../contexts/ingredientsContext.js';
 
 function BurgerIngredients(props) {
+  const data = useContext(IngredientsContext);
   const [current, setCurrent] = React.useState('Булки');
+  const [bun, sauce, main] = useMemo(() =>
+    data.reduce((arr, item) => {
+      if (item.type === 'bun') {
+        arr[0].push(item);
+        return arr
+      }
+      if (item.type === 'sauce') {
+        arr[1].push(item);
+        return arr
+      }
+      if (item.type === 'main') {
+        arr[2].push(item);
+        return arr
+      }
+      return arr
+    }, [[], [], []]),
+    [data]
+  );
 
   function openModal(data) {
     props.openModal(data);
   }
 
-  const bun = props.data.filter((item) => item.type === 'bun');
-  const sauce = props.data.filter((item) => item.type === 'sauce');
-  const main = props.data.filter((item) => item.type === 'main');
   return (
     <div className={styles.construct}>
       <CellEmpty height="mt-10"/>
@@ -87,7 +103,6 @@ function BurgerIngredients(props) {
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientsPropTypes.isRequired).isRequired,
   openModal: PropTypes.func.isRequired
 };
 

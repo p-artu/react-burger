@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import styles from './burger-constructor.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
@@ -7,18 +7,21 @@ import { IngredientsContext } from '../../contexts/ingredientsContext.js';
 
 function BurgerConstructor(props) {
   const data = useContext(IngredientsContext);
-  const totalPrice = data.reduce((a, b) => {
-    if (b.type !== "bun") {
-      return a + b.price
-    }
-    return a + 0
-  }, 0);
-  const dataId = data.map((item) => {
-    return item._id
-  });
+  const bun = useMemo(() => data.find((item) => item.type === "bun"), [data]);
+  const totalPrice = useMemo(() => {
+    const fillingPrice = data.reduce((acc, item) => {
+      if (item.type !== "bun") {
+        return acc + item.price
+      }
+      return acc
+    }, 0);
+    const bunsPrice = 2 * bun.price;
+    return fillingPrice + bunsPrice
+  }, [data, bun]);
 
   function openModal() {
-    props.openModal(dataId);
+    const dataIds = data.map(item => item._id);
+    props.openModal(dataIds);
   }
 
   return (
@@ -29,9 +32,9 @@ function BurgerConstructor(props) {
           <ConstructorElement
             type="top"
             isLocked={true}
-            text={data[0].name + ' (верх)'}
-            price={data[0].price}
-            thumbnail={data[0].image}
+            text={bun.name + ' (верх)'}
+            price={bun.price}
+            thumbnail={bun.image}
           />
         </div>
         <CellEmpty height="mt-4"/>
@@ -57,9 +60,9 @@ function BurgerConstructor(props) {
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text={data[0].name + ' (низ)'}
-            price={data[0].price}
-            thumbnail={data[0].image}
+            text={bun.name + ' (низ)'}
+            price={bun.price}
+            thumbnail={bun.image}
           />
         </div>
       </div>
@@ -67,7 +70,7 @@ function BurgerConstructor(props) {
       <div className={styles.order}>
         <div className={styles.total}>
           <p className="text text_type_digits-medium">
-            {totalPrice + 2*data[0].price}
+            {totalPrice}
           </p>
           <CellEmpty height="ml-2"/>
           <div className={styles.icon}>

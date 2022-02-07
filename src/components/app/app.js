@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import app from './app.module.css';
 import {BurgersApi} from '../../utils/BurgersApi.js';
 import CellEmpty from '../cell-empty/cell-empty';
@@ -11,12 +11,12 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import { IngredientsContext } from '../../contexts/ingredientsContext.js';
 
 function App() {
-  const [data, setData] = React.useState([]);
-  const [visible, setVisible] = React.useState(false);
-  const [currentIngredient, setCurrentIngredient] = React.useState({});
-  const [modalTitle, setModalTitle] = React.useState('');
+  const [data, setData] = useState([]);
+  const [currentIngredient, setCurrentIngredient] = useState({});
+  const [modalTitle, setModalTitle] = useState('');
+  const [visible, visibleDispatcher] = useReducer(reducer, false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     BurgersApi.getIngredients()
     .then(({data}) => {
       setData(data);
@@ -26,33 +26,25 @@ function App() {
     });
   }, []);
 
-  function handleOpenIngredientModal(data) {
-    setVisible(true);
-    setCurrentIngredient(data);
-    setModalTitle('Детали ингредиента');
+  function reducer(state, action) {
+    setCurrentIngredient(action.ingredient);
+    setModalTitle(action.title);
+    return action.isOpen
   }
-  function handleOpenOrderModal(dataId) {
-    // try {
-    //   const id = await BurgersApi.getNumber(dataId);
-    //   setModalTitle(id.order.number.toString());
-    // } catch(err) {
-    //   console.error(err);
-    // } finally {
-    //   setVisible(true);
-    // }
-    BurgersApi.getNumber(dataId)
+  function handleOpenIngredientModal(data) {
+    visibleDispatcher({ ingredient: data, title: 'Детали ингредиента', isOpen: true });
+  }
+  function handleOpenOrderModal(dataIds) {
+    BurgersApi.getNumber(dataIds)
     .then((id) => {
-      setModalTitle(id.order.number.toString());
-      setVisible(true);
+      visibleDispatcher({ ingredient: {}, title: id.order.number.toString(), isOpen: true });
     })
     .catch(err => {
       console.error(err);
     });
   }
   function handleCloseModal() {
-    setVisible(false);
-    setCurrentIngredient({});
-    setModalTitle('');
+    visibleDispatcher({ ingredient: {}, title: '', isOpen: false });
   }
 
   return (
@@ -61,7 +53,7 @@ function App() {
         <AppHeader />
         {!!data.length &&
           <main className={app.main}>
-            <BurgerIngredients openModal={handleOpenIngredientModal} data={data}/>
+            <BurgerIngredients openModal={handleOpenIngredientModal}/>
             <BurgerConstructor openModal={handleOpenOrderModal}/>
           </main>}
         <CellEmpty height="mb-3"/>
