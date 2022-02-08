@@ -12,9 +12,11 @@ import { IngredientsContext } from '../../contexts/ingredientsContext.js';
 
 function App() {
   const [data, setData] = useState([]);
-  const [currentIngredient, setCurrentIngredient] = useState({});
-  const [modalTitle, setModalTitle] = useState('');
-  const [visible, visibleDispatcher] = useReducer(reducer, false);
+  const [visible, visibleDispatcher] = useReducer(reducer, {
+    currentIngredient: {},
+    modalTitle: '',
+    isOpen: false,
+ });
 
   useEffect(() => {
     BurgersApi.getIngredients()
@@ -27,24 +29,44 @@ function App() {
   }, []);
 
   function reducer(state, action) {
-    setCurrentIngredient(action.ingredient);
-    setModalTitle(action.title);
-    return action.isOpen
+    return {
+      currentIngredient: action.payload.ingredient,
+      modalTitle: action.payload.title,
+      isOpen: action.payload.isOpen
+    }
   }
   function handleOpenIngredientModal(data) {
-    visibleDispatcher({ ingredient: data, title: 'Детали ингредиента', isOpen: true });
+    visibleDispatcher({
+      payload: {
+        ingredient: data,
+        title: 'Детали ингредиента',
+        isOpen: true
+      }
+    });
   }
   function handleOpenOrderModal(dataIds) {
     BurgersApi.getNumber(dataIds)
     .then((id) => {
-      visibleDispatcher({ ingredient: {}, title: id.order.number.toString(), isOpen: true });
+      visibleDispatcher({
+        payload: {
+          ingredient: {},
+          title: id.order.number.toString(),
+          isOpen: true
+        }
+      });
     })
     .catch(err => {
       console.error(err);
     });
   }
   function handleCloseModal() {
-    visibleDispatcher({ ingredient: {}, title: '', isOpen: false });
+    visibleDispatcher({
+      payload: {
+        ingredient: {},
+        title: '',
+        isOpen: false
+      }
+    });
   }
 
   return (
@@ -57,9 +79,9 @@ function App() {
             <BurgerConstructor openModal={handleOpenOrderModal}/>
           </main>}
         <CellEmpty height="mb-3"/>
-        {visible &&
-          <Modal title={modalTitle} closePopup={handleCloseModal}>
-            {currentIngredient.name ? <IngredientDetails data={currentIngredient}/> : <OrderDetails/>}
+        {visible.isOpen &&
+          <Modal title={visible.modalTitle} closePopup={handleCloseModal}>
+            {visible.currentIngredient.name ? <IngredientDetails data={visible.currentIngredient}/> : <OrderDetails/>}
           </Modal>
         }
       </div>
