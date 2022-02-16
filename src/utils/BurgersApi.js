@@ -18,9 +18,19 @@ class Api {
     })
     .then(this._checkResponse)
   }
+  getNumber(dataId) {
+    return fetch(`${this._baseUrl}/orders`, {
+      headers: this._headers,
+      method: 'POST',
+      body: JSON.stringify({ 
+        "ingredients": dataId
+      })
+    })
+    .then(this._checkResponse)
+  }
 }
 
-export const IngredientsApi = new Api({
+export const BurgersApi = new Api({
   baseUrl: BASE_URL,
   headers: {
     'Content-Type': 'application/json'
