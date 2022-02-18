@@ -11,19 +11,19 @@ class Api {
     }
     return Promise.reject(`Ошибка: ${res.status}`)
   }
-  getIngredients() {
+  getIngredientsRequest() {
     return fetch(`${this._baseUrl}/ingredients`, {
       headers: this._headers,
       method: 'GET',
     })
     .then(this._checkResponse)
   }
-  getNumber(dataId) {
+  getNumberRequest(dataIds) {
     return fetch(`${this._baseUrl}/orders`, {
       headers: this._headers,
       method: 'POST',
       body: JSON.stringify({ 
-        "ingredients": dataId
+        "ingredients": dataIds
       })
     })
     .then(this._checkResponse)

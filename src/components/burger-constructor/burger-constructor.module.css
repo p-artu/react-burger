@@ -1,4 +1,5 @@
 .construct {
+  width: 100%;
   max-width: 600px;
 }
 
@@ -15,11 +16,13 @@
 }
 
 .content {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 16px;
   height: 464px;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
   scrollbar-color: #8585ad #2f2f37;
 	scrollbar-width: thin;
 }
@@ -55,4 +58,20 @@
 .icon svg {
   height: 33px;
   width: 33px;
+}
+
+.emptyBunTop {
+  border-radius: 88px 88px 40px 40px;
+  border: 1px dashed white;
+  width: 536px;
+  height: 80px;
+  margin-right: 16px;
+}
+
+.emptyBunBottom {
+  border-radius: 40px 40px 88px 88px;
+  border: 1px dashed white;
+  width: 536px;
+  height: 80px;
+  margin-right: 16px;
 }

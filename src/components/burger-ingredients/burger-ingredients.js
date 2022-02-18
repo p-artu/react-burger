@@ -1,13 +1,14 @@
-import React, { useContext, useMemo } from 'react';
-import PropTypes from 'prop-types';
+import React, { useMemo, useEffect } from 'react';
 import styles from './burger-ingredients.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import IngredientsElement from '../ingredients-element/ingredients-element';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IngredientsContext } from '../../contexts/ingredientsContext.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { OPEN_INGREDIENT_MODAL, getIngredients } from '../../services/actions/index';
 
-function BurgerIngredients(props) {
-  const data = useContext(IngredientsContext);
+function BurgerIngredients() {
+  const dispatch = useDispatch();
+  const data = useSelector(store => store.reducer.ingredients);
   const [current, setCurrent] = React.useState('Булки');
   const [bun, sauce, main] = useMemo(() =>
     data.reduce((arr, item) => {
@@ -28,8 +29,17 @@ function BurgerIngredients(props) {
     [data]
   );
 
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, []);
+
   function openModal(data) {
-    props.openModal(data);
+    dispatch({
+      type: OPEN_INGREDIENT_MODAL,
+      payload: {
+        ingredient: data
+      }
+    });
   }
 
   return (
@@ -62,6 +72,9 @@ function BurgerIngredients(props) {
           {bun.map((item) => (
             <li className={styles['ingredients-item']} key={item._id} onClick={() => openModal(item)}>
               <IngredientsElement
+                data={item}
+                id={item._id}
+                type={item.type}
                 text={item.name}
                 price={item.price}
                 thumbnail={item.image}
@@ -76,6 +89,9 @@ function BurgerIngredients(props) {
           {sauce.map((item) => (
             <li className={styles['ingredients-item']} key={item._id} onClick={() => openModal(item)}>
               <IngredientsElement
+                data={item}
+                id={item._id}
+                type={item.type}
                 text={item.name}
                 price={item.price}
                 thumbnail={item.image}
@@ -90,6 +106,9 @@ function BurgerIngredients(props) {
           {main.map((item) => (
             <li className={styles['ingredients-item']} key={item._id} onClick={() => openModal(item)}>
               <IngredientsElement
+                data={item}
+                id={item._id}
+                type={item.type}
                 text={item.name}
                 price={item.price}
                 thumbnail={item.image}
@@ -101,9 +120,5 @@ function BurgerIngredients(props) {
     </div>
   );
 }
-
-BurgerIngredients.propTypes = {
-  openModal: PropTypes.func.isRequired
-};
 
 export default BurgerIngredients;

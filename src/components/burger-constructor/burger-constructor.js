@@ -1,72 +1,121 @@
-import React, { useContext, useMemo } from 'react';
-import PropTypes from 'prop-types';
+import React, { useMemo } from 'react';
 import styles from './burger-constructor.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IngredientsContext } from '../../contexts/ingredientsContext.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { useDrop } from "react-dnd";
+import { getNumber, ADD_INGREDIENT, DELETE_INGREDIENT, INCREASE_COUNTER, REDUCE_COUNTER } from '../../services/actions/index';
+import EmptyBurgerIngredients from '../empty-burger-ingredients/empty-burger-ingredients';
 
-function BurgerConstructor(props) {
-  const data = useContext(IngredientsContext);
-  const bun = useMemo(() => data.find((item) => item.type === "bun"), [data]);
-  const totalPrice = useMemo(() => {
-    const fillingPrice = data.reduce((acc, item) => {
-      if (item.type !== "bun") {
-        return acc + item.price
+function BurgerConstructor() {
+  const dispatch = useDispatch();
+  const data = useSelector(store => store.reducer.draggedIngredients);
+  const [{isHover}, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop(item) {
+      let uniqueItem = {...item};
+      if (uniqueItem.type !== 'bun') {
+        const now = new Date().getTime();
+        uniqueItem.unId = now;
       }
-      return acc
+      dispatch({
+        type: ADD_INGREDIENT,
+        item: uniqueItem
+      });
+      if (uniqueItem.type !== 'bun') {
+        dispatch({
+          type: INCREASE_COUNTER,
+          item: uniqueItem
+        });
+      }
+    },
+    collect: monitor => ({
+      isHover: monitor.isOver(),
+    })
+  });
+  const border = isHover ? 'red dashed 1px' : '';
+  const totalPrice = useMemo(() => {
+    const fillingPrice = data.content.reduce((acc, item) => {
+      return acc + item.price
     }, 0);
-    const bunsPrice = 2 * bun.price;
+    let bunsPrice = 0;
+    if (data.bun.price) {
+      bunsPrice = 2 * data.bun.price;
+    }
     return fillingPrice + bunsPrice
-  }, [data, bun]);
+  }, [data]);
 
   function openModal() {
     const dataIds = data.map(item => item._id);
-    props.openModal(dataIds);
+    dispatch(getNumber(dataIds));
+  }
+  function deleteIngredient(item) {
+    dispatch({
+      type: DELETE_INGREDIENT,
+      unId: item.unId,
+    });
+    dispatch({
+      type: REDUCE_COUNTER,
+      item: item
+    });
   }
 
   return (
     <div className={styles.construct}>
-      <CellEmpty height="mt-25"/>
-      <div className={styles.list}>
-        <div className={styles.buns}>
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={bun.name + ' (верх)'}
-            price={bun.price}
-            thumbnail={bun.image}
-          />
+      <CellEmpty height="pt-25"/>
+      {(!!data.bun.name || !!data.content.length) ?
+        <div ref={dropTarget} className={styles.list}>
+          {!!data.bun.name ?
+            <div className={styles.buns}>
+              <ConstructorElement
+                type="top"
+                isLocked={true}
+                text={data.bun.name + ' (верх)'}
+                price={data.bun.price}
+                thumbnail={data.bun.image}
+              />
+            </div>
+          :
+            <div style={{border}} className={styles.emptyBunTop}></div>
+          }
+          <CellEmpty height="mt-4"/>
+          <div style={{border}} className={styles.content}>
+            {data.content.map((item) => {
+              if (item.type !== "bun") {
+                return (<div className={styles.element} key={item.unId}>
+                  <CellEmpty height="ml-4"/>
+                  <DragIcon type="primary"/>
+                  <CellEmpty height="ml-2"/>
+                  <ConstructorElement
+                    text={item.name}
+                    price={item.price}
+                    thumbnail={item.image}
+                    handleClose={() => deleteIngredient(item)}
+                  />
+                </div>)
+              }
+              return null
+            })}
+          </div>
+          <CellEmpty height="mt-4"/>
+          {!!data.bun.name ?
+            <div className={styles.buns}>
+              <ConstructorElement
+                type="bottom"
+                isLocked={true}
+                text={data.bun.name + ' (низ)'}
+                price={data.bun.price}
+                thumbnail={data.bun.image}
+              />
+            </div>
+          :
+            <div style={{border}} className={styles.emptyBunBottom}></div>
+          }
         </div>
-        <CellEmpty height="mt-4"/>
-        <div className={styles.content}>
-          {data.map((item) => {
-            if (item.type !== "bun") {
-              return (<div className={styles.element} key={item._id}>
-                <CellEmpty height="ml-4"/>
-                <DragIcon type="primary"/>
-                <CellEmpty height="ml-2"/>
-                <ConstructorElement
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image}
-                />
-              </div>)
-            }
-            return null
-          })}
-        </div>
-        <CellEmpty height="mt-4"/>
-        <div className={styles.buns}>
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={bun.name + ' (низ)'}
-            price={bun.price}
-            thumbnail={bun.image}
-          />
-        </div>
-      </div>
-      <CellEmpty height="mt-10"/>
+      :
+        <EmptyBurgerIngredients />
+      }
+      <CellEmpty height="pt-10"/>
       <div className={styles.order}>
         <div className={styles.total}>
           <p className="text text_type_digits-medium">
@@ -86,9 +135,5 @@ function BurgerConstructor(props) {
     </div>
   );
 }
-
-BurgerConstructor.propTypes = {
-  openModal: PropTypes.func.isRequired
-};
 
 export default BurgerConstructor;

@@ -4,6 +4,10 @@
   flex-direction: column;
 }
 
+.opacity {
+  opacity: .4;
+}
+
 .image {
   width: 240px;
   height: 120px;
