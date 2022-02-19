@@ -1,11 +1,12 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import styles from './burger-constructor.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
-import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from "react-dnd";
-import { getNumber, ADD_INGREDIENT, DELETE_INGREDIENT, INCREASE_COUNTER, REDUCE_COUNTER } from '../../services/actions/index';
+import { getNumber, ADD_INGREDIENT, INCREASE_COUNTER, MOVE_INGREDIENT } from '../../services/actions/index';
 import EmptyBurgerIngredients from '../empty-burger-ingredients/empty-burger-ingredients';
+import ToppingElement from '../topping-element/topping-element';
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
@@ -49,16 +50,24 @@ function BurgerConstructor() {
     const dataIds = data.map(item => item._id);
     dispatch(getNumber(dataIds));
   }
-  function deleteIngredient(item) {
+  const moveCard = useCallback((dragIndex, hoverIndex) => {
     dispatch({
-      type: DELETE_INGREDIENT,
-      unId: item.unId,
+      type: MOVE_INGREDIENT,
+      dragIndex,
+      hoverIndex
     });
-    dispatch({
-      type: REDUCE_COUNTER,
-      item: item
-    });
-  }
+  }, [])
+  const renderCard = useCallback((item, index) => {
+    return (
+      <ToppingElement
+        key={item.unId}
+        id={item.unId}
+        index={index}
+        item={item}
+        moveCard={moveCard}
+      />
+    )
+  }, [])
 
   return (
     <div className={styles.construct}>
@@ -80,22 +89,7 @@ function BurgerConstructor() {
           }
           <CellEmpty height="mt-4"/>
           <div style={{border}} className={styles.content}>
-            {data.content.map((item) => {
-              if (item.type !== "bun") {
-                return (<div className={styles.element} key={item.unId}>
-                  <CellEmpty height="ml-4"/>
-                  <DragIcon type="primary"/>
-                  <CellEmpty height="ml-2"/>
-                  <ConstructorElement
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                    handleClose={() => deleteIngredient(item)}
-                  />
-                </div>)
-              }
-              return null
-            })}
+            {data.content.map((item, i) => renderCard(item, i))}
           </div>
           <CellEmpty height="mt-4"/>
           {!!data.bun.name ?
@@ -116,6 +110,7 @@ function BurgerConstructor() {
         <EmptyBurgerIngredients />
       }
       <CellEmpty height="pt-10"/>
+      {(!!data.bun.price || !!data.content.length) &&
       <div className={styles.order}>
         <div className={styles.total}>
           <p className="text text_type_digits-medium">
@@ -127,11 +122,12 @@ function BurgerConstructor() {
           </div>
         </div>
         <CellEmpty height="ml-10"/>
+        {!!data.bun.price && !!data.content.length &&
         <Button type="primary" size="large" onClick={openModal}>
           Оформить заказ
-        </Button>
+        </Button>}
         <CellEmpty height="ml-4"/>
-      </div>
+      </div>}
     </div>
   );
 }

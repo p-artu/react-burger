@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
 import {
   GET_INGREDIENTS,
-  GET_NUMBER,
   OPEN_INGREDIENT_MODAL,
   OPEN_ORDER_MODAL,
   CLOSE_MODAL,
   ADD_INGREDIENT,
   DELETE_INGREDIENT,
   INCREASE_COUNTER,
-  REDUCE_COUNTER
+  REDUCE_COUNTER,
+  MOVE_INGREDIENT
 } from '../actions/index'
 
 const initialState = {
@@ -29,11 +29,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         ingredients: action.ingredients
-      }
-    case GET_NUMBER:
-      return {
-        ...state,
-        orderNumber: action.orderNumber
       }
     case OPEN_INGREDIENT_MODAL:
       return {
@@ -79,6 +74,17 @@ const reducer = (state = initialState, action) => {
               ...state.draggedIngredients.content,
               action.item
             ]
+          }
+        }
+      case MOVE_INGREDIENT:
+        let newData = [...state.draggedIngredients.content];
+        newData.splice(action.dragIndex, 1);
+        newData.splice(action.hoverIndex, 0, state.draggedIngredients.content[action.dragIndex]);
+        return {
+          ...state,
+          draggedIngredients: {
+            ...state.draggedIngredients,
+            content: newData
           }
         }
       case DELETE_INGREDIENT:

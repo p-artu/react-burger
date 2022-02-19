@@ -39,12 +39,6 @@
   background-color: #8585ad;
 }
 
-.element {
-  display: flex;
-  align-items: center;
-  padding: 0 8px 0 0;
-}
-
 .order {
   display: flex;
   justify-content: flex-end;

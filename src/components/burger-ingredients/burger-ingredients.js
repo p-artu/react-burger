@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useRef } from 'react';
 import styles from './burger-ingredients.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import IngredientsElement from '../ingredients-element/ingredients-element';
@@ -28,6 +28,10 @@ function BurgerIngredients() {
     }, [[], [], []]),
     [data]
   );
+  const ingredientsRef = useRef(null);
+  const bunRef = useRef(null);
+  const sauceRef = useRef(null);
+  const mainRef = useRef(null);
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -40,6 +44,23 @@ function BurgerIngredients() {
         ingredient: data
       }
     });
+  }
+  function handleScroll() {
+    const bunsRoofDistance = bunRef.current.getBoundingClientRect().top - 15;
+    const saucesRoofDistance = sauceRef.current.getBoundingClientRect().top - 15;
+    const mainsRoofDistance = mainRef.current.getBoundingClientRect().top - 15;
+    const ingredientsRoofDistance = ingredientsRef.current.getBoundingClientRect().top;
+    const bunsceilingDistance = Math.abs(ingredientsRoofDistance - bunsRoofDistance);
+    const saucesceilingDistance = Math.abs(ingredientsRoofDistance - saucesRoofDistance);
+    const mainsceilingDistance = Math.abs(ingredientsRoofDistance - mainsRoofDistance);
+    const nearestTitle = Math.min(bunsceilingDistance, saucesceilingDistance, mainsceilingDistance);
+    if (nearestTitle === bunsceilingDistance) {
+      setCurrent('Булки');
+    } else if (nearestTitle === saucesceilingDistance) {
+      setCurrent('Соусы');
+    } else {
+      setCurrent('Начинки');
+    }
   }
 
   return (
@@ -65,53 +86,38 @@ function BurgerIngredients() {
         </a>
       </div>
       <CellEmpty height="mt-10"/>
-      <div className={styles.ingredients}>
-        <h2 id='bun' className="text text_type_main-medium">Булки</h2>
+      <div className={styles.ingredients} onScroll={handleScroll} ref={ingredientsRef}>
+        <h2 id='bun' className="text text_type_main-medium" ref={bunRef}>Булки</h2>
         <CellEmpty height="mt-6"/>
         <ul className={styles['ingredients-type']}>
           {bun.map((item) => (
             <li className={styles['ingredients-item']} key={item._id} onClick={() => openModal(item)}>
               <IngredientsElement
                 data={item}
-                id={item._id}
-                type={item.type}
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
               />
             </li>
           ))}
         </ul>
         <CellEmpty height="mt-10"/>
-        <h2 id='sauce' className="text text_type_main-medium">Соусы</h2>
+        <h2 id='sauce' className="text text_type_main-medium" ref={sauceRef}>Соусы</h2>
         <CellEmpty height="mt-6"/>
         <ul className={styles['ingredients-type']}>
           {sauce.map((item) => (
             <li className={styles['ingredients-item']} key={item._id} onClick={() => openModal(item)}>
               <IngredientsElement
                 data={item}
-                id={item._id}
-                type={item.type}
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
               />
             </li>
           ))}
         </ul>
         <CellEmpty height="mt-10"/>
-        <h2 id='main' className="text text_type_main-medium">Начинки</h2>
+        <h2 id='main' className="text text_type_main-medium" ref={mainRef}>Начинки</h2>
         <CellEmpty height="mt-6"/>
         <ul className={styles['ingredients-type']}>
           {main.map((item) => (
             <li className={styles['ingredients-item']} key={item._id} onClick={() => openModal(item)}>
               <IngredientsElement
                 data={item}
-                id={item._id}
-                type={item.type}
-                text={item.name}
-                price={item.price}
-                thumbnail={item.image}
               />
             </li>
           ))}
