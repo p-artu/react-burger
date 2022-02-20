@@ -12,6 +12,7 @@ import ToppingElement from '../topping-element/topping-element';
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const data = useSelector(store => store.constructorIngredients.draggedIngredients);
+  const {orderRequest, orderFailed} = useSelector(store => store.order);
   const [{isHover}, dropTarget] = useDrop({
     accept: "ingredient",
     drop(item) {
@@ -111,24 +112,36 @@ function BurgerConstructor() {
         <EmptyBurgerIngredients />
       }
       <CellEmpty height="pt-10"/>
-      {(!!data.bun.price || !!data.content.length) &&
-      <div className={styles.order}>
-        <div className={styles.total}>
-          <p className="text text_type_digits-medium">
-            {totalPrice}
-          </p>
-          <CellEmpty height="ml-2"/>
-          <div className={styles.icon}>
-            <CurrencyIcon type="primary"/>
+      {orderRequest ?
+        <h2 className="text text_type_main-medium">Идёт загрузка...</h2>
+      :
+        (!!data.bun.price || !!data.content.length) &&
+        <>
+          {orderFailed &&
+            <>
+              <h2 className={`text text_type_main-medium ${styles.error}`}>Произошла ошибка! Попробуйте ещё раз!</h2>
+              <CellEmpty height="pt-10"/>
+            </>
+          }
+          <div className={styles.order}>
+            <div className={styles.total}>
+              <p className="text text_type_digits-medium">
+                {totalPrice}
+              </p>
+              <CellEmpty height="ml-2"/>
+              <div className={styles.icon}>
+                <CurrencyIcon type="primary"/>
+              </div>
+            </div>
+            <CellEmpty height="ml-10"/>
+            {!!data.bun.price && !!data.content.length &&
+            <Button type="primary" size="large" onClick={openModal}>
+              Оформить заказ
+            </Button>}
+            <CellEmpty height="ml-4"/>
           </div>
-        </div>
-        <CellEmpty height="ml-10"/>
-        {!!data.bun.price && !!data.content.length &&
-        <Button type="primary" size="large" onClick={openModal}>
-          Оформить заказ
-        </Button>}
-        <CellEmpty height="ml-4"/>
-      </div>}
+        </>
+      }
     </div>
   );
 }

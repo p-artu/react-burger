@@ -69,3 +69,8 @@
   height: 80px;
   margin-right: 16px;
 }
+
+.error {
+  color: red;
+  text-align: center;
+}

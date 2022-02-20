@@ -6,20 +6,31 @@ import {
 } from '../actions/order';
 
 const initialState = {
-  orderDetails: null
+  orderDetails: null,
+  orderRequest: false,
+  orderFailed: false
 };
 
 export const orderReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ORDER_REQUEST:
-      return state
+      return {
+        ...state,
+        orderRequest: true,
+        orderFailed: false
+      }
     case GET_ORDER_SUCCESS:
       return {
         ...state,
-        orderDetails: action.orderNumber
+        orderDetails: action.orderNumber,
+        orderRequest: false
       }
     case GET_ORDER_FAILED:
-      return state
+      return {
+        ...state,
+        orderRequest: false,
+        orderFailed: true
+      }
     case CLOSE_ORDER_MODAL:
       return {
         ...state,

@@ -19,13 +19,13 @@ export function getNumber(dataIds) {
         });
       } else {
         dispatch({
-          type: GET_ORDER_REQUEST
+          type: GET_ORDER_FAILED
         });
       }
     })
     .catch(err => {
       dispatch({
-        type: GET_ORDER_REQUEST
+        type: GET_ORDER_FAILED
       });
       console.error(err);
     });
