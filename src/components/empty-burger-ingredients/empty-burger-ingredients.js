@@ -1,6 +1,6 @@
 import { useDrop } from "react-dnd";
 import { useDispatch } from 'react-redux';
-import { ADD_INGREDIENT, INCREASE_COUNTER } from '../../services/actions/index';
+import { ADD_INGREDIENT, INCREASE_COUNTER } from '../../services/actions/constructor-ingredients';
 import styles from './empty-burger-ingredients.module.css';
 
 function EmptyBurgerIngredients() {

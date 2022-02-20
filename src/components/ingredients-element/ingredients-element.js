@@ -7,7 +7,7 @@ import { ingredientsPropTypes } from '../../utils/types';
 
 function IngredientsElement(props) {
   const {data} = props;
-  const counterList = useSelector(store => store.reducer.counterList);
+  const counterList = useSelector(store => store.constructorIngredients.counterList);
   const [{isDrag} , dragRef] = useDrag({
     type: "ingredient",
     item: data,

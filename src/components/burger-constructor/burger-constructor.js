@@ -4,13 +4,14 @@ import CellEmpty from '../cell-empty/cell-empty';
 import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from "react-dnd";
-import { getNumber, ADD_INGREDIENT, INCREASE_COUNTER, MOVE_INGREDIENT } from '../../services/actions/index';
+import { getNumber } from '../../services/actions/order';
+import { ADD_INGREDIENT, INCREASE_COUNTER, MOVE_INGREDIENT } from '../../services/actions/constructor-ingredients';
 import EmptyBurgerIngredients from '../empty-burger-ingredients/empty-burger-ingredients';
 import ToppingElement from '../topping-element/topping-element';
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
-  const data = useSelector(store => store.reducer.draggedIngredients);
+  const data = useSelector(store => store.constructorIngredients.draggedIngredients);
   const [{isHover}, dropTarget] = useDrop({
     accept: "ingredient",
     drop(item) {
@@ -47,7 +48,7 @@ function BurgerConstructor() {
   }, [data]);
 
   function openModal() {
-    const dataIds = data.map(item => item._id);
+    const dataIds = data.content.map(item => item._id);
     dispatch(getNumber(dataIds));
   }
   const moveCard = useCallback((dragIndex, hoverIndex) => {

@@ -14,7 +14,7 @@ export const ingredientsPropTypes = PropTypes.shape({
   image_large: PropTypes.string.isRequired,
   __v: PropTypes.number.isRequired
 });
-export const uniqueIngredientsPropTypes = PropTypes.shape({
+export const uniqueIngredientPropTypes = PropTypes.shape({
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,

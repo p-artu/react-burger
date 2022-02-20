@@ -1,9 +1,9 @@
 import { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { uniqueIngredientsPropTypes } from '../../utils/types';
+import { uniqueIngredientPropTypes } from '../../utils/types';
 import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from 'react-redux';
-import { DELETE_INGREDIENT, REDUCE_COUNTER } from '../../services/actions/index';
+import { DELETE_INGREDIENT, REDUCE_COUNTER } from '../../services/actions/constructor-ingredients';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../cell-empty/cell-empty';
 import styles from './topping-element.module.css';
@@ -81,7 +81,7 @@ function ToppingElement(props) {
 }
 
 ToppingElement.propTypes = {
-  item: uniqueIngredientsPropTypes.isRequired,
+  item: uniqueIngredientPropTypes.isRequired,
   id: PropTypes.number.isRequired,
   index: PropTypes.number.isRequired,
   moveCard: PropTypes.func.isRequired

@@ -4,11 +4,12 @@ import CellEmpty from '../cell-empty/cell-empty';
 import IngredientsElement from '../ingredients-element/ingredients-element';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { OPEN_INGREDIENT_MODAL, getIngredients } from '../../services/actions/index';
+import { getIngredients } from '../../services/actions/ingredients';
+import { OPEN_INGREDIENT_MODAL } from '../../services/actions/ingredient-modal';
 
 function BurgerIngredients() {
   const dispatch = useDispatch();
-  const data = useSelector(store => store.reducer.ingredients);
+  const data = useSelector(store => store.ingredients.ingredients);
   const [current, setCurrent] = React.useState('Булки');
   const [bun, sauce, main] = useMemo(() =>
     data.reduce((arr, item) => {

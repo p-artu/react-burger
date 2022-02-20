@@ -7,12 +7,23 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { CLOSE_INGREDIENT_MODAL } from '../../services/actions/ingredient-modal';
+import { CLOSE_ORDER_MODAL } from '../../services/actions/order';
 
 function App() {
-  const { currentIngredient, isModalOpen } = useSelector(store => store.reducer);
+  const dispatch = useDispatch();
+  const { currentIngredient } = useSelector(store => store.ingredientModal);
+  const { orderDetails } = useSelector(store => store.order);
+
+  function closeIngredientPopup() {
+    dispatch({ type: CLOSE_INGREDIENT_MODAL });
+  }
+  function closeOrderPopup() {
+    dispatch({ type: CLOSE_ORDER_MODAL });
+  }
 
   return (
     <div className={app.page}>
@@ -24,11 +35,14 @@ function App() {
         </main>
       </DndProvider>
       <CellEmpty height="mb-3"/>
-      {isModalOpen &&
-        <Modal>
-          {currentIngredient.name ? <IngredientDetails/> : <OrderDetails/>}
-        </Modal>
-      }
+      {currentIngredient &&
+        <Modal closePopup={closeIngredientPopup}>
+          <IngredientDetails/>
+        </Modal>}
+      {orderDetails &&
+        <Modal closePopup={closeOrderPopup}>
+          <OrderDetails/>
+        </Modal>}
     </div>
   );
 }
