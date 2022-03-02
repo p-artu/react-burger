@@ -46,3 +46,8 @@
   max-width: 272px;
   cursor: pointer;
 }
+
+.error {
+  color: red;
+  text-align: center;
+}
