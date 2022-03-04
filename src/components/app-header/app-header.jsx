@@ -1,11 +1,9 @@
 import React from 'react';
-import {NavLink, useLocation} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import header from './header.module.css';
 import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 function AppHeader() {
-  const {url, path} = useLocation();
-  console.log(url, path);
   return (
     <header className={header.header}>
       <div className={header.container}>

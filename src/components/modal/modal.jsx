@@ -15,7 +15,7 @@ function Modal({closePopup, ...props}) {
       document.removeEventListener('keydown', handleEscClose);
     }
   }, []);
-
+  console.log('location?.state?.from');
   return ReactDOM.createPortal(
     (<div className={styles.container}>
       <div className={styles.modal}>

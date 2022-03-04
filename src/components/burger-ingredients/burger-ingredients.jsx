@@ -1,10 +1,9 @@
-import React, { useMemo, useEffect, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import styles from './burger-ingredients.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import IngredientsElement from '../ingredients-element/ingredients-element';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { getIngredients } from '../../services/actions/ingredients';
 import { OPEN_INGREDIENT_MODAL } from '../../services/actions/ingredient-modal';
 
 function BurgerIngredients() {
@@ -33,10 +32,6 @@ function BurgerIngredients() {
   const bunRef = useRef(null);
   const sauceRef = useRef(null);
   const mainRef = useRef(null);
-
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, []);
 
   function openModal(data) {
     dispatch({
@@ -100,7 +95,7 @@ function BurgerIngredients() {
           <CellEmpty height="mt-6"/>
           <ul className={styles['ingredients-type']}>
             {bun.map((item) => (
-              <li className={styles['ingredients-item']} key={item._id} onClick={() => openModal(item)}>
+              <li className={styles['ingredients-item']} key={item._id}>
                 <IngredientsElement
                   data={item}
                 />
@@ -112,7 +107,7 @@ function BurgerIngredients() {
           <CellEmpty height="mt-6"/>
           <ul className={styles['ingredients-type']}>
             {sauce.map((item) => (
-              <li className={styles['ingredients-item']} key={item._id} onClick={() => openModal(item)}>
+              <li className={styles['ingredients-item']} key={item._id}>
                 <IngredientsElement
                   data={item}
                 />
@@ -124,7 +119,7 @@ function BurgerIngredients() {
           <CellEmpty height="mt-6"/>
           <ul className={styles['ingredients-type']}>
             {main.map((item) => (
-              <li className={styles['ingredients-item']} key={item._id} onClick={() => openModal(item)}>
+              <li className={styles['ingredients-item']} key={item._id}>
                 <IngredientsElement
                   data={item}
                 />

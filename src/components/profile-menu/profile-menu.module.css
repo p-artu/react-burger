@@ -1,0 +1,35 @@
+.profileMenu {
+  width: 100%;
+  max-width: 320px;
+}
+
+.menuList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menuItem {
+  height: 64px;
+  display: flex;
+  align-items: center;
+}
+
+.navlink {
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  color: #8585ad;
+}
+
+.activeNavlink {
+  color: #f2f2f3;
+}
+
+.exit {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  color: #8585ad;
+}
