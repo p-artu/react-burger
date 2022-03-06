@@ -4,13 +4,16 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import CellEmpty from '../components/cell-empty/cell-empty';
 import styles from './forgot-password.module.css';
 
-function ForgotPage() {
+function ForgotPage(props) {
   const [form, setValue] = useState({email: '' });
 
   const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value });
   }
-  function handleSubmit(e) {}
+  function handleSubmit(e) {
+    e.preventDefault();
+    props.recoverPassword(form.email);
+  }
 
   return (
     <div className={styles.forgot}>

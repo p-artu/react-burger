@@ -1,14 +1,20 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './profile-inputs.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 
-function ProfileInputs() {
-  const [form, setValue] = useState({ name: '', email: '', password: '' });
+function ProfileInputs(props) {
+  const {name, email} = props.currentUser;
+  const [form, setValue] = useState({ name, email, password: '' });
   const [inputDisabled, setInputDisabled] = useState({ name: true, email: true, password: true });
+  const [hasChanges, setHasChanges] = useState(false);
   const nameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+
+  useEffect(() => {
+    setHasChanges(!(form.name === name) || !(form.email === email) || !(form.password === ''));
+  }, [email, form.email, form.name, form.password, name]);
 
   const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value });
@@ -34,9 +40,13 @@ function ProfileInputs() {
   function onPasswordBlur() {
     setInputDisabled({ ...inputDisabled, password: true });
   }
-  function handleSubmit(e) {}
+  function handleSubmit(e) {
+    e.preventDefault();
+    const {email, password, name} = form;
+    props.handleSubmit(email, password, name);
+  }
   function undoChanges() {
-    setValue({ name: '', email: '', password: '' });
+    setValue({ name, email, password: '' });
   }
 
   return (
@@ -90,6 +100,7 @@ function ProfileInputs() {
           ref={passwordRef}
         />
         <CellEmpty height="pt-6"/>
+        {hasChanges &&
         <div className={styles.buttons}>
           <div className={styles.buttonContainer}>
             <Button onClick={undoChanges} type='secondary' size='medium'>
@@ -99,7 +110,7 @@ function ProfileInputs() {
           <Button type='primary' size='medium'>
             Сохранить
           </Button>
-        </div>
+        </div>}
       </form>
     </div>
   );

@@ -4,8 +4,8 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import CellEmpty from '../components/cell-empty/cell-empty';
 import styles from './reset-password.module.css';
 
-function ResetPage() {
-  const [form, setValue] = useState({ password: '', key: '' });
+function ResetPage(props) {
+  const [form, setValue] = useState({ password: '', token: '' });
   const [passwordIcon, setPasswordIcon] = useState('ShowIcon');
   const [passwordInputType, setPasswordInputType] = useState('password');
 
@@ -21,7 +21,10 @@ function ResetPage() {
       setPasswordInputType('password');
     }
   }
-  function handleSubmit(e) {}
+  function handleSubmit(e) {
+    e.preventDefault();
+    props.setNewPassword(form.token, form.password);
+  }
 
   return (
     <div className={styles.reset}>
@@ -47,8 +50,8 @@ function ResetPage() {
           type={'text'}
           placeholder={'Введите код из письма'}
           onChange={onChange}
-          value={form.key}
-          name={'key'}
+          value={form.token}
+          name={'token'}
           error={false}
           errorText={'Ошибка'}
           size={'default'}

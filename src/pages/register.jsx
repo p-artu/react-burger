@@ -1,16 +1,26 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../components/cell-empty/cell-empty';
 import styles from './register.module.css';
 
-function RegisterPage() {
+function RegisterPage(props) {
   const [form, setValue] = useState({ name: '', email: '', password: '' });
+  const location = useLocation();
 
   const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value });
   }
-  function handleSubmit(e) {}
+  function handleSubmit(e) {
+    e.preventDefault();
+    const {email, password, name} = form;
+    props.handleSubmit(email, password, name);
+  }
+
+  if (props.loggedIn) {
+    console.log(location.state?.from);
+    return <Redirect to={location.state?.from || '/'}/>
+  }
 
   return (
     <div className={styles.register}>

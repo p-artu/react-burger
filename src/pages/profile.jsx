@@ -4,14 +4,14 @@ import ProfileMenu from '../components/profile-menu/profile-menu';
 import ProfileInputs from '../components/profile-inputs/profile-inputs';
 import styles from './profile.module.css';
 
-function ProfilePage() {
+function ProfilePage(props) {
   return (
     <div className={styles.profile}>
       <CellEmpty height="pt-30"/>
       <div className={styles.profileContainer}>
-        <ProfileMenu/>
+        <ProfileMenu signOut={props.signOut} />
         <CellEmpty height="pl-15"/>
-        <ProfileInputs/>
+        <ProfileInputs currentUser={props.currentUser} handleSubmit={props.handleSubmit}/>
       </div>
     </div>
   );

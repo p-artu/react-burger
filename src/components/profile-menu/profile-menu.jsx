@@ -3,7 +3,11 @@ import { NavLink } from 'react-router-dom';
 import styles from './profile-menu.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 
-function ProfileMenu() {
+function ProfileMenu(props) {
+  function signOut() {
+    props.signOut();
+  }
+
   return (
     <div className={styles.profileMenu}>
       <ul className={styles.menuList}>
@@ -18,7 +22,7 @@ function ProfileMenu() {
           </NavLink>
         </li>
         <li className={styles.menuItem}>
-          <button className={`${styles.exit} text text_type_main-medium`}>Выход</button>
+          <button onClick={signOut} className={`${styles.exit} text text_type_main-medium`}>Выход</button>
         </li>
       </ul>
       <CellEmpty height="pt-20"/>
