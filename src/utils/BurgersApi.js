@@ -28,7 +28,7 @@ class Api {
     })
     .then(this._checkResponse)
   }
-  getUserInfo(accessToken) {
+  getUserInfoRequest(accessToken) {
     return fetch(`${this._baseUrl}/auth/user`, {
       headers: {
         ...this._headers,
@@ -38,7 +38,7 @@ class Api {
     })
     .then(this._checkResponse)
   }
-  editUserInfo(accessToken, email, password, name) {
+  editUserInfoRequest(accessToken, email, password, name) {
     return fetch(`${this._baseUrl}/auth/user`, {
       headers: {
         ...this._headers,
@@ -73,7 +73,7 @@ class Api {
     })
     .then(this._checkResponse);
   }
-  token(refreshToken) {
+  getTokenRequest(refreshToken) {
     return fetch(`${this._baseUrl}/auth/token`, {
       method: 'POST',
       headers: this._headers,

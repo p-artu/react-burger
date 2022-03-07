@@ -1,12 +1,16 @@
 import React, {useState} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../components/cell-empty/cell-empty';
+import { authorize } from '../services/actions/user';
 import styles from './login.module.css';
 
-function LoginPage(props) {
+function LoginPage() {
   const [form, setValue] = useState({ email: '', password: '' });
   const location = useLocation();
+  const dispatch = useDispatch();
+  const {user} = useSelector(store => store.user);
 
   const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value });
@@ -14,11 +18,10 @@ function LoginPage(props) {
   function handleSubmit(e) {
     e.preventDefault();
     const {email, password} = form;
-    props.handleSubmit(email, password);
+    dispatch(authorize(email, password));
   }
-  console.log(props.loggedIn);
-  if (props.loggedIn) {
-    console.log(location.state?.from);
+
+  if (user.name) {
     return <Redirect to={location.state?.from || '/'}/>
   }
 

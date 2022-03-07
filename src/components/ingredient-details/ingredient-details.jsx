@@ -10,8 +10,6 @@ function IngredientDetails() {
     return item._id === id
   });
 
-  console.log(currentIngredient);
-
   return (
     <>
       <h2 className={`text text_type_main-large mt-10 ml-10 ${styles.title}`}>Детали ингредиента</h2>

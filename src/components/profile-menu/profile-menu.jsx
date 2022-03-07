@@ -1,11 +1,15 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import styles from './profile-menu.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
+import { logout } from '../../services/actions/user';
 
-function ProfileMenu(props) {
+function ProfileMenu() {
+  const dispatch = useDispatch();
+
   function signOut() {
-    props.signOut();
+    dispatch(logout());
   }
 
   return (

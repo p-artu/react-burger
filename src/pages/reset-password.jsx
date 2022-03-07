@@ -1,13 +1,18 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../components/cell-empty/cell-empty';
+import { setNewPasswordRequest } from '../services/actions/user';
 import styles from './reset-password.module.css';
 
-function ResetPage(props) {
+function ResetPage() {
   const [form, setValue] = useState({ password: '', token: '' });
   const [passwordIcon, setPasswordIcon] = useState('ShowIcon');
   const [passwordInputType, setPasswordInputType] = useState('password');
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const {user} = useSelector(store => store.user);
 
   const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value });
@@ -23,7 +28,11 @@ function ResetPage(props) {
   }
   function handleSubmit(e) {
     e.preventDefault();
-    props.setNewPassword(form.token, form.password);
+    dispatch(setNewPasswordRequest(form.token, form.password));
+  }
+
+  if (user.name) {
+    return <Redirect to={location.state?.from || '/'}/>
   }
 
   return (

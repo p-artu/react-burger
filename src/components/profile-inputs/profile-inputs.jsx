@@ -1,16 +1,19 @@
 import React, {useState, useRef, useEffect} from 'react';
+import { useDispatch, useSelector  } from 'react-redux';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './profile-inputs.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
+import { editUserInfo } from '../../services/actions/user';
 
-function ProfileInputs(props) {
-  const {name, email} = props.currentUser;
+function ProfileInputs() {
+  const {name, email} = useSelector(store => store.user.user);
   const [form, setValue] = useState({ name, email, password: '' });
   const [inputDisabled, setInputDisabled] = useState({ name: true, email: true, password: true });
   const [hasChanges, setHasChanges] = useState(false);
   const nameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setHasChanges(!(form.name === name) || !(form.email === email) || !(form.password === ''));
@@ -43,7 +46,8 @@ function ProfileInputs(props) {
   function handleSubmit(e) {
     e.preventDefault();
     const {email, password, name} = form;
-    props.handleSubmit(email, password, name);
+    dispatch(editUserInfo(email, password, name));
+    setValue({ name, email, password: '' });
   }
   function undoChanges() {
     setValue({ name, email, password: '' });

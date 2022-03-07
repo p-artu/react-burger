@@ -1,18 +1,27 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../components/cell-empty/cell-empty';
+import { recoverPassword } from '../services/actions/user';
 import styles from './forgot-password.module.css';
 
-function ForgotPage(props) {
+function ForgotPage() {
   const [form, setValue] = useState({email: '' });
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const {user} = useSelector(store => store.user);
 
   const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value });
   }
   function handleSubmit(e) {
     e.preventDefault();
-    props.recoverPassword(form.email);
+    dispatch(recoverPassword(form.email));
+  }
+
+  if (user.name) {
+    return <Redirect to={location.state?.from || '/'}/>
   }
 
   return (
