@@ -8,13 +8,17 @@ import Modal from '../modal/modal';
 import ProtectedRoute from '../protected-route/protected-route.js';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { getIngredients } from '../../services/actions/ingredients';
+import { getUserInfo } from '../../services/actions/user';
 
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
-  const background = history.action === 'PUSH' && location.state && location.state.from;
+  const previousPath = history.action === 'PUSH' && location.state && location.state.from;
 
+  useEffect(() => {
+    dispatch(getUserInfo());
+  }, []);
   useEffect(() => {
     dispatch(getIngredients());
   }, []);
@@ -26,7 +30,7 @@ function App() {
   return (
     <div className={app.page}>
       <AppHeader />
-      <Switch location={background || location}>
+      <Switch location={previousPath || location}>
         <Route path="/" exact={true}>
           <HomePage />
         </Route>
@@ -55,7 +59,7 @@ function App() {
           <PageNotFound />
         </Route>
       </Switch>
-      {background &&
+      {previousPath &&
         <Route path="/ingredients/:id" exact={true}>
           <Modal closePopup={closeIngredientPopup}>
             <IngredientDetails/>

@@ -3,11 +3,9 @@ import styles from './burger-ingredients.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import IngredientsElement from '../ingredients-element/ingredients-element';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { OPEN_INGREDIENT_MODAL } from '../../services/actions/ingredient-modal';
+import { useSelector } from 'react-redux';
 
 function BurgerIngredients() {
-  const dispatch = useDispatch();
   const {ingredients, ingredientsRequest, ingredientsFailed} = useSelector(store => store.ingredients);
   const [current, setCurrent] = React.useState('Булки');
   const [bun, sauce, main] = useMemo(() =>
@@ -33,14 +31,6 @@ function BurgerIngredients() {
   const sauceRef = useRef(null);
   const mainRef = useRef(null);
 
-  function openModal(data) {
-    dispatch({
-      type: OPEN_INGREDIENT_MODAL,
-      payload: {
-        ingredient: data
-      }
-    });
-  }
   function handleScroll() {
     const bunsRoofDistance = bunRef.current.getBoundingClientRect().top - 15;
     const saucesRoofDistance = sauceRef.current.getBoundingClientRect().top - 15;

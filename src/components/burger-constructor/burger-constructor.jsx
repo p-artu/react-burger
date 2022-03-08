@@ -1,4 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import styles from './burger-constructor.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -10,8 +11,10 @@ import EmptyBurgerIngredients from '../empty-burger-ingredients/empty-burger-ing
 import ToppingElement from '../topping-element/topping-element';
 
 function BurgerConstructor() {
+  const history = useHistory();
   const dispatch = useDispatch();
   const data = useSelector(store => store.constructorIngredients.draggedIngredients);
+  const {user} = useSelector(store => store.user);
   const {orderRequest, orderFailed} = useSelector(store => store.order);
   const [{isHover}, dropTarget] = useDrop({
     accept: "ingredient",
@@ -49,8 +52,12 @@ function BurgerConstructor() {
   }, [data]);
 
   function openModal() {
-    const dataIds = data.content.map(item => item._id);
-    dispatch(getNumber(dataIds));
+    if (user.name) {
+      const dataIds = data.content.map(item => item._id);
+      dispatch(getNumber(dataIds));
+    } else {
+      history.push('/login');
+    }
   }
   const moveCard = useCallback((dragIndex, hoverIndex) => {
     dispatch({

@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Redirect, useLocation } from 'react-router-dom';
+import { Link, Redirect, useLocation, useHistory } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../components/cell-empty/cell-empty';
-import { recoverPassword } from '../services/actions/user';
+import { recoverPassword } from '../services/actions/password-change';
 import styles from './forgot-password.module.css';
 
 function ForgotPage() {
@@ -11,6 +11,7 @@ function ForgotPage() {
   const location = useLocation();
   const dispatch = useDispatch();
   const {user} = useSelector(store => store.user);
+  const history = useHistory();
 
   const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value });
@@ -18,6 +19,7 @@ function ForgotPage() {
   function handleSubmit(e) {
     e.preventDefault();
     dispatch(recoverPassword(form.email));
+    history.push({pathname: `/reset-password`, state: location});
   }
 
   if (user.name) {

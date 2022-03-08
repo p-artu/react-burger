@@ -14,12 +14,6 @@ import {
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   LOGOUT_FAILED,
-  RESET_PASSWORD_REQUEST,
-  RESET_PASSWORD_SUCCESS,
-  RESET_PASSWORD_FAILED,
-  SET_NEW_PASSWORD_REQUEST,
-  SET_NEW_PASSWORD_SUCCESS,
-  SET_NEW_PASSWORD_FAILED
 } from '../actions/user';
 
 const initialState = {
@@ -120,18 +114,6 @@ export const userReducer = (state = initialState, action) => {
         userRequest: false,
         userFailed: true
       }
-    case RESET_PASSWORD_REQUEST:
-      return state
-    case RESET_PASSWORD_SUCCESS:
-      return state
-    case RESET_PASSWORD_FAILED:
-      return state
-    case SET_NEW_PASSWORD_REQUEST:
-      return state
-    case SET_NEW_PASSWORD_SUCCESS:
-      return state
-    case SET_NEW_PASSWORD_FAILED:
-      return state
     default:
       return state
   }

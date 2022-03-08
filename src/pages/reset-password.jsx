@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Redirect, useLocation } from 'react-router-dom';
+import { Link, Redirect, useLocation, useHistory } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../components/cell-empty/cell-empty';
-import { setNewPasswordRequest } from '../services/actions/user';
+import { setNewPasswordRequest } from '../services/actions/password-change';
 import styles from './reset-password.module.css';
 
 function ResetPage() {
@@ -13,6 +13,7 @@ function ResetPage() {
   const location = useLocation();
   const dispatch = useDispatch();
   const {user} = useSelector(store => store.user);
+  const history = useHistory();
 
   const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value });
@@ -29,10 +30,14 @@ function ResetPage() {
   function handleSubmit(e) {
     e.preventDefault();
     dispatch(setNewPasswordRequest(form.token, form.password));
+    history.push('/login');
   }
 
   if (user.name) {
     return <Redirect to={location.state?.from || '/'}/>
+  }
+  if (!location.state?.pathname) {
+    return <Redirect to={'/forgot-password'}/>
   }
 
   return (

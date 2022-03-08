@@ -6,9 +6,7 @@ import { useSelector } from 'react-redux';
 function IngredientDetails() {
   const {ingredients} = useSelector(store => store.ingredients);
   const {id} = useParams();
-  const currentIngredient = ingredients.find(item => {
-    return item._id === id
-  });
+  const currentIngredient = ingredients.find(item => item._id === id);
 
   return (
     <>
