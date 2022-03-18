@@ -3,7 +3,8 @@ import {
   DELETE_INGREDIENT,
   INCREASE_COUNTER,
   REDUCE_COUNTER,
-  MOVE_INGREDIENT
+  MOVE_INGREDIENT,
+  CLEAR_INGREDIENTS
 } from '../actions/constructor-ingredients';
 
 const initialState = {
@@ -22,8 +23,8 @@ export const constructorIngredientsReducer = (state = initialState, action) => {
           ...state,
           counterList: {
             ...state.counterList,
-            [action.item._id]: 2,
-            [state.draggedIngredients.bun._id]: 0
+            [state.draggedIngredients.bun._id]: 0,
+            [action.item._id]: 2
           },
           draggedIngredients: {
             ...state.draggedIngredients,
@@ -77,6 +78,16 @@ export const constructorIngredientsReducer = (state = initialState, action) => {
           ...state.counterList,
           [action.item._id]: state.draggedIngredients.content.filter(item => item._id === action.item._id).length
         }
+      }
+    case CLEAR_INGREDIENTS:
+      return {
+        ...state,
+        draggedIngredients: {
+          ...state.draggedIngredients,
+          bun: {},
+          content: []
+        },
+        counterList: {}
       }
     default:
       return state

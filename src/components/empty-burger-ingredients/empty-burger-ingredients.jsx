@@ -1,6 +1,6 @@
 import { useDrop } from "react-dnd";
 import { useDispatch } from 'react-redux';
-import { ADD_INGREDIENT, INCREASE_COUNTER } from '../../services/actions/constructor-ingredients';
+import { addIngredient, increaseCounter } from '../../services/actions/constructor-ingredients';
 import styles from './empty-burger-ingredients.module.css';
 
 function EmptyBurgerIngredients() {
@@ -13,15 +13,9 @@ function EmptyBurgerIngredients() {
         const now = new Date().getTime();
         uniqueItem.unId = now;
       }
-      dispatch({
-        type: ADD_INGREDIENT,
-        item: uniqueItem
-      });
+      dispatch(addIngredient(uniqueItem));
       if (uniqueItem.type !== 'bun') {
-        dispatch({
-          type: INCREASE_COUNTER,
-          item: uniqueItem
-        });
+        dispatch(increaseCounter(uniqueItem));
       }
     },
     collect: monitor => ({

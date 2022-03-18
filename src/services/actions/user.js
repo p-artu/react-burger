@@ -19,172 +19,139 @@ export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const LOGOUT_FAILED = 'LOGOUT_FAILED';
 
+export const getUserInfoRequest = () => ({type: GET_USER_INFO_REQUEST});
+export const getUserInfoSuccess = user => ({type: GET_USER_INFO_SUCCESS, user});
+export const getUserInfoFailed = () => ({type: GET_USER_INFO_FAILED});
+export const editUserInfoRequest = () => ({type: EDIT_USER_INFO_REQUEST});
+export const editUserInfoSuccess = user => ({type: EDIT_USER_INFO_SUCCESS, user});
+export const editUserInfoFailed = () => ({type: EDIT_USER_INFO_FAILED});
+export const getTokenRequest = () => ({type: GET_TOKEN_REQUEST});
+export const getTokenSuccess = () => ({type: GET_TOKEN_SUCCESS});
+export const getTokenFailed = () => ({type: GET_TOKEN_FAILED});
+export const loginRequest = () => ({type: LOGIN_REQUEST});
+export const loginSuccess = user => ({type: LOGIN_SUCCESS, user});
+export const loginFailed = () => ({type: LOGIN_FAILED});
+export const registerRequest = () => ({type: REGISTER_REQUEST});
+export const registerSuccess = user => ({type: REGISTER_SUCCESS, user});
+export const registerFailed = () => ({type: REGISTER_FAILED});
+export const logoutRequest = () => ({type: LOGOUT_REQUEST});
+export const logoutSuccess = () => ({type: LOGOUT_SUCCESS});
+export const logoutFailed = () => ({type: LOGOUT_FAILED});
+
 export function getUserInfo() {
   return function(dispatch) {
-    dispatch({
-      type: GET_USER_INFO_REQUEST
-    });
+    dispatch(getUserInfoRequest());
     const accessToken = localStorage.getItem('accessToken');
     BurgersApi.getUserInfoRequest(accessToken)
     .then(res => {
       if (res && res.success) {
-        dispatch({
-          type: GET_USER_INFO_SUCCESS,
-          user: res.user
-        });
+        dispatch(getUserInfoSuccess(res.user));
       } else {
-        dispatch({
-          type: GET_USER_INFO_FAILED
-        });
+        dispatch(getUserInfoFailed());
       }
     })
     .catch(err => {
       if (accessToken) {
         dispatch(getToken());
       }
-      dispatch({
-        type: GET_USER_INFO_FAILED
-      });
+      dispatch(getUserInfoFailed());
       console.error(err);
     });
   }
 }
 export function editUserInfo(email, password, name) {
   return function(dispatch) {
-    dispatch({
-      type: EDIT_USER_INFO_REQUEST
-    });
+    dispatch(editUserInfoRequest());
     const accessToken = localStorage.getItem('accessToken');
     BurgersApi.editUserInfoRequest(accessToken, email, password, name)
     .then(res => {
       if (res && res.success) {
-        dispatch({
-          type: EDIT_USER_INFO_SUCCESS,
-          user: res.user
-        });
+        dispatch(editUserInfoSuccess(res.user));
       } else {
-        dispatch({
-          type: EDIT_USER_INFO_FAILED
-        });
+        dispatch(editUserInfoFailed());
       }
     })
     .catch(err => {
-      dispatch({
-        type: EDIT_USER_INFO_FAILED
-      });
+      dispatch(editUserInfoFailed());
       console.error(err);
     });
   }
 }
 export function getToken() {
   return function(dispatch) {
-    dispatch({
-      type: GET_TOKEN_REQUEST
-    });
+    dispatch(getTokenRequest());
     const refreshToken = localStorage.getItem('refreshToken');
     BurgersApi.getTokenRequest(refreshToken)
     .then(res => {
       if (res && res.success) {
-        dispatch({
-          type: GET_TOKEN_SUCCESS
-        });
+        dispatch(getTokenSuccess());
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('refreshToken', res.refreshToken);
         dispatch(getUserInfo());
       } else {
-        dispatch({
-          type: GET_TOKEN_FAILED
-        });
+        dispatch(getTokenFailed());
       }
     })
     .catch(err => {
-      dispatch({
-        type: GET_TOKEN_FAILED
-      });
+      dispatch(getTokenFailed());
       console.error(err);
     });
   }
 }
 export function authorize(email, password) {
   return function(dispatch) {
-    dispatch({
-      type: LOGIN_REQUEST
-    });
+    dispatch(loginRequest());
     BurgersApi.authorize(email, password)
     .then(res => {
       if (res && res.success) {
-        dispatch({
-          type: LOGIN_SUCCESS,
-          user: res.user
-        });
+        dispatch(loginSuccess(res.user));
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('refreshToken', res.refreshToken);
       } else {
-        dispatch({
-          type: LOGIN_FAILED
-        });
+        dispatch(loginFailed());
       }
     })
     .catch(err => {
-      dispatch({
-        type: LOGIN_FAILED
-      });
+      dispatch(loginFailed());
       console.error(err);
     });
   }
 }
 export function register(email, password, name) {
   return function(dispatch) {
-    dispatch({
-      type: REGISTER_REQUEST
-    });
+    dispatch(registerRequest());
     BurgersApi.register(email, password, name)
     .then(res => {
       if (res && res.success) {
-        dispatch({
-          type: REGISTER_SUCCESS,
-          user: res.user
-        });
+        dispatch(registerSuccess(res.user));
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('refreshToken', res.refreshToken);
       } else {
-        dispatch({
-          type: REGISTER_FAILED
-        });
+        dispatch(registerFailed());
       }
     })
     .catch(err => {
-      dispatch({
-        type: REGISTER_FAILED
-      });
+      dispatch(registerFailed());
       console.error(err);
     });
   }
 }
 export function logout() {
   return function(dispatch) {
-    dispatch({
-      type: LOGOUT_REQUEST
-    });
+    dispatch(logoutRequest());
     const refreshToken = localStorage.getItem('refreshToken');
     BurgersApi.logout(refreshToken)
     .then(res => {
       if (res && res.success) {
-        dispatch({
-          type: LOGOUT_SUCCESS
-        });
+        dispatch(logoutSuccess());
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
       } else {
-        dispatch({
-          type: LOGOUT_FAILED
-        });
+        dispatch(logoutFailed());
       }
     })
     .catch(err => {
-      dispatch({
-        type: LOGOUT_FAILED
-      });
+      dispatch(logoutFailed());
       console.error(err);
     });
   }

@@ -15,7 +15,6 @@ function ProfilePage() {
 
   return (
     <div className={styles.profile}>
-      <CellEmpty height="pt-30"/>
       <div className={styles.profileContainer}>
         <ProfileMenu />
         <CellEmpty height="pl-15"/>

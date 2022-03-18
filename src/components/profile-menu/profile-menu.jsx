@@ -29,8 +29,7 @@ function ProfileMenu() {
           <button onClick={signOut} className={`${styles.exit} text text_type_main-medium`}>Выход</button>
         </li>
       </ul>
-      <CellEmpty height="pt-20"/>
-      <p className='text text_type_main-default text_color_inactive'>
+      <p className='text text_type_main-default text_color_inactive mt-20'>
         В этом разделе вы можете изменить свои персональные данные
       </p>
     </div>

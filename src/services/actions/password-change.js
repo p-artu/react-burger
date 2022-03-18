@@ -7,52 +7,43 @@ export const SET_NEW_PASSWORD_REQUEST = 'SET_NEW_PASSWORD_REQUEST';
 export const SET_NEW_PASSWORD_SUCCESS = 'SET_NEW_PASSWORD_SUCCESS';
 export const SET_NEW_PASSWORD_FAILED = 'SET_NEW_PASSWORD_FAILED';
 
+export const resetPasswordRequest = () => ({type: RESET_PASSWORD_REQUEST});
+export const resetPasswordSuccess = () => ({type: RESET_PASSWORD_SUCCESS});
+export const resetPasswordFailed = () => ({type: RESET_PASSWORD_FAILED});
+export const setNewPasswordRequest = () => ({type: SET_NEW_PASSWORD_REQUEST});
+export const setNewPasswordSuccess = () => ({type: SET_NEW_PASSWORD_SUCCESS});
+export const setNewPasswordFailed = () => ({type: SET_NEW_PASSWORD_FAILED});
+
 export function recoverPassword(email) {
   return function(dispatch) {
-    dispatch({
-      type: RESET_PASSWORD_REQUEST
-    });
+    dispatch(resetPasswordRequest());
     BurgersApi.resetPassword(email)
     .then(res => {
       if (res && res.success) {
-        dispatch({
-          type: RESET_PASSWORD_SUCCESS
-        });
+        dispatch(resetPasswordSuccess());
       } else {
-        dispatch({
-          type: RESET_PASSWORD_FAILED
-        });
+        dispatch(resetPasswordFailed());
       }
     })
     .catch(err => {
-      dispatch({
-        type: RESET_PASSWORD_FAILED
-      });
+      dispatch(resetPasswordFailed());
       console.error(err);
     });
   }
 }
-export function setNewPasswordRequest(token, password) {
+export function setNewPassword(token, password) {
   return function(dispatch) {
-    dispatch({
-      type: RESET_PASSWORD_REQUEST
-    });
+    dispatch(setNewPasswordRequest());
     BurgersApi.setNewPassword(token, password)
     .then(res => {
       if (res && res.success) {
-        dispatch({
-          type: RESET_PASSWORD_SUCCESS
-        });
+        dispatch(setNewPasswordSuccess());
       } else {
-        dispatch({
-          type: RESET_PASSWORD_FAILED
-        });
+        dispatch(setNewPasswordFailed());
       }
     })
     .catch(err => {
-      dispatch({
-        type: RESET_PASSWORD_FAILED
-      });
+      dispatch(setNewPasswordFailed());
       console.error(err);
     });
   }

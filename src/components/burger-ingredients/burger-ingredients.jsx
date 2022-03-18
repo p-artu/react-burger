@@ -1,6 +1,5 @@
 import React, { useMemo, useRef } from 'react';
 import styles from './burger-ingredients.module.css';
-import CellEmpty from '../cell-empty/cell-empty';
 import IngredientsElement from '../ingredients-element/ingredients-element';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from 'react-redux';
@@ -51,7 +50,6 @@ function BurgerIngredients() {
 
   return (
     <div className={styles.construct}>
-      <CellEmpty height="mt-10"/>
       {ingredientsRequest &&
         <h1 className="text text_type_main-large">Идёт загрузка...</h1>
       }
@@ -60,8 +58,7 @@ function BurgerIngredients() {
       }
       {!!ingredients.length &&
       <>
-        <h1 className="text text_type_main-large">Соберите бургер</h1>
-        <CellEmpty height="mt-5"/>
+        <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
         <div className={styles.links}>
           <a href="#bun" className={styles.link}>
             <Tab value="Булки" active={current === 'Булки'} onClick={setCurrent}>
@@ -79,10 +76,8 @@ function BurgerIngredients() {
             </Tab>
           </a>
         </div>
-        <CellEmpty height="mt-10"/>
         <div className={styles.ingredients} onScroll={handleScroll} ref={ingredientsRef}>
-          <h2 id='bun' className="text text_type_main-medium" ref={bunRef}>Булки</h2>
-          <CellEmpty height="mt-6"/>
+          <h2 id='bun' className="text text_type_main-medium mb-6" ref={bunRef}>Булки</h2>
           <ul className={styles['ingredients-type']}>
             {bun.map((item) => (
               <li className={styles['ingredients-item']} key={item._id}>
@@ -92,9 +87,7 @@ function BurgerIngredients() {
               </li>
             ))}
           </ul>
-          <CellEmpty height="mt-10"/>
-          <h2 id='sauce' className="text text_type_main-medium" ref={sauceRef}>Соусы</h2>
-          <CellEmpty height="mt-6"/>
+          <h2 id='sauce' className="text text_type_main-medium mt-10 mb-6" ref={sauceRef}>Соусы</h2>
           <ul className={styles['ingredients-type']}>
             {sauce.map((item) => (
               <li className={styles['ingredients-item']} key={item._id}>
@@ -104,9 +97,7 @@ function BurgerIngredients() {
               </li>
             ))}
           </ul>
-          <CellEmpty height="mt-10"/>
-          <h2 id='main' className="text text_type_main-medium" ref={mainRef}>Начинки</h2>
-          <CellEmpty height="mt-6"/>
+          <h2 id='main' className="text text_type_main-medium mt-10 mb-6" ref={mainRef}>Начинки</h2>
           <ul className={styles['ingredients-type']}>
             {main.map((item) => (
               <li className={styles['ingredients-item']} key={item._id}>

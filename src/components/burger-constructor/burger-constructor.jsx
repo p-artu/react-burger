@@ -6,7 +6,7 @@ import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-de
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from "react-dnd";
 import { getNumber } from '../../services/actions/order';
-import { ADD_INGREDIENT, INCREASE_COUNTER, MOVE_INGREDIENT } from '../../services/actions/constructor-ingredients';
+import { addIngredient, increaseCounter, moveIngredient } from '../../services/actions/constructor-ingredients';
 import EmptyBurgerIngredients from '../empty-burger-ingredients/empty-burger-ingredients';
 import ToppingElement from '../topping-element/topping-element';
 
@@ -24,15 +24,9 @@ function BurgerConstructor() {
         const now = new Date().getTime();
         uniqueItem.unId = now;
       }
-      dispatch({
-        type: ADD_INGREDIENT,
-        item: uniqueItem
-      });
+      dispatch(addIngredient(uniqueItem));
       if (uniqueItem.type !== 'bun') {
-        dispatch({
-          type: INCREASE_COUNTER,
-          item: uniqueItem
-        });
+        dispatch(increaseCounter(uniqueItem));
       }
     },
     collect: monitor => ({
@@ -60,11 +54,7 @@ function BurgerConstructor() {
     }
   }
   const moveCard = useCallback((dragIndex, hoverIndex) => {
-    dispatch({
-      type: MOVE_INGREDIENT,
-      dragIndex,
-      hoverIndex
-    });
+    dispatch(moveIngredient(dragIndex, hoverIndex));
   }, [])
   const renderCard = useCallback((item, index) => {
     return (
@@ -80,7 +70,6 @@ function BurgerConstructor() {
 
   return (
     <div className={styles.construct}>
-      <CellEmpty height="pt-25"/>
       {(!!data.bun.name || !!data.content.length) ?
         <div ref={dropTarget} className={styles.list}>
           {!!data.bun.name ?

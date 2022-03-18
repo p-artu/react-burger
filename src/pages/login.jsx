@@ -27,10 +27,7 @@ function LoginPage() {
 
   return (
     <div className={styles.login}>
-      <CellEmpty height="pt-20"/>
-      <CellEmpty height="pt-25"/>
-      <h1 className="text text_type_main-medium">Вход</h1>
-      <CellEmpty height="pt-6"/>
+      <h1 className="text text_type_main-medium mb-6">Вход</h1>
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <Input
           type={'email'}
@@ -47,11 +44,9 @@ function LoginPage() {
         <CellEmpty height="pt-6"/>
         <Button type="primary" size="medium">Войти</Button>
       </form>
-      <CellEmpty height="pt-20"/>
-      <p className="text text_type_main-default text_color_inactive">Вы — новый пользователь?
+      <p className="text text_type_main-default text_color_inactive mt-20 mb-4">Вы — новый пользователь?
         <Link to="/register" className={`text text_type_main-default ${styles.link}`}>Зарегистрироваться</Link>
       </p>
-      <CellEmpty height="pt-4"/>
       <p className="text text_type_main-default text_color_inactive">Забыли пароль?
         <Link to="/forgot-password" className={`text text_type_main-default ${styles.link}`}>Восстановить пароль</Link>
       </p>

@@ -27,10 +27,7 @@ function RegisterPage() {
 
   return (
     <div className={styles.register}>
-      <CellEmpty height="pt-20"/>
-      <CellEmpty height="pt-25"/>
-      <h1 className="text text_type_main-medium">Регистрация</h1>
-      <CellEmpty height="pt-6"/>
+      <h1 className="text text_type_main-medium mb-6">Регистрация</h1>
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <Input
           type={'text'}
@@ -58,11 +55,9 @@ function RegisterPage() {
         <CellEmpty height="pt-6"/>
         <Button type="primary" size="medium">Зарегистрироваться</Button>
       </form>
-      <CellEmpty height="pt-20"/>
-      <p className="text text_type_main-default text_color_inactive">Уже зарегистрированы?
+      <p className="text text_type_main-default text_color_inactive mt-20 mb-20">Уже зарегистрированы?
         <Link to="/login" className={`text text_type_main-default ${styles.link}`}>Войти</Link>
       </p>
-      <CellEmpty height="pt-20"/>
     </div>
   );
 }

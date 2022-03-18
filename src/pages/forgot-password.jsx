@@ -28,10 +28,7 @@ function ForgotPage() {
 
   return (
     <div className={styles.forgot}>
-      <CellEmpty height="pt-20"/>
-      <CellEmpty height="pt-25"/>
-      <h1 className="text text_type_main-medium">Восстановление пароля</h1>
-      <CellEmpty height="pt-6"/>
+      <h1 className="text text_type_main-medium mb-6">Восстановление пароля</h1>
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <Input
           type={'email'}
@@ -46,11 +43,9 @@ function ForgotPage() {
         <CellEmpty height="pt-6"/>
         <Button type="primary" size="medium">Восстановить</Button>
       </form>
-      <CellEmpty height="pt-20"/>
-      <p className="text text_type_main-default text_color_inactive">Вспомнили пароль?
+      <p className="text text_type_main-default text_color_inactive mt-20 mb-20">Вспомнили пароль?
         <Link to="/login" className={`text text_type_main-default ${styles.link}`}>Войти</Link>
       </p>
-      <CellEmpty height="pt-20"/>
     </div>
   );
 }

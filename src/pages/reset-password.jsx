@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect, useLocation, useHistory } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../components/cell-empty/cell-empty';
-import { setNewPasswordRequest } from '../services/actions/password-change';
+import { setNewPassword } from '../services/actions/password-change';
 import styles from './reset-password.module.css';
 
 function ResetPage() {
@@ -29,7 +29,7 @@ function ResetPage() {
   }
   function handleSubmit(e) {
     e.preventDefault();
-    dispatch(setNewPasswordRequest(form.token, form.password));
+    dispatch(setNewPassword(form.token, form.password));
     history.push('/login');
   }
 
@@ -42,10 +42,7 @@ function ResetPage() {
 
   return (
     <div className={styles.reset}>
-      <CellEmpty height="pt-20"/>
-      <CellEmpty height="pt-25"/>
-      <h1 className="text text_type_main-medium">Восстановление пароля</h1>
-      <CellEmpty height="pt-6"/>
+      <h1 className="text text_type_main-medium mb-6">Восстановление пароля</h1>
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <Input
           type={passwordInputType}
@@ -73,8 +70,7 @@ function ResetPage() {
         <CellEmpty height="pt-6"/>
         <Button type="primary" size="medium">Сохранить</Button>
       </form>
-      <CellEmpty height="pt-20"/>
-      <p className="text text_type_main-default text_color_inactive">Вспомнили пароль?
+      <p className="text text_type_main-default text_color_inactive mt-20">Вспомнили пароль?
         <Link to="/register" className={`text text_type_main-default ${styles.link}`}>Войти</Link>
       </p>
     </div>

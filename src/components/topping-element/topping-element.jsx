@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { uniqueIngredientPropTypes } from '../../utils/types';
 import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from 'react-redux';
-import { DELETE_INGREDIENT, REDUCE_COUNTER } from '../../services/actions/constructor-ingredients';
+import { deleteIngredient, reduceCounter } from '../../services/actions/constructor-ingredients';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../cell-empty/cell-empty';
 import styles from './topping-element.module.css';
@@ -54,15 +54,9 @@ function ToppingElement(props) {
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
 
-  function deleteIngredient(item) {
-    dispatch({
-      type: DELETE_INGREDIENT,
-      unId: item.unId,
-    });
-    dispatch({
-      type: REDUCE_COUNTER,
-      item: item
-    });
+  function removeIngredient(item) {
+    dispatch(deleteIngredient(item.unId));
+    dispatch(reduceCounter(item));
   }
 
   return (
@@ -74,7 +68,7 @@ function ToppingElement(props) {
         text={item.name}
         price={item.price}
         thumbnail={item.image}
-        handleClose={() => deleteIngredient(item)}
+        handleClose={() => removeIngredient(item)}
       />
     </div>
   );
