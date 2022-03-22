@@ -1,5 +1,6 @@
 .construct {
   max-width: 600px;
+  margin: 40px 0 0 0;
 }
 
 .ingredients {
@@ -9,6 +10,7 @@
   overflow: auto;
   scrollbar-color: #8585ad #2f2f37;
 	scrollbar-width: thin;
+  margin: 40px 0 0 0;
 }
 
 .ingredients::-webkit-scrollbar {

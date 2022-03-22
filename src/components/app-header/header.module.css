@@ -21,6 +21,12 @@
 .menu {
   display: flex;
   cursor: pointer;
+  color: #8585ad;
+  text-decoration: none;
+}
+
+.activeMenu {
+  color: #f2f2f3;
 }
 
 .logo {

@@ -4,30 +4,24 @@ export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
 export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
 
+export const getIngredientsRequest = () => ({type: GET_INGREDIENTS_REQUEST});
+export const getIngredientsSuccess = ingredients => ({type: GET_INGREDIENTS_SUCCESS, ingredients});
+export const getIngredientsFailed = () => ({type: GET_INGREDIENTS_FAILED});
+
 export function getIngredients() {
   return function(dispatch) {
-    dispatch({
-      type: GET_INGREDIENTS_REQUEST
-    });
+    dispatch(getIngredientsRequest());
     BurgersApi.getIngredientsRequest()
     .then(res => {
       if (res && res.success) {
-        dispatch({
-          type: GET_INGREDIENTS_SUCCESS,
-          ingredients: res.data
-        });
+        dispatch(getIngredientsSuccess(res.data));
       } else {
-        dispatch({
-          type: GET_INGREDIENTS_FAILED
-        });
+        dispatch(getIngredientsFailed());
       }
     })
     .catch(err => {
-      dispatch({
-        type: GET_INGREDIENTS_FAILED
-      });
+      dispatch(getIngredientsFailed());
       console.error(err);
     });
   }
 }
-

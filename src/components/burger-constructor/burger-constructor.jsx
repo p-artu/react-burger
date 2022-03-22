@@ -1,17 +1,20 @@
 import React, { useMemo, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import styles from './burger-constructor.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from "react-dnd";
 import { getNumber } from '../../services/actions/order';
-import { ADD_INGREDIENT, INCREASE_COUNTER, MOVE_INGREDIENT } from '../../services/actions/constructor-ingredients';
+import { addIngredient, increaseCounter, moveIngredient } from '../../services/actions/constructor-ingredients';
 import EmptyBurgerIngredients from '../empty-burger-ingredients/empty-burger-ingredients';
 import ToppingElement from '../topping-element/topping-element';
 
 function BurgerConstructor() {
+  const history = useHistory();
   const dispatch = useDispatch();
   const data = useSelector(store => store.constructorIngredients.draggedIngredients);
+  const {user} = useSelector(store => store.user);
   const {orderRequest, orderFailed} = useSelector(store => store.order);
   const [{isHover}, dropTarget] = useDrop({
     accept: "ingredient",
@@ -21,15 +24,9 @@ function BurgerConstructor() {
         const now = new Date().getTime();
         uniqueItem.unId = now;
       }
-      dispatch({
-        type: ADD_INGREDIENT,
-        item: uniqueItem
-      });
+      dispatch(addIngredient(uniqueItem));
       if (uniqueItem.type !== 'bun') {
-        dispatch({
-          type: INCREASE_COUNTER,
-          item: uniqueItem
-        });
+        dispatch(increaseCounter(uniqueItem));
       }
     },
     collect: monitor => ({
@@ -49,15 +46,15 @@ function BurgerConstructor() {
   }, [data]);
 
   function openModal() {
-    const dataIds = data.content.map(item => item._id);
-    dispatch(getNumber(dataIds));
+    if (user.name) {
+      const dataIds = data.content.map(item => item._id);
+      dispatch(getNumber(dataIds));
+    } else {
+      history.push('/login');
+    }
   }
   const moveCard = useCallback((dragIndex, hoverIndex) => {
-    dispatch({
-      type: MOVE_INGREDIENT,
-      dragIndex,
-      hoverIndex
-    });
+    dispatch(moveIngredient(dragIndex, hoverIndex));
   }, [])
   const renderCard = useCallback((item, index) => {
     return (
@@ -73,7 +70,6 @@ function BurgerConstructor() {
 
   return (
     <div className={styles.construct}>
-      <CellEmpty height="pt-25"/>
       {(!!data.bun.name || !!data.content.length) ?
         <div ref={dropTarget} className={styles.list}>
           {!!data.bun.name ?

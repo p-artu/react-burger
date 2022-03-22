@@ -1,0 +1,14 @@
+.profileInputs {
+
+}
+
+.buttons {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.buttonContainer button {
+  padding: 0;
+  margin: 0 28px 0 0;
+}
