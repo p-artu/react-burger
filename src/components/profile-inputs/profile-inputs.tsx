@@ -1,37 +1,46 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, SyntheticEvent, ChangeEvent} from 'react';
 import { useDispatch, useSelector  } from 'react-redux';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './profile-inputs.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import { editUserInfo } from '../../services/actions/user';
 
+type TUser = {
+  name: string;
+  email: string;
+};
+type TUserStore = {
+  user: {
+    user: TUser;
+  };
+};
 function ProfileInputs() {
-  const {name, email} = useSelector(store => store.user.user);
+  const {name, email} = useSelector<TUserStore, TUser>(store => store.user.user);
   const [form, setValue] = useState({ name, email, password: '' });
   const [inputDisabled, setInputDisabled] = useState({ name: true, email: true, password: true });
   const [hasChanges, setHasChanges] = useState(false);
-  const nameRef = useRef(null);
-  const emailRef = useRef(null);
-  const passwordRef = useRef(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
     setHasChanges(!(form.name === name) || !(form.email === email) || !(form.password === ''));
   }, [email, form.email, form.name, form.password, name]);
 
-  const onChange = e => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   }
   function onNameIconClick() {
-    setTimeout(() => nameRef.current.focus(), 0);
+    setTimeout(() => {if (nameRef && nameRef.current) nameRef.current.focus()}, 0);
     setInputDisabled({ ...inputDisabled, name: !inputDisabled.name });
   }
   function onEmailIconClick() {
-    setTimeout(() => emailRef.current.focus(), 0);
+    setTimeout(() => {if (emailRef && emailRef.current) emailRef.current.focus()}, 0);
     setInputDisabled({ ...inputDisabled, email: !inputDisabled.email });
   }
   function onPasswordIconClick() {
-    setTimeout(() => passwordRef.current.focus(), 0);
+    setTimeout(() => {if (passwordRef && passwordRef.current) passwordRef.current.focus()}, 0);
     setInputDisabled({ ...inputDisabled, password: !inputDisabled.password });
   }
   function onNameBlur() {
@@ -43,7 +52,7 @@ function ProfileInputs() {
   function onPasswordBlur() {
     setInputDisabled({ ...inputDisabled, password: true });
   }
-  function handleSubmit(e) {
+  function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
     const {email, password, name} = form;
     dispatch(editUserInfo(email, password, name));

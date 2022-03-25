@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, ChangeEvent, SyntheticEvent} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -6,16 +6,39 @@ import CellEmpty from '../components/cell-empty/cell-empty';
 import { authorize } from '../services/actions/user';
 import styles from './login.module.css';
 
+type TUser = {
+  user: {
+    name: string;
+  };
+};
+type TUserStore = {
+  user: TUser;
+};
+type TLocationState = {
+  from: ILocation
+};
+interface ILocation {
+  hash: string;
+  host: string;
+  hostname: string;
+  href: string;
+  pathname: string;
+  port: string;
+  protocol: string;
+  search: string;
+  state: {from: TLocationState;};
+  from: ILocation;
+}
 function LoginPage() {
   const [form, setValue] = useState({ email: '', password: '' });
-  const location = useLocation();
+  const location = useLocation<ILocation>();
   const dispatch = useDispatch();
-  const {user} = useSelector(store => store.user);
+  const {user} = useSelector<TUserStore, TUser>(store => store.user);
 
-  const onChange = e => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   }
-  function handleSubmit(e) {
+  function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
     const {email, password} = form;
     dispatch(authorize(email, password));

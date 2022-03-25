@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, FC } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './burger-constructor.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
@@ -10,16 +10,48 @@ import { addIngredient, increaseCounter, moveIngredient } from '../../services/a
 import EmptyBurgerIngredients from '../empty-burger-ingredients/empty-burger-ingredients';
 import ToppingElement from '../topping-element/topping-element';
 
-function BurgerConstructor() {
+type TUser = {
+  name: string;
+};
+type TContent = {
+  _id: string;
+  price: number;
+  image: string;
+  name: string;
+  type: string;
+  unId: number;
+};
+type TData = {
+  content: TContent[];
+  bun: TContent;
+};
+type TDataStore = {
+  constructorIngredients: {
+    draggedIngredients: TData;
+  };
+};
+type TUserStore = {
+  user: {
+    user: TUser;
+  };
+};
+type TOrder = {
+  order: {
+    orderRequest: object;
+    orderFailed: object;
+  };
+};
+const BurgerConstructor: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const data = useSelector(store => store.constructorIngredients.draggedIngredients);
-  const {user} = useSelector(store => store.user);
-  const {orderRequest, orderFailed} = useSelector(store => store.order);
+  const data: TData = useSelector<TDataStore, TData>(store => store.constructorIngredients.draggedIngredients);
+  const user: TUser = useSelector<TUserStore, TUser>(store => store.user.user);
+  const orderRequest = useSelector<TOrder>(store => store.order.orderRequest);
+  const orderFailed = useSelector<TOrder>(store => store.order.orderFailed);
   const [{isHover}, dropTarget] = useDrop({
     accept: "ingredient",
-    drop(item) {
-      let uniqueItem = {...item};
+    drop(item: TContent) {
+      let uniqueItem: TContent = {...item};
       if (uniqueItem.type !== 'bun') {
         const now = new Date().getTime();
         uniqueItem.unId = now;
@@ -35,7 +67,7 @@ function BurgerConstructor() {
   });
   const border = isHover ? 'red dashed 1px' : '';
   const totalPrice = useMemo(() => {
-    const fillingPrice = data.content.reduce((acc, item) => {
+    const fillingPrice = data.content.reduce((acc: number, item: TContent) => {
       return acc + item.price
     }, 0);
     let bunsPrice = 0;
@@ -87,7 +119,7 @@ function BurgerConstructor() {
           }
           <CellEmpty height="mt-4"/>
           <div style={{border}} className={styles.content}>
-            {data.content.map((item, i) => renderCard(item, i))}
+            {data.content.map((item, i: number) => renderCard(item, i))}
           </div>
           <CellEmpty height="mt-4"/>
           {!!data.bun.name ?

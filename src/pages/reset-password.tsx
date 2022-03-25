@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, ChangeEvent, SyntheticEvent} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect, useLocation, useHistory } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -6,16 +6,48 @@ import CellEmpty from '../components/cell-empty/cell-empty';
 import { setNewPassword } from '../services/actions/password-change';
 import styles from './reset-password.module.css';
 
+type TUser = {
+  user: {
+    name: string;
+  };
+};
+type TUserStore = {
+  user: TUser;
+};
+type TLocationState = {
+  from: ILocation
+};
+interface ILocation {
+  hash: string;
+  host: string;
+  hostname: string;
+  href: string;
+  pathname: string;
+  port: string;
+  protocol: string;
+  search: string;
+  state: {from: TLocationState;};
+  from: ILocation;
+}
+type TIconTypes = 'secondary' | 'primary' | 'error' | 'success';
+type TIconProps = {
+    type: TIconTypes;
+    onClick?: () => void;
+};
+type TICons = {
+  ShowIcon: React.FC<TIconProps>;
+  HideIcon: React.FC<TIconProps>;
+};
 function ResetPage() {
   const [form, setValue] = useState({ password: '', token: '' });
-  const [passwordIcon, setPasswordIcon] = useState('ShowIcon');
-  const [passwordInputType, setPasswordInputType] = useState('password');
-  const location = useLocation();
+  const [passwordIcon, setPasswordIcon] = useState<keyof TICons>('ShowIcon');
+  const [passwordInputType, setPasswordInputType] = useState<'text' | 'email' | 'password'>('password');
+  const location = useLocation<ILocation>();
   const dispatch = useDispatch();
-  const {user} = useSelector(store => store.user);
+  const {user} = useSelector<TUserStore, TUser>(store => store.user);
   const history = useHistory();
 
-  const onChange = e => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   }
   function onIconClick() {
@@ -27,7 +59,7 @@ function ResetPage() {
       setPasswordInputType('password');
     }
   }
-  function handleSubmit(e) {
+  function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
     dispatch(setNewPassword(form.token, form.password));
     history.push('/login');

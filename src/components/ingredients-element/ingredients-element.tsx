@@ -1,15 +1,39 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDrag } from "react-dnd";
 import { useSelector } from 'react-redux';
 import styles from './ingredients-element.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ingredientsPropTypes } from '../../utils/types';
 
-function IngredientsElement(props) {
+type TIngredient = {
+  _id: string;
+  name: string;
+  type: string;
+  proteins: number;
+  fat: number;
+  carbohydrates: number;
+  calories: number;
+  price: number;
+  image: string;
+  image_mobile: string;
+  image_large: string;
+  unId: number;
+  __v: number;
+};
+interface IIngredientsElement {
+  data: TIngredient;
+}
+type TDataStore = {
+  constructorIngredients: {
+    counterList: TData;
+  };
+};
+type TData = {
+  [name: string]: number;
+};
+const IngredientsElement: FC<IIngredientsElement> = ({data}) => {
   const location = useLocation();
-  const {data} = props;
-  const counterList = useSelector(store => store.constructorIngredients.counterList);
+  const counterList: TData = useSelector<TDataStore, TData>(store => store.constructorIngredients.counterList);
   const [{isDrag} , dragRef] = useDrag({
     type: "ingredient",
     item: data,
@@ -30,9 +54,5 @@ function IngredientsElement(props) {
     </Link>
   );
 }
-
-IngredientsElement.propTypes = {
-  data: ingredientsPropTypes.isRequired
-};
 
 export default IngredientsElement;

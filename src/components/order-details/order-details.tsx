@@ -3,8 +3,14 @@ import { useSelector } from 'react-redux';
 import styles from './order-details.module.css';
 import done from '../../images/done.png';
 
+type TOrder = {
+  orderDetails: string;
+};
+type TOrderStore = {
+  order: TOrder;
+};
 function OrderDetails() {
-  const { orderDetails } = useSelector(store => store.order);
+  const { orderDetails } = useSelector<TOrderStore, TOrder>(store => store.order);
 
   return (
     <>

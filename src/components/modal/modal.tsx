@@ -1,37 +1,33 @@
-import React from 'react';
+import React, {FC} from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
 import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
+import { modalRoot } from '../../utils/constants';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-const modalRoot = document.getElementById('react-modals');
-
-function Modal({closePopup, ...props}) {
+interface IModal {
+  closePopup: () => void;
+}
+const Modal: FC<IModal> = ({closePopup, children}) => {
   React.useEffect(() => {
-    function handleEscClose(e) {if (e.key === 'Escape') closePopup()};
+    function handleEscClose(e: KeyboardEvent) {if (e.key === 'Escape') closePopup()};
     document.addEventListener('keydown', handleEscClose);
     return () => {
       document.removeEventListener('keydown', handleEscClose);
     }
   }, []);
 
-  return ReactDOM.createPortal(
+  return modalRoot && ReactDOM.createPortal(
     (<div className={styles.container}>
       <div className={styles.modal}>
         <button className={styles.exit} onClick={closePopup}>
           <CloseIcon type="primary" />
         </button>
-        {props.children}
+        {children}
       </div>
       <ModalOverlay closePopup={closePopup}/>
     </div>), modalRoot
   );
-};
-
-Modal.propTypes = {
-  children: PropTypes.element.isRequired,
-  closePopup: PropTypes.func.isRequired
 };
 
 export default Modal;

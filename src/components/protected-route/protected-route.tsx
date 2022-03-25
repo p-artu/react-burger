@@ -1,10 +1,23 @@
-import React, {useEffect} from "react";
+import React, {useEffect, FC} from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, RouteProps } from "react-router-dom";
 import { getUserInfo } from '../../services/actions/user';
 
-const ProtectedRoute = ({children, ...rest}) => {
-  const {user} = useSelector(store => store.user);
+type TUser = {
+  user: {
+    name: string;
+    email: string;
+  };
+};
+type TUserStore = {
+  user: TUser;
+};
+interface IProtectedRoute extends RouteProps {
+  exact: boolean;
+  path: string;
+}
+const ProtectedRoute: FC<IProtectedRoute> = ({children, exact, path}) => {
+  const {user} = useSelector<TUserStore, TUser>(store => store.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -13,7 +26,8 @@ const ProtectedRoute = ({children, ...rest}) => {
 
   return (
     <Route
-      {...rest}
+      exact={exact}
+      path={path}
       render={({location}) =>
         user.name ? (
           children

@@ -3,9 +3,32 @@ import {useParams} from 'react-router-dom';
 import styles from './ingredient-details.module.css';
 import { useSelector } from 'react-redux';
 
+type TIngredient = {
+  _id: string;
+  name: string;
+  type: string;
+  proteins: number;
+  fat: number;
+  carbohydrates: number;
+  calories: number;
+  price: number;
+  image: string;
+  image_mobile: string;
+  image_large: string;
+  unId: number;
+  __v: number;
+};
+type TIngredients = {
+  ingredients: TIngredient[];
+};
+type TIngredientsStore = {
+  ingredients: {
+    ingredients: TIngredient[];
+  };
+};
 function IngredientDetails() {
-  const {ingredients} = useSelector(store => store.ingredients);
-  const {id} = useParams();
+  const {ingredients} = useSelector<TIngredientsStore, TIngredients>(store => store.ingredients);
+  const {id}: {id: string} = useParams();
   const currentIngredient = ingredients.find(item => item._id === id);
 
   return (

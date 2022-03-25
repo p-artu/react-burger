@@ -10,9 +10,15 @@ import OrderDetails from '../components/order-details/order-details';
 import { closeOrderModal } from '../services/actions/order';
 import styles from './home.module.css';
 
+type TOrder = {
+  orderDetails: string;
+};
+type TOrderStore = {
+  order: TOrder;
+};
 function HomePage() {
   const dispatch = useDispatch();
-  const { orderDetails } = useSelector(store => store.order);
+  const { orderDetails } = useSelector<TOrderStore, TOrder>(store => store.order);
 
   function closeOrderPopup() {
     dispatch(closeOrderModal());
