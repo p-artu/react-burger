@@ -3,34 +3,8 @@ import styles from './burger-ingredients.module.css';
 import IngredientsElement from '../ingredients-element/ingredients-element';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from 'react-redux';
+import { TIngredientsStore, TIngredients, TIngredient } from '../../utils/types';
 
-type TIngredient = {
-  _id: string;
-  name: string;
-  type: string;
-  proteins: number;
-  fat: number;
-  carbohydrates: number;
-  calories: number;
-  price: number;
-  image: string;
-  image_mobile: string;
-  image_large: string;
-  unId: number;
-  __v: number;
-};
-type TIngredients = {
-  ingredients: TIngredient[];
-  ingredientsRequest: boolean;
-  ingredientsFailed: boolean;
-};
-type TIngredientsStore = {
-  ingredients: {
-    ingredients: TIngredient[];
-    ingredientsRequest: boolean;
-    ingredientsFailed: boolean;
-  };
-};
 function BurgerIngredients() {
   const {ingredients, ingredientsRequest, ingredientsFailed} = useSelector<TIngredientsStore, TIngredients>(store => store.ingredients);
   const [current, setCurrent] = React.useState('Булки');

@@ -5,29 +5,8 @@ import { deleteIngredient, reduceCounter } from '../../services/actions/construc
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../cell-empty/cell-empty';
 import styles from './topping-element.module.css';
+import { IToppingElement, TIngredient } from '../../utils/types';
 
-type TContent = {
-  _id: string;
-  name: string;
-  type: string;
-  proteins: number;
-  fat: number;
-  carbohydrates: number;
-  calories: number;
-  price: number;
-  image: string;
-  image_mobile: string;
-  image_large: string;
-  unId: number;
-  __v: number;
-  index: number;
-};
-interface IToppingElement {
-  id: number;
-  index: number;
-  item: TContent;
-  moveCard: (dragIndex: number, hoverIndex: number) => void;
-}
 const ToppingElement: FC<IToppingElement> = ({id, index, item, moveCard}) => {
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
@@ -75,7 +54,7 @@ const ToppingElement: FC<IToppingElement> = ({id, index, item, moveCard}) => {
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
 
-  function removeIngredient(item: TContent) {
+  function removeIngredient(item: TIngredient) {
     dispatch(deleteIngredient(item.unId));
     dispatch(reduceCounter(item));
   }

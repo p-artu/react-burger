@@ -1,13 +1,5 @@
 import {BASE_URL} from './constants';
-
-interface IApi {
-  options: {
-    baseUrl: string,
-    headers: { [header: string]: string }
-  };
-  _baseUrl: string;
-  _headers: { [header: string]: string };
-}
+import { IApi } from './types';
 
 class Api implements IApi {
   options: { baseUrl: string; headers: { [header: string]: string }; };

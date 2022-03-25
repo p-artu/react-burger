@@ -2,13 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import styles from './order-details.module.css';
 import done from '../../images/done.png';
+import { TOrderStore, TOrder } from '../../utils/types';
 
-type TOrder = {
-  orderDetails: string;
-};
-type TOrderStore = {
-  order: TOrder;
-};
 function OrderDetails() {
   const { orderDetails } = useSelector<TOrderStore, TOrder>(store => store.order);
 

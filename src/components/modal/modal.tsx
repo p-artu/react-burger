@@ -4,10 +4,8 @@ import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import { modalRoot } from '../../utils/constants';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { IModal } from '../../utils/types';
 
-interface IModal {
-  closePopup: () => void;
-}
 const Modal: FC<IModal> = ({closePopup, children}) => {
   React.useEffect(() => {
     function handleEscClose(e: KeyboardEvent) {if (e.key === 'Escape') closePopup()};

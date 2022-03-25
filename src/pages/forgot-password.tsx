@@ -5,35 +5,13 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import CellEmpty from '../components/cell-empty/cell-empty';
 import { recoverPassword } from '../services/actions/password-change';
 import styles from './forgot-password.module.css';
+import { ILocation, TUserStore, TUser } from '../utils/types';
 
-type TUser = {
-  user: {
-    name: string;
-  };
-};
-type TUserStore = {
-  user: TUser;
-};
-type TLocationState = {
-  from: ILocation
-};
-interface ILocation {
-  hash: string;
-  host: string;
-  hostname: string;
-  href: string;
-  pathname: string;
-  port: string;
-  protocol: string;
-  search: string;
-  state: {from: TLocationState;};
-  from: ILocation;
-}
 function ForgotPage() {
   const [form, setValue] = useState({email: '' });
   const location = useLocation<ILocation>();
   const dispatch = useDispatch();
-  const {user} = useSelector<TUserStore, TUser>(store => store.user);
+  const user = useSelector<TUserStore, TUser>(store => store.user.user);
   const history = useHistory();
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

@@ -9,49 +9,19 @@ import { getNumber } from '../../services/actions/order';
 import { addIngredient, increaseCounter, moveIngredient } from '../../services/actions/constructor-ingredients';
 import EmptyBurgerIngredients from '../empty-burger-ingredients/empty-burger-ingredients';
 import ToppingElement from '../topping-element/topping-element';
+import { TDataStore, TData, TUserStore, TUser, TOrderStore, TOrder, TIngredient } from '../../utils/types';
 
-type TUser = {
-  name: string;
-};
-type TContent = {
-  _id: string;
-  price: number;
-  image: string;
-  name: string;
-  type: string;
-  unId: number;
-};
-type TData = {
-  content: TContent[];
-  bun: TContent;
-};
-type TDataStore = {
-  constructorIngredients: {
-    draggedIngredients: TData;
-  };
-};
-type TUserStore = {
-  user: {
-    user: TUser;
-  };
-};
-type TOrder = {
-  order: {
-    orderRequest: object;
-    orderFailed: object;
-  };
-};
 const BurgerConstructor: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const data: TData = useSelector<TDataStore, TData>(store => store.constructorIngredients.draggedIngredients);
   const user: TUser = useSelector<TUserStore, TUser>(store => store.user.user);
-  const orderRequest = useSelector<TOrder>(store => store.order.orderRequest);
-  const orderFailed = useSelector<TOrder>(store => store.order.orderFailed);
+  const {orderRequest} = useSelector<TOrderStore, TOrder>(store => store.order);
+  const {orderFailed} = useSelector<TOrderStore, TOrder>(store => store.order);
   const [{isHover}, dropTarget] = useDrop({
     accept: "ingredient",
-    drop(item: TContent) {
-      let uniqueItem: TContent = {...item};
+    drop(item: TIngredient) {
+      let uniqueItem: TIngredient = {...item};
       if (uniqueItem.type !== 'bun') {
         const now = new Date().getTime();
         uniqueItem.unId = now;
@@ -67,7 +37,7 @@ const BurgerConstructor: FC = () => {
   });
   const border = isHover ? 'red dashed 1px' : '';
   const totalPrice = useMemo(() => {
-    const fillingPrice = data.content.reduce((acc: number, item: TContent) => {
+    const fillingPrice = data.content.reduce((acc: number, item: TIngredient) => {
       return acc + item.price
     }, 0);
     let bunsPrice = 0;

@@ -5,46 +5,15 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import CellEmpty from '../components/cell-empty/cell-empty';
 import { setNewPassword } from '../services/actions/password-change';
 import styles from './reset-password.module.css';
+import { ILocation, TUserStore, TUser, TICons } from '../utils/types';
 
-type TUser = {
-  user: {
-    name: string;
-  };
-};
-type TUserStore = {
-  user: TUser;
-};
-type TLocationState = {
-  from: ILocation
-};
-interface ILocation {
-  hash: string;
-  host: string;
-  hostname: string;
-  href: string;
-  pathname: string;
-  port: string;
-  protocol: string;
-  search: string;
-  state: {from: TLocationState;};
-  from: ILocation;
-}
-type TIconTypes = 'secondary' | 'primary' | 'error' | 'success';
-type TIconProps = {
-    type: TIconTypes;
-    onClick?: () => void;
-};
-type TICons = {
-  ShowIcon: React.FC<TIconProps>;
-  HideIcon: React.FC<TIconProps>;
-};
 function ResetPage() {
   const [form, setValue] = useState({ password: '', token: '' });
   const [passwordIcon, setPasswordIcon] = useState<keyof TICons>('ShowIcon');
   const [passwordInputType, setPasswordInputType] = useState<'text' | 'email' | 'password'>('password');
   const location = useLocation<ILocation>();
   const dispatch = useDispatch();
-  const {user} = useSelector<TUserStore, TUser>(store => store.user);
+  const user = useSelector<TUserStore, TUser>(store => store.user.user);
   const history = useHistory();
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

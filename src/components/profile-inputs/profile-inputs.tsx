@@ -4,16 +4,8 @@ import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-component
 import styles from './profile-inputs.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import { editUserInfo } from '../../services/actions/user';
+import { TUserStore, TUser } from '../../utils/types';
 
-type TUser = {
-  name: string;
-  email: string;
-};
-type TUserStore = {
-  user: {
-    user: TUser;
-  };
-};
 function ProfileInputs() {
   const {name, email} = useSelector<TUserStore, TUser>(store => store.user.user);
   const [form, setValue] = useState({ name, email, password: '' });

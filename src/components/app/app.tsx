@@ -9,22 +9,8 @@ import ProtectedRoute from '../protected-route/protected-route';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { getIngredients } from '../../services/actions/ingredients';
 import { getUserInfo } from '../../services/actions/user';
+import { ILocation } from '../../utils/types';
 
-type TLocationState = {
-  from: ILocation
-};
-interface ILocation {
-  hash: string;
-  host: string;
-  hostname: string;
-  href: string;
-  pathname: string;
-  port: string;
-  protocol: string;
-  search: string;
-  state: {from: TLocationState;};
-  from: ILocation;
-}
 function App(): JSX.Element {
   const dispatch = useDispatch();
   const location = useLocation<ILocation>();

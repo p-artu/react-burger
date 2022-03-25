@@ -5,35 +5,13 @@ import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burg
 import CellEmpty from '../components/cell-empty/cell-empty';
 import { register } from '../services/actions/user';
 import styles from './register.module.css';
+import { ILocation, TUserStore, TUser } from '../utils/types';
 
-type TUser = {
-  user: {
-    name: string;
-  };
-};
-type TUserStore = {
-  user: TUser;
-};
-type TLocationState = {
-  from: ILocation
-};
-interface ILocation {
-  hash: string;
-  host: string;
-  hostname: string;
-  href: string;
-  pathname: string;
-  port: string;
-  protocol: string;
-  search: string;
-  state: {from: TLocationState;};
-  from: ILocation;
-}
 function RegisterPage() {
   const [form, setValue] = useState({ name: '', email: '', password: '' });
   const location = useLocation<ILocation>();
   const dispatch = useDispatch();
-  const {user} = useSelector<TUserStore, TUser>(store => store.user);
+  const user = useSelector<TUserStore, TUser>(store => store.user.user);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
