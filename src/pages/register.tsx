@@ -1,21 +1,22 @@
-import React, {useState} from 'react';
+import React, {useState, ChangeEvent, SyntheticEvent} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../components/cell-empty/cell-empty';
 import { register } from '../services/actions/user';
 import styles from './register.module.css';
+import { ILocation, TUserStore, TUser } from '../utils/types';
 
 function RegisterPage() {
   const [form, setValue] = useState({ name: '', email: '', password: '' });
-  const location = useLocation();
+  const location = useLocation<ILocation>();
   const dispatch = useDispatch();
-  const {user} = useSelector(store => store.user);
+  const user = useSelector<TUserStore, TUser>(store => store.user.user);
 
-  const onChange = e => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   }
-  function handleSubmit(e) {
+  function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
     const {email, password, name} = form;
     dispatch(register(email, password, name));

@@ -9,10 +9,11 @@ import BurgerIngredients from '../components/burger-ingredients/burger-ingredien
 import OrderDetails from '../components/order-details/order-details';
 import { closeOrderModal } from '../services/actions/order';
 import styles from './home.module.css';
+import { TOrderStore, TOrder } from '../utils/types';
 
 function HomePage() {
   const dispatch = useDispatch();
-  const { orderDetails } = useSelector(store => store.order);
+  const { orderDetails } = useSelector<TOrderStore, TOrder>(store => store.order);
 
   function closeOrderPopup() {
     dispatch(closeOrderModal());

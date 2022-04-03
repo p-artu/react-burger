@@ -1,17 +1,15 @@
-import { useRef } from 'react';
-import PropTypes from 'prop-types';
-import { uniqueIngredientPropTypes } from '../../utils/types';
+import React, { useRef, FC } from 'react';
 import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from 'react-redux';
 import { deleteIngredient, reduceCounter } from '../../services/actions/constructor-ingredients';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../cell-empty/cell-empty';
 import styles from './topping-element.module.css';
+import { IToppingElement, TIngredient } from '../../utils/types';
 
-function ToppingElement(props) {
-  const {id, index, item, moveCard} = props;
+const ToppingElement: FC<IToppingElement> = ({id, index, item, moveCard}) => {
   const dispatch = useDispatch();
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop({
     accept: 'card',
     collect(monitor) {
@@ -19,7 +17,7 @@ function ToppingElement(props) {
         handlerId: monitor.getHandlerId(),
       }
     },
-    hover(item, monitor) {
+    hover(item: any, monitor) {
       if (!ref.current) {
         return
       }
@@ -31,12 +29,14 @@ function ToppingElement(props) {
       const hoverBoundingRect = ref.current?.getBoundingClientRect()
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top)/2;
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return
-      }
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return
+      const hoverClientY = (clientOffset !== null) && clientOffset.y - hoverBoundingRect.top;
+      if (hoverClientY !== null) {
+        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+          return
+        }
+        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+          return
+        }
       }
       moveCard(dragIndex, hoverIndex);
       item.index = hoverIndex;
@@ -54,7 +54,7 @@ function ToppingElement(props) {
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
 
-  function removeIngredient(item) {
+  function removeIngredient(item: TIngredient) {
     dispatch(deleteIngredient(item.unId));
     dispatch(reduceCounter(item));
   }
@@ -73,12 +73,5 @@ function ToppingElement(props) {
     </div>
   );
 }
-
-ToppingElement.propTypes = {
-  item: uniqueIngredientPropTypes.isRequired,
-  id: PropTypes.number.isRequired,
-  index: PropTypes.number.isRequired,
-  moveCard: PropTypes.func.isRequired
-};
 
 export default ToppingElement;

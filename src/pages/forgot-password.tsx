@@ -1,22 +1,23 @@
-import React, {useState} from 'react';
+import React, {useState, ChangeEvent, SyntheticEvent} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect, useLocation, useHistory } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../components/cell-empty/cell-empty';
 import { recoverPassword } from '../services/actions/password-change';
 import styles from './forgot-password.module.css';
+import { ILocation, TUserStore, TUser } from '../utils/types';
 
 function ForgotPage() {
   const [form, setValue] = useState({email: '' });
-  const location = useLocation();
+  const location = useLocation<ILocation>();
   const dispatch = useDispatch();
-  const {user} = useSelector(store => store.user);
+  const user = useSelector<TUserStore, TUser>(store => store.user.user);
   const history = useHistory();
 
-  const onChange = e => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
   }
-  function handleSubmit(e) {
+  function handleSubmit(e: SyntheticEvent) {
     e.preventDefault();
     dispatch(recoverPassword(form.email));
     history.push({pathname: `/reset-password`, state: location});

@@ -5,16 +5,17 @@ import app from './app.module.css';
 import { HomePage, LoginPage, RegisterPage, ForgotPage, ResetPage, ProfilePage, PageNotFound } from '../../pages';
 import AppHeader from '../app-header/app-header';
 import Modal from '../modal/modal';
-import ProtectedRoute from '../protected-route/protected-route.js';
+import ProtectedRoute from '../protected-route/protected-route';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { getIngredients } from '../../services/actions/ingredients';
 import { getUserInfo } from '../../services/actions/user';
+import { ILocation } from '../../utils/types';
 
-function App() {
+function App(): JSX.Element {
   const dispatch = useDispatch();
-  const location = useLocation();
+  const location = useLocation<ILocation>();
   const history = useHistory();
-  const previousPath = history.action === 'PUSH' && location.state && location.state.from;
+  const previousPath = history.action === 'PUSH' && location.state && location.state?.from;
 
   useEffect(() => {
     dispatch(getUserInfo());

@@ -2,13 +2,14 @@ import { useDrop } from "react-dnd";
 import { useDispatch } from 'react-redux';
 import { addIngredient, increaseCounter } from '../../services/actions/constructor-ingredients';
 import styles from './empty-burger-ingredients.module.css';
+import { TIngredient } from '../../utils/types';
 
 function EmptyBurgerIngredients() {
   const dispatch = useDispatch();
   const [{isHover}, dropTarget] = useDrop({
     accept: "ingredient",
-    drop(item) {
-      let uniqueItem = {...item};
+    drop(item: TIngredient) {
+      let uniqueItem: TIngredient = {...item};
       if (uniqueItem.type !== 'bun') {
         const now = new Date().getTime();
         uniqueItem.unId = now;
