@@ -1,3 +1,4 @@
+import { TUserActions, TUserState } from '../types';
 import {
   GET_USER_INFO_REQUEST,
   GET_USER_INFO_SUCCESS,
@@ -14,15 +15,18 @@ import {
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   LOGOUT_FAILED,
-} from '../actions/user';
+} from '../constants';
 
-const initialState = {
-  user: {},
+const initialState: TUserState = {
+  user: {
+    name: '',
+    email: ''
+  },
   userRequest: false,
   userFailed: false
 };
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action: TUserActions): TUserState => {
   switch (action.type) {
     case GET_USER_INFO_REQUEST:
       return {
@@ -105,7 +109,10 @@ export const userReducer = (state = initialState, action) => {
     case LOGOUT_SUCCESS:
       return {
         ...state,
-        user: {},
+        user: {
+          name: '',
+          email: ''
+        },
         userRequest: false
       }
     case LOGOUT_FAILED:

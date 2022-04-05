@@ -1,17 +1,17 @@
 import React, {useState, ChangeEvent, SyntheticEvent} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from '../services/hooks';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 import { Button, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../components/cell-empty/cell-empty';
-import { register } from '../services/actions/user';
+import { register } from '../services/actions';
 import styles from './register.module.css';
-import { ILocation, TUserStore, TUser } from '../utils/types';
+import { ILocation } from '../utils/types';
 
 function RegisterPage() {
   const [form, setValue] = useState({ name: '', email: '', password: '' });
   const location = useLocation<ILocation>();
   const dispatch = useDispatch();
-  const user = useSelector<TUserStore, TUser>(store => store.user.user);
+  const user = useSelector(store => store.user.user);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value });
@@ -22,7 +22,7 @@ function RegisterPage() {
     dispatch(register(email, password, name));
   }
 
-  if (user.name) {
+  if (user.name !== '') {
     return <Redirect to={location.state?.from || '/'}/>
   }
 

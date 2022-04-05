@@ -1,23 +1,22 @@
-import React, { useMemo, useCallback, FC } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './burger-constructor.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from '../../services/hooks';
 import { useDrop } from "react-dnd";
-import { getNumber } from '../../services/actions/order';
-import { addIngredient, increaseCounter, moveIngredient } from '../../services/actions/constructor-ingredients';
+import { getNumber, addIngredient, increaseCounter, moveIngredient } from '../../services/actions';
 import EmptyBurgerIngredients from '../empty-burger-ingredients/empty-burger-ingredients';
 import ToppingElement from '../topping-element/topping-element';
-import { TDataStore, TData, TUserStore, TUser, TOrderStore, TOrder, TIngredient } from '../../utils/types';
+import { TIngredient } from '../../utils/types';
 
-const BurgerConstructor: FC = () => {
+const BurgerConstructor = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const data: TData = useSelector<TDataStore, TData>(store => store.constructorIngredients.draggedIngredients);
-  const user: TUser = useSelector<TUserStore, TUser>(store => store.user.user);
-  const {orderRequest} = useSelector<TOrderStore, TOrder>(store => store.order);
-  const {orderFailed} = useSelector<TOrderStore, TOrder>(store => store.order);
+  const data = useSelector(store => store.constructorIngredients.draggedIngredients);
+  const user = useSelector(store => store.user.user);
+  const {orderRequest} = useSelector(store => store.order);
+  const {orderFailed} = useSelector(store => store.order);
   const [{isHover}, dropTarget] = useDrop({
     accept: "ingredient",
     drop(item: TIngredient) {
@@ -41,14 +40,14 @@ const BurgerConstructor: FC = () => {
       return acc + item.price
     }, 0);
     let bunsPrice = 0;
-    if (data.bun.price) {
+    if (data.bun !== null && data.bun.price !== 0) {
       bunsPrice = 2 * data.bun.price;
     }
     return fillingPrice + bunsPrice
   }, [data]);
 
   function openModal() {
-    if (user.name) {
+    if (user.name !== '') {
       const dataIds = data.content.map(item => item._id);
       dispatch(getNumber(dataIds));
     } else {
@@ -72,9 +71,9 @@ const BurgerConstructor: FC = () => {
 
   return (
     <div className={styles.construct}>
-      {(!!data.bun.name || !!data.content.length) ?
+      {(data.bun !== null || !!data.content.length) ?
         <div ref={dropTarget} className={styles.list}>
-          {!!data.bun.name ?
+          {data.bun !== null ?
             <div className={styles.buns}>
               <ConstructorElement
                 type="top"
@@ -92,7 +91,7 @@ const BurgerConstructor: FC = () => {
             {data.content.map((item, i: number) => renderCard(item, i))}
           </div>
           <CellEmpty height="mt-4"/>
-          {!!data.bun.name ?
+          {data.bun !== null ?
             <div className={styles.buns}>
               <ConstructorElement
                 type="bottom"
@@ -113,7 +112,7 @@ const BurgerConstructor: FC = () => {
       {orderRequest ?
         <h2 className="text text_type_main-medium">Идёт загрузка...</h2>
       :
-        (!!data.bun.price || !!data.content.length) &&
+        (data.bun !== null || !!data.content.length) &&
         <>
           {orderFailed &&
             <>
@@ -132,7 +131,7 @@ const BurgerConstructor: FC = () => {
               </div>
             </div>
             <CellEmpty height="ml-10"/>
-            {!!data.bun.price && !!data.content.length &&
+            {data.bun !== null && !!data.content.length &&
             <Button type="primary" size="large" onClick={openModal}>
               Оформить заказ
             </Button>}

@@ -1,11 +1,11 @@
 import React, {useState, ChangeEvent, SyntheticEvent} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from '../services/hooks';
 import { Link, Redirect, useLocation, useHistory } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../components/cell-empty/cell-empty';
-import { setNewPassword } from '../services/actions/password-change';
+import { setNewPassword } from '../services/actions';
 import styles from './reset-password.module.css';
-import { ILocation, TUserStore, TUser, TICons } from '../utils/types';
+import { ILocation, TICons } from '../utils/types';
 
 function ResetPage() {
   const [form, setValue] = useState({ password: '', token: '' });
@@ -13,7 +13,7 @@ function ResetPage() {
   const [passwordInputType, setPasswordInputType] = useState<'text' | 'email' | 'password'>('password');
   const location = useLocation<ILocation>();
   const dispatch = useDispatch();
-  const user = useSelector<TUserStore, TUser>(store => store.user.user);
+  const user = useSelector(store => store.user.user);
   const history = useHistory();
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +34,7 @@ function ResetPage() {
     history.push('/login');
   }
 
-  if (user.name) {
+  if (user.name !== '') {
     return <Redirect to={location.state?.from || '/'}/>
   }
   if (!location.state?.pathname) {

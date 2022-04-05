@@ -44,9 +44,9 @@ export type TUserStore = {
 };
 //////////////////////////
 export type TOrder = {
-  orderRequest: object;
-  orderFailed: object;
-  orderDetails: string;
+  orderRequest: boolean;
+  orderFailed: boolean;
+  orderDetails: null | string;
 };
 export type TOrderStore = {
   order: TOrder;

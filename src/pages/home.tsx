@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../services/hooks';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import CellEmpty from '../components/cell-empty/cell-empty';
@@ -7,13 +7,12 @@ import Modal from '../components/modal/modal';
 import BurgerConstructor from '../components/burger-constructor/burger-constructor';
 import BurgerIngredients from '../components/burger-ingredients/burger-ingredients';
 import OrderDetails from '../components/order-details/order-details';
-import { closeOrderModal } from '../services/actions/order';
+import { closeOrderModal } from '../services/actions';
 import styles from './home.module.css';
-import { TOrderStore, TOrder } from '../utils/types';
 
 function HomePage() {
   const dispatch = useDispatch();
-  const { orderDetails } = useSelector<TOrderStore, TOrder>(store => store.order);
+  const { orderDetails } = useSelector(store => store.order);
 
   function closeOrderPopup() {
     dispatch(closeOrderModal());
