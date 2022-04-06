@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Switch, Route, useLocation, useHistory} from 'react-router-dom';
 import { useDispatch } from '../../services/hooks';
 import app from './app.module.css';
-import { HomePage, LoginPage, RegisterPage, ForgotPage, ResetPage, ProfilePage, PageNotFound } from '../../pages';
+import { HomePage, LoginPage, RegisterPage, ForgotPage, ResetPage, ProfilePage, OrderFeedPage, PageNotFound } from '../../pages';
 import AppHeader from '../app-header/app-header';
 import Modal from '../modal/modal';
 import ProtectedRoute from '../protected-route/protected-route';
@@ -54,6 +54,9 @@ function App(): JSX.Element {
         </ProtectedRoute>
         <Route path="/ingredients/:id" exact={true}>
           <IngredientDetails/>
+        </Route>
+        <Route path="/feed" exact={true}>
+          <OrderFeedPage />
         </Route>
         <Route>
           <PageNotFound />

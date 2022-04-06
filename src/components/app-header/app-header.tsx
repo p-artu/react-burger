@@ -12,7 +12,7 @@ function AppHeader() {
             <BurgerIcon type="primary" />
             <p className="text text_type_main-default pl-2">Конструктор</p>
           </NavLink>
-          <NavLink activeClassName={header.activeMenu} to="/orders" exact={true} className={`${header.menu} pt-4 pb-4 pl-5 pr-5 ml-2`}>
+          <NavLink activeClassName={header.activeMenu} to="/feed" exact={true} className={`${header.menu} pt-4 pb-4 pl-5 pr-5 ml-2`}>
             <ListIcon type="secondary" />
             <p className="text text_type_main-default pl-2">Лента заказов</p>
           </NavLink>

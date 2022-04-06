@@ -1,0 +1,101 @@
+.stat {
+  width: 100%;
+  max-width: 580px;
+  margin: 100px 0 0 0;
+}
+
+.orders {
+  display: flex;
+  justify-content: space-between;
+}
+
+.orders_column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 272px;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list_item {
+
+}
+
+.title {
+
+}
+
+.number {
+  color: #0cc;
+}
+
+.buns {
+  margin-right: 16px;
+  width: 536px;
+  display: flex;
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 464px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-color: #8585ad #2f2f37;
+	scrollbar-width: thin;
+}
+
+.content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content::-webkit-scrollbar-track {
+  background-color: #2f2f37;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+}
+
+.order {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.total {
+  display: flex;
+  align-items: center;
+}
+
+.icon svg {
+  height: 33px;
+  width: 33px;
+}
+
+.emptyBunTop {
+  border-radius: 88px 88px 40px 40px;
+  border: 1px dashed white;
+  width: 536px;
+  height: 80px;
+  margin-right: 16px;
+}
+
+.emptyBunBottom {
+  border-radius: 40px 40px 88px 88px;
+  border: 1px dashed white;
+  width: 536px;
+  height: 80px;
+  margin-right: 16px;
+}
+
+.error {
+  color: red;
+  text-align: center;
+}
