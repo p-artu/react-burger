@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useSelector, useDispatch } from '../services/hooks';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { getAllOrders } from '../services/actions';
 import CellEmpty from '../components/cell-empty/cell-empty';
 import Modal from '../components/modal/modal';
 import OrdersList from '../components/orders-list/orders-list';
@@ -13,6 +14,10 @@ import styles from './order-feed.module.css';
 function OrderFeedPage() {
   const dispatch = useDispatch();
   const { orderDetails } = useSelector(store => store.order);
+
+ useEffect(() => {
+    dispatch(getAllOrders());
+  }, []); 
 
   function closeOrderPopup() {
     dispatch(closeOrderModal());

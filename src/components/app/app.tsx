@@ -7,6 +7,7 @@ import AppHeader from '../app-header/app-header';
 import Modal from '../modal/modal';
 import ProtectedRoute from '../protected-route/protected-route';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import OrderDetailsDetailed from '../ingredient-details-detailed/ingredient-details-detailed';
 import { getIngredients, getUserInfo } from '../../services/actions';
 import { ILocation } from '../../utils/types';
 
@@ -58,16 +59,26 @@ function App(): JSX.Element {
         <Route path="/feed" exact={true}>
           <OrderFeedPage />
         </Route>
+        <Route path="/feed/:id" exact={true}>
+          <OrderDetailsDetailed/>
+        </Route>
         <Route>
           <PageNotFound />
         </Route>
       </Switch>
       {previousPath &&
-        <Route path="/ingredients/:id" exact={true}>
-          <Modal closePopup={closeIngredientPopup}>
-            <IngredientDetails/>
-          </Modal>
-        </Route>}
+        <Switch>
+          <Route path="/ingredients/:id" exact={true}>
+            <Modal closePopup={closeIngredientPopup}>
+              <IngredientDetails/>
+            </Modal>
+          </Route>
+          <Route path="/feed/:id" exact={true}>
+            <Modal closePopup={closeIngredientPopup}>
+              <OrderDetailsDetailed/>
+            </Modal>
+          </Route>
+        </Switch>}
     </div>
   );
 }

@@ -9,7 +9,7 @@
   border-radius: 40px;
   margin: 0 0 16px;
   padding: 0 24px;
-  max-height: 214px;
+  /* max-height: 214px; */
 }
 
 .info {
@@ -31,7 +31,12 @@
   align-items: center;
 }
 
+.images {
+  display: flex;
+}
+
 .frame {
+  position: relative;
   width: 64px;
   height: 64px;
   box-sizing: border-box;
@@ -44,11 +49,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0 -16px 0 0;
 }
 
 .image {
   width: 112px;
   height: 56px;
+}
+
+.image_text {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  background-color: rgba(0, 0, 0, 0.42);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .price {

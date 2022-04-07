@@ -1,31 +1,31 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './order-statistics.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
-import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from '../../services/hooks';
-import { getNumber, moveIngredient } from '../../services/actions';
-import EmptyBurgerIngredients from '../empty-burger-ingredients/empty-burger-ingredients';
-import ToppingElement from '../topping-element/topping-element';
-import { TIngredient } from '../../utils/types';
+import { getNumber } from '../../services/actions';
+import { TAllOrdersArr } from '../../utils/types';
 
 const OrderStatistics = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const data = useSelector(store => store.constructorIngredients.draggedIngredients);
   const user = useSelector(store => store.user.user);
-  const {orderRequest} = useSelector(store => store.order);
-  const {orderFailed} = useSelector(store => store.order);
-  const totalPrice = useMemo(() => {
-    const fillingPrice = data.content.reduce((acc: number, item: TIngredient) => {
-      return acc + item.price
-    }, 0);
-    let bunsPrice = 0;
-    if (data.bun !== null && data.bun.price !== 0) {
-      bunsPrice = 2 * data.bun.price;
-    }
-    return fillingPrice + bunsPrice
-  }, [data]);
+  const { allOrders } = useSelector(store => store.order);
+  const [readyOrder, pendingOrder] = useMemo(() =>
+    allOrders.orders.reduce((arr: TAllOrdersArr[][], item: TAllOrdersArr) => {
+      if (item.status === 'done' && arr[0].length < 20) {
+        arr[0].push(item);
+        return arr
+      }
+      if (item.status === 'pending' && arr[1].length < 20) {
+        arr[1].push(item);
+        return arr
+      }
+      return arr
+    }, [[], []]),
+    [allOrders]
+  );
 
   function openModal() {
     if (user.name !== '') {
@@ -35,20 +35,6 @@ const OrderStatistics = () => {
       history.push('/login');
     }
   }
-  const moveCard = useCallback((dragIndex, hoverIndex) => {
-    dispatch(moveIngredient(dragIndex, hoverIndex));
-  }, [])
-  const renderCard = useCallback((item, index) => {
-    return (
-      <ToppingElement
-        key={item.unId}
-        id={item.unId}
-        index={index}
-        item={item}
-        moveCard={moveCard}
-      />
-    )
-  }, [])
 
   return (
     <div className={styles.stat}>
@@ -56,33 +42,29 @@ const OrderStatistics = () => {
         <div className={styles.orders_column}>
           <h2 className={`${styles.title} text text_type_main-medium mb-4`}>Готовы:</h2>
           <ul className={styles.list}>
-            <li className={styles.list_item}>
-              <p className={`${styles.number} text text_type_digits-default mt-2`}>034533</p>
-            </li>
-            <li className={styles.list_item}>
-              <p className={`${styles.number} text text_type_digits-default mt-2`}>034533</p>
-            </li>
-            <li className={styles.list_item}>
-              <p className={`${styles.number} text text_type_digits-default mt-2`}>034533</p>
-            </li>
+            {readyOrder.map((item: any, i: any) => (
+              <li key={item._id} className={styles.list_item}>
+                <p className={`${styles.number} text text_type_digits-default mt-2`}>{`0${item.number}`}</p>
+              </li>
+            ))}
           </ul>
         </div>
         <CellEmpty height="ml-9"/>
         <div className={styles.orders_column}>
           <h2 className={`${styles.title} text text_type_main-medium mb-4`}>В работе:</h2>
           <ul className={styles.list}>
-            <li className={styles.list_item}>
-              <p className={`${styles.number} text text_type_digits-default mt-2`}>034533</p>
-            </li>
-            <li className={styles.list_item}>
-              <p className={`${styles.number} text text_type_digits-default mt-2`}>034533</p>
-            </li>
-            <li className={styles.list_item}>
-              <p className={`${styles.number} text text_type_digits-default mt-2`}>034533</p>
-            </li>
+            {pendingOrder.map((item: any, i: any) => (
+              <li key={item._id} className={styles.list_item}>
+                <p className={`text text_type_digits-default mt-2`}>{`0${item.number}`}</p>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
+      <h2 className={`${styles.title} text text_type_main-medium mt-15`}>Выполнено за все время:</h2>
+      <p className={`text text_type_digits-large ${styles.shadow}`}>{allOrders?.total}</p>
+      <h2 className={`${styles.title} text text_type_main-medium mt-15`}>Выполнено за сегодня:</h2>
+      <p className={`text text_type_digits-large ${styles.shadow}`}>{allOrders?.totalToday}</p>
     </div>
   );
 }

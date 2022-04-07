@@ -23,13 +23,20 @@ class Api implements IApi {
     })
     .then(this._checkResponse)
   }
-  public getNumberRequest(dataIds: string) {
-    return fetch(`${this._baseUrl}/orders`, {
+  public getNumberRequest(dataIds: string, authToken: any) {
+    return fetch(`${this._baseUrl}/orders?token=${authToken}`, {
       headers: this._headers,
       method: 'POST',
       body: JSON.stringify({ 
         "ingredients": dataIds
       })
+    })
+    .then(this._checkResponse)
+  }
+  public getAllOrdersRequest() {
+    return fetch(`${this._baseUrl}/orders/all`, {
+      headers: this._headers,
+      method: 'GET',
     })
     .then(this._checkResponse)
   }

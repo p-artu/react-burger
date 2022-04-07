@@ -6,6 +6,7 @@ import { TIngredient } from '../../utils/types';
 
 function OrdersList() {
   const {ingredients, ingredientsRequest, ingredientsFailed} = useSelector(store => store.ingredients);
+  const { allOrders } = useSelector(store => store.order);
   const [bun, sauce, main] = useMemo(() =>
     ingredients.reduce((arr: TIngredient[][], item: TIngredient) => {
       if (item.type === 'bun') {
@@ -38,7 +39,8 @@ function OrdersList() {
       <>
         <h1 className="text text_type_main-large mb-5">Лента заказов</h1>
         <ul className={styles.orders} ref={ingredientsRef}>
-          {main.map((item: TIngredient) => (
+          {allOrders !== null &&
+          allOrders.orders.map((item: any) => (
             <li className={styles['ingredients-item']} key={item._id}>
               <OrdersElement
                 data={item}

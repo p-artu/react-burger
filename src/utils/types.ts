@@ -47,9 +47,28 @@ export type TOrder = {
   orderRequest: boolean;
   orderFailed: boolean;
   orderDetails: null | string;
+  allOrders: TAllOrders;
+  allOrdersRequest: boolean;
+  allOrdersFailed: boolean;
 };
 export type TOrderStore = {
   order: TOrder;
+};
+//////////////////////////
+export type TAllOrders = {
+  orders: TAllOrdersArr[];
+  success: boolean;
+  total: number;
+  totalToday: number;
+};
+export type TAllOrdersArr = {
+  createdAt: string;
+  ingredients: string[];
+  name: string;
+  number: number;
+  status: string;
+  updatedAt: string;
+  _id: string;
 };
 //////////////////////////
 export type TIngredient = {
