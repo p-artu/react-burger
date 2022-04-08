@@ -50,6 +50,9 @@ export type TOrder = {
   allOrders: TAllOrders;
   allOrdersRequest: boolean;
   allOrdersFailed: boolean;
+  allMyOrders: TAllOrders;
+  allMyOrdersRequest: boolean;
+  allMyOrdersFailed: boolean;
 };
 export type TOrderStore = {
   order: TOrder;
@@ -85,6 +88,7 @@ export type TIngredient = {
   image_large: string;
   unId: number;
   __v: number;
+  quantity?: number;
 };
 export type TIngredients = {
   ingredients: TIngredient[];

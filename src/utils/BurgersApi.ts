@@ -23,9 +23,12 @@ class Api implements IApi {
     })
     .then(this._checkResponse)
   }
-  public getNumberRequest(dataIds: string, authToken: any) {
-    return fetch(`${this._baseUrl}/orders?token=${authToken}`, {
-      headers: this._headers,
+  public getNumberRequest(dataIds: string, accessToken: any) {
+    return fetch(`${this._baseUrl}/orders`, {
+      headers: {
+        ...this._headers,
+        authorization: accessToken
+      },
       method: 'POST',
       body: JSON.stringify({ 
         "ingredients": dataIds
@@ -36,6 +39,16 @@ class Api implements IApi {
   public getAllOrdersRequest() {
     return fetch(`${this._baseUrl}/orders/all`, {
       headers: this._headers,
+      method: 'GET',
+    })
+    .then(this._checkResponse)
+  }
+  public getAllMyOrdersRequest(accessToken: any) {
+    return fetch(`${this._baseUrl}/orders`, {
+      headers: {
+        ...this._headers,
+        authorization: accessToken
+      },
       method: 'GET',
     })
     .then(this._checkResponse)

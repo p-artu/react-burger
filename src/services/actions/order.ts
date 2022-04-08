@@ -10,7 +10,10 @@ import {
   CLOSE_ORDER_MODAL,
   GET_ORDERS_REQUEST,
   GET_ORDERS_SUCCESS,
-  GET_ORDERS_FAILED
+  GET_ORDERS_FAILED,
+  GET_MY_ORDERS_REQUEST,
+  GET_MY_ORDERS_SUCCESS,
+  GET_MY_ORDERS_FAILED
 } from '../constants';
 import {
   IGetOrderRequest,
@@ -19,7 +22,10 @@ import {
   ICloseOrderModal,
   IGetOrdersRequest,
   IGetOrdersSuccess,
-  IGetOrdersFailed
+  IGetOrdersFailed,
+  IGetMyOrdersRequest,
+  IGetMyOrdersSuccess,
+  IGetMyOrdersFailed
 } from '../types';
 
 export const getOrderRequest = (): IGetOrderRequest => ({type: GET_ORDER_REQUEST});
@@ -31,12 +37,15 @@ export const getOrdersRequest = (): IGetOrdersRequest => ({type: GET_ORDERS_REQU
 export const getOrdersSuccess = (allOrders: TAllOrders): IGetOrdersSuccess => ({type: GET_ORDERS_SUCCESS, allOrders});
 export const getOrdersFailed = (): IGetOrdersFailed => ({type: GET_ORDERS_FAILED});
 
+export const getMyOrdersRequest = (): IGetMyOrdersRequest => ({type: GET_MY_ORDERS_REQUEST});
+export const getMyOrdersSuccess = (allMyOrders: TAllOrders): IGetMyOrdersSuccess => ({type: GET_MY_ORDERS_SUCCESS, allMyOrders});
+export const getMyOrdersFailed = (): IGetMyOrdersFailed => ({type: GET_MY_ORDERS_FAILED});
+
 export const getNumber: AppThunk = (dataIds) => (dispatch: AppDispatch) => {
   dispatch(getOrderRequest());
   const accessToken: any = localStorage.getItem('accessToken');
-  console.log(accessToken);
-  const authToken = accessToken.split('Bearer ')[1];
-  BurgersApi.getNumberRequest(dataIds, authToken)
+  // const authToken = accessToken.split('Bearer ')[1];
+  BurgersApi.getNumberRequest(dataIds, accessToken)
   .then(res => {
     if (res && res.success) {
       dispatch(getOrderSuccess(res.order.number.toString()));
@@ -54,7 +63,6 @@ export const getAllOrders: AppThunk = () => (dispatch: AppDispatch) => {
   dispatch(getOrdersRequest());
   BurgersApi.getAllOrdersRequest()
   .then(res => {
-    console.log(res);
     if (res && res.success) {
       dispatch(getOrdersSuccess(res));
     } else {
@@ -63,6 +71,23 @@ export const getAllOrders: AppThunk = () => (dispatch: AppDispatch) => {
   })
   .catch(err => {
     dispatch(getOrdersFailed());
+    console.error(err);
+  });
+}
+export const getAllMyOrders: AppThunk = () => (dispatch: AppDispatch) => {
+  dispatch(getMyOrdersRequest());
+  const accessToken: any = localStorage.getItem('accessToken');
+  BurgersApi.getAllMyOrdersRequest(accessToken)
+  .then(res => {
+    console.log(res);
+    if (res && res.success) {
+      dispatch(getMyOrdersSuccess(res));
+    } else {
+      dispatch(getMyOrdersFailed());
+    }
+  })
+  .catch(err => {
+    dispatch(getMyOrdersFailed());
     console.error(err);
   });
 }

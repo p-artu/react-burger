@@ -7,7 +7,10 @@ import {
   CLOSE_ORDER_MODAL,
   GET_ORDERS_REQUEST,
   GET_ORDERS_SUCCESS,
-  GET_ORDERS_FAILED
+  GET_ORDERS_FAILED,
+  GET_MY_ORDERS_REQUEST,
+  GET_MY_ORDERS_SUCCESS,
+  GET_MY_ORDERS_FAILED
 } from '../constants';
 
 export interface IGetOrderRequest {
@@ -35,6 +38,17 @@ export interface IGetOrdersFailed {
   readonly type: typeof GET_ORDERS_FAILED;
 }
 
+export interface IGetMyOrdersRequest {
+  readonly type: typeof GET_MY_ORDERS_REQUEST;
+}
+export interface IGetMyOrdersSuccess {
+  readonly type: typeof GET_MY_ORDERS_SUCCESS;
+  readonly allMyOrders: TAllOrders;
+}
+export interface IGetMyOrdersFailed {
+  readonly type: typeof GET_MY_ORDERS_FAILED;
+}
+
 export type TOrderActions =
   IGetOrderRequest
   | IGetOrderSuccess
@@ -42,5 +56,8 @@ export type TOrderActions =
   | ICloseOrderModal
   | IGetOrdersRequest
   | IGetOrdersSuccess
-  | IGetOrdersFailed;
+  | IGetOrdersFailed
+  | IGetMyOrdersRequest
+  | IGetMyOrdersSuccess
+  | IGetMyOrdersFailed;
 export type TOrderState = TOrder;

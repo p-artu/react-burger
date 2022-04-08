@@ -1,19 +1,19 @@
 import React, {useMemo, useEffect} from 'react';
 import {useParams} from 'react-router-dom';
-import styles from './ingredient-details-detailed.module.css';
+import styles from './my-ingredient-details-detailed.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getAllOrders } from '../../services/actions';
+import { getAllMyOrders } from '../../services/actions';
 import { useSelector, useDispatch } from '../../services/hooks';
 import { formatRelative } from 'date-fns';
 import { ru } from "date-fns/locale";
 
-function OrderDetailsDetailed() {
+function MyOrderDetailsDetailed() {
   const dispatch = useDispatch();
-  const { allOrders, allOrdersRequest, allOrdersFailed } = useSelector(store => store.order);
+  const { allMyOrders, allMyOrdersRequest, allMyOrdersFailed } = useSelector(store => store.order);
   const {ingredients} = useSelector(store => store.ingredients);
   const {id}: {id: string} = useParams();
-  const currentOrder = allOrders.orders.find(item => item._id === id);
+  const currentOrder = allMyOrders.orders.find(item => item._id === id);
   const createdAt = currentOrder && formatRelative(new Date(currentOrder.createdAt), new Date(), { locale: ru });
   const orderIngredients = useMemo(() =>
     currentOrder?.ingredients.map((id: string) => {
@@ -33,26 +33,25 @@ function OrderDetailsDetailed() {
       return item
     })},
     [uniqueOrderIngredients, orderIngredients]);
-  console.log(uniqueOrderIngredientsQuantity);
   const totalPrice = useMemo(() =>
     orderIngredients?.reduce((acc: number, item: any) => {
-      return acc + item?.price
+      return acc + item.price
     }, 0),
     [orderIngredients]);
 
-  useEffect(() => {
-    dispatch(getAllOrders());
-  }, []);
+    useEffect(() => {
+      dispatch(getAllMyOrders());
+    }, []); 
 
   return (
     <div className={styles.container}>
-      {allOrdersRequest &&
+      {allMyOrdersRequest &&
         <h1 className="text text_type_main-large mt-7">Идёт загрузка...</h1>
       }
-      {allOrdersFailed && !allOrders.orders.length &&
+      {allMyOrdersFailed && !allMyOrders.orders.length &&
         <h1 className={`text text_type_main-large mt-7 ${styles.error}`}>Произошла ошибка! Попробуйте перезагрузить.</h1>
       }
-      {!!allOrders.orders.length &&
+      {!!allMyOrders.orders.length &&
       <>
         <p className={`${styles.number} text text_type_digits-default mt-7 mb-10`}>{`#0${currentOrder?.number}`}</p>
         <h2 className={`${styles.title} text text_type_main-medium ml-10 mb-3`}>{currentOrder?.name}</h2>
@@ -86,4 +85,4 @@ function OrderDetailsDetailed() {
   );
 };
 
-export default OrderDetailsDetailed;
+export default MyOrderDetailsDetailed;

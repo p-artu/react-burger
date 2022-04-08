@@ -1,19 +1,13 @@
 import React, { FC, useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import CellEmpty from '../cell-empty/cell-empty';
-import styles from './orders-element.module.css';
+import styles from './my-orders-element.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from '../../services/hooks';
-import dayjs from 'dayjs';
 import { formatRelative } from 'date-fns';
 import { ru } from "date-fns/locale";
-// require('dayjs/locale/ru');
-// var calendar = require('dayjs/plugin/calendar');
-// dayjs.extend(calendar);
 
-const OrdersElement: FC<any> = ({data}) => {
-  // dayjs.locale('ru');
-  // console.log(dayjs().calendar(dayjs(data.createdAt)));
+const MyOrdersElement: FC<any> = ({data}) => {
   const createdAt = formatRelative(new Date(data.createdAt), new Date(), { locale: ru });
   const {ingredients} = useSelector(store => store.ingredients);
   const location = useLocation();
@@ -33,13 +27,14 @@ const OrdersElement: FC<any> = ({data}) => {
     [orderIngredients]);
 
   return (
-    <Link to={{pathname: `/feed/${data._id}`, state: { from: location }}} className={styles.order}>
+    <Link to={{pathname: `/profile/orders/${data._id}`, state: { from: location }}} className={styles.order}>
       <CellEmpty height="mt-6"/>
       <div className={styles.info}>
         <p className={`${styles.number} text text_type_digits-default`}>{`#0${data.number}`}</p>
         <p className={`${styles.date} text text_type_main-default text_color_inactive`}>{createdAt}</p>
       </div>
-      <p className={`${styles.title} text text_type_main-medium mt-6 mb-6`}>{data.name}</p>
+      <p className={`${styles.title} text text_type_main-medium mt-6`}>{data.name}</p>
+      <p className={`${styles.status} text text_type_main-default mt-2 mb-6`}>{data.status === 'done' ? 'Выполнен' : data.status === 'pending' ? 'В работе' : 'Отменён'}</p>
       <div className={styles.content}>
         <div className={styles.images}>
           {uniqueOrderIngredients.map((item: any, i: any) => (
@@ -60,4 +55,4 @@ const OrdersElement: FC<any> = ({data}) => {
   );
 }
 
-export default OrdersElement;
+export default MyOrdersElement;

@@ -1,11 +1,13 @@
 import React from 'react';
 import { useDispatch } from '../../services/hooks';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import styles from './profile-menu.module.css';
 import { logout } from '../../services/actions';
 
 function ProfileMenu() {
   const dispatch = useDispatch();
+  const {pathname} = useLocation();
+  console.log(pathname);
 
   function signOut() {
     dispatch(logout());
@@ -29,7 +31,11 @@ function ProfileMenu() {
         </li>
       </ul>
       <p className='text text_type_main-default text_color_inactive mt-20'>
-        В этом разделе вы можете изменить свои персональные данные
+        {pathname === '/profile/orders' ?
+          'В этом разделе вы можете просмотреть свою историю заказов'
+        :
+          'В этом разделе вы можете изменить свои персональные данные'
+        }
       </p>
     </div>
   );

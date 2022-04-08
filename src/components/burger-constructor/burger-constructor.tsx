@@ -49,6 +49,10 @@ const BurgerConstructor = () => {
   function openModal() {
     if (user.name !== '') {
       const dataIds = data.content.map(item => item._id);
+      if (data.bun !== null) {
+        dataIds.push(data.bun._id);
+        dataIds.push(data.bun._id);
+      }
       dispatch(getNumber(dataIds));
     } else {
       history.push('/login');

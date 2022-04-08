@@ -8,7 +8,8 @@ import Modal from '../modal/modal';
 import ProtectedRoute from '../protected-route/protected-route';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetailsDetailed from '../ingredient-details-detailed/ingredient-details-detailed';
-import { getIngredients, getUserInfo } from '../../services/actions';
+import MyOrderDetailsDetailed from '../my-ingredient-details-detailed/my-ingredient-details-detailed';
+import { getIngredients, getUserInfo, getAllOrders, getAllMyOrders } from '../../services/actions';
 import { ILocation } from '../../utils/types';
 
 function App(): JSX.Element {
@@ -23,6 +24,12 @@ function App(): JSX.Element {
   useEffect(() => {
     dispatch(getIngredients());
   }, []);
+  useEffect(() => {
+    dispatch(getAllOrders());
+  }, []);
+  useEffect(() => {
+    dispatch(getAllMyOrders());
+  }, []); 
 
   function closeIngredientPopup() {
     history.goBack();
@@ -49,6 +56,12 @@ function App(): JSX.Element {
         </Route>
         <ProtectedRoute
           exact={true}
+          path="/profile/orders/:id"
+        >
+          <MyOrderDetailsDetailed/>
+        </ProtectedRoute>
+        <ProtectedRoute
+          exact={false}
           path="/profile"
         >
           <ProfilePage />
@@ -78,6 +91,14 @@ function App(): JSX.Element {
               <OrderDetailsDetailed/>
             </Modal>
           </Route>
+          <ProtectedRoute
+            exact={true}
+            path="/profile/orders/:id"
+          >
+            <Modal closePopup={closeIngredientPopup}>
+              <MyOrderDetailsDetailed/>
+            </Modal>
+          </ProtectedRoute>
         </Switch>}
     </div>
   );
