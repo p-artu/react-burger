@@ -54,7 +54,13 @@ export const orderReducer = (state = initialState, action: TOrderActions): TOrde
       return {
         ...state,
         wsConnected: false,
-        wsError: false
+        wsError: false,
+        allOrders: {
+          orders: [],
+          success: false,
+          total: 0,
+          totalToday: 0
+        }
       }
     case WS_GET_MESSAGE:
       return {
@@ -77,7 +83,13 @@ export const orderReducer = (state = initialState, action: TOrderActions): TOrde
       return {
         ...state,
         wsMyConnected: false,
-        wsMyError: false
+        wsMyError: false,
+        allMyOrders: {
+          orders: [],
+          success: false,
+          total: 0,
+          totalToday: 0
+        }
       }
     case WS_GET_MY_MESSAGE:
       return {

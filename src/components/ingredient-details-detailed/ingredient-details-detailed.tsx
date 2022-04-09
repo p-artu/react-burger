@@ -1,15 +1,16 @@
 import React, {useMemo, useEffect} from 'react';
-import {useParams} from 'react-router-dom';
+import {useParams, useLocation} from 'react-router-dom';
 import styles from './ingredient-details-detailed.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { WSConnectionStart } from '../../services/actions';
+import { WSConnectionStart, WSConnectionClosed } from '../../services/actions';
 import { useSelector, useDispatch } from '../../services/hooks';
 import { formatRelative } from 'date-fns';
 import { ru } from "date-fns/locale";
 import { TIngredient } from '../../utils/types';
 
 function OrderDetailsDetailed() {
+  const {pathname} = useLocation();
   const dispatch = useDispatch();
   const { allOrders, wsConnected, wsError } = useSelector(store => store.order);
   const {ingredients} = useSelector(store => store.ingredients);
@@ -45,6 +46,11 @@ function OrderDetailsDetailed() {
 
   useEffect(() => {
     dispatch(WSConnectionStart('/all'));
+    if (!pathname.includes('/feed')) {
+      return () => {
+        dispatch(WSConnectionClosed());
+      };
+    }
   }, []);
 
   return (
@@ -62,8 +68,9 @@ function OrderDetailsDetailed() {
         <p className={`${styles.status} text text_type_main-default ml-10 mb-15`}>{currentOrder?.status === 'done' ? 'Выполнен' : currentOrder?.status === 'pending' ? 'В работе' : 'Отменён'}</p>
         <p className={`${styles.title} text text_type_main-medium ml-10 mb-6`}>Состав:</p>
         <ul className={styles.list}>
-          {uniqueOrderIngredientsQuantity?.map((item: any, i: number) => (
-            <li key={item?._id} className={styles.list_item}>
+          {uniqueOrderIngredientsQuantity[0] && uniqueOrderIngredientsQuantity[0]._id &&
+          uniqueOrderIngredientsQuantity.map((item: any, i: number) => (
+            <li key={item._id} className={styles.list_item}>
               <div className={styles.frame}>
                 <img className={styles.image} src={item?.image_mobile} alt={item?.name}/>
               </div>

@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import styles from './my-orders-list.module.css';
 import MyOrdersElement from '../my-orders-element/my-orders-element';
 import { useSelector, useDispatch } from '../../services/hooks';
-import { WSConnectionMyStart } from '../../services/actions';
+import { WSConnectionMyStart, WSConnectionMyClosed } from '../../services/actions';
 
 function MyOrdersList() {
   const dispatch = useDispatch();
@@ -14,6 +14,9 @@ function MyOrdersList() {
     const accessToken: any = localStorage.getItem('accessToken');
     const authToken = accessToken && accessToken.split('Bearer ')[1];
     dispatch(WSConnectionMyStart(`?token=${authToken}`));
+    return () => {
+      dispatch(WSConnectionMyClosed());
+    };
   }, []); 
 
   return (
@@ -29,7 +32,7 @@ function MyOrdersList() {
         <ul className={styles.orders} ref={ingredientsRef}>
           {allMyOrders !== null &&
           MyOrders.map((item: any) => (
-            <li className={styles['ingredients-item']} key={item?._id}>
+            <li className={styles['ingredients-item']} key={item._id}>
               <MyOrdersElement
                 data={item}
               />

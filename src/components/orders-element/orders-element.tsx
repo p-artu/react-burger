@@ -40,8 +40,9 @@ const OrdersElement: FC<IOrdersElement> = ({data}) => {
       <p className={`${styles.title} text text_type_main-medium mt-6 mb-6`}>{data.name}</p>
       <div className={styles.content}>
         <div className={styles.images}>
-          {uniqueOrderIngredients.map((item: any, i: number) => (
-            <div key={item?._id} className={styles.frame} style={i>5 ? {'display': 'none'} : {'zIndex': 6-i}}>
+          {uniqueOrderIngredients[0] && uniqueOrderIngredients[0]._id &&
+          uniqueOrderIngredients.map((item: any, i: number) => (
+            <div key={item._id} className={styles.frame} style={i>5 ? {'display': 'none'} : {'zIndex': 6-i}}>
               <img className={styles.image} src={item?.image_mobile} alt={item?.name}/>
               <p className={`${styles.image_text} text text_type_main-default`} style={(i===5 && uniqueOrderIngredients.length>6) ? {} : {'display': 'none'}}>{`+${uniqueOrderIngredients.length-6}`}</p>
             </div>
