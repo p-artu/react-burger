@@ -1,16 +1,10 @@
 import React, { useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
 import styles from './order-statistics.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
-import { useSelector, useDispatch } from '../../services/hooks';
-import { getNumber } from '../../services/actions';
+import { useSelector } from '../../services/hooks';
 import { TAllOrdersArr } from '../../utils/types';
 
 const OrderStatistics = () => {
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const data = useSelector(store => store.constructorIngredients.draggedIngredients);
-  const user = useSelector(store => store.user.user);
   const { allOrders } = useSelector(store => store.order);
   const [readyOrder, pendingOrder] = useMemo(() =>
     allOrders.orders.reduce((arr: TAllOrdersArr[][], item: TAllOrdersArr) => {
@@ -27,24 +21,15 @@ const OrderStatistics = () => {
     [allOrders]
   );
 
-  function openModal() {
-    if (user.name !== '') {
-      const dataIds = data.content.map(item => item._id);
-      dispatch(getNumber(dataIds));
-    } else {
-      history.push('/login');
-    }
-  }
-
   return (
     <div className={styles.stat}>
       <div className={styles.orders}>
         <div className={styles.orders_column}>
           <h2 className={`${styles.title} text text_type_main-medium mb-4`}>Готовы:</h2>
           <ul className={styles.list}>
-            {readyOrder.map((item: any, i: any) => (
-              <li key={item._id} className={styles.list_item}>
-                <p className={`${styles.number} text text_type_digits-default mt-2`}>{`0${item.number}`}</p>
+            {readyOrder.map((item: TAllOrdersArr, i: number) => (
+              <li key={item?._id} className={styles.list_item}>
+                <p className={`${styles.number} text text_type_digits-default mt-2`}>{`0${item?.number}`}</p>
               </li>
             ))}
           </ul>
@@ -53,9 +38,9 @@ const OrderStatistics = () => {
         <div className={styles.orders_column}>
           <h2 className={`${styles.title} text text_type_main-medium mb-4`}>В работе:</h2>
           <ul className={styles.list}>
-            {pendingOrder.map((item: any, i: any) => (
-              <li key={item._id} className={styles.list_item}>
-                <p className={`text text_type_digits-default mt-2`}>{`0${item.number}`}</p>
+            {pendingOrder.map((item: TAllOrdersArr, i: number) => (
+              <li key={item?._id} className={styles.list_item}>
+                <p className={`text text_type_digits-default mt-2`}>{`0${item?.number}`}</p>
               </li>
             ))}
           </ul>

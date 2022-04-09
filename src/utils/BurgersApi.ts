@@ -23,7 +23,7 @@ class Api implements IApi {
     })
     .then(this._checkResponse)
   }
-  public getNumberRequest(dataIds: string, accessToken: any) {
+  public getNumberRequest(dataIds: string, accessToken: string) {
     return fetch(`${this._baseUrl}/orders`, {
       headers: {
         ...this._headers,
@@ -33,23 +33,6 @@ class Api implements IApi {
       body: JSON.stringify({ 
         "ingredients": dataIds
       })
-    })
-    .then(this._checkResponse)
-  }
-  public getAllOrdersRequest() {
-    return fetch(`${this._baseUrl}/orders/all`, {
-      headers: this._headers,
-      method: 'GET',
-    })
-    .then(this._checkResponse)
-  }
-  public getAllMyOrdersRequest(accessToken: any) {
-    return fetch(`${this._baseUrl}/orders`, {
-      headers: {
-        ...this._headers,
-        authorization: accessToken
-      },
-      method: 'GET',
     })
     .then(this._checkResponse)
   }

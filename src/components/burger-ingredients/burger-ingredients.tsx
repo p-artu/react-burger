@@ -54,10 +54,10 @@ function BurgerIngredients() {
       {ingredientsRequest &&
         <h1 className="text text_type_main-large">Идёт загрузка...</h1>
       }
-      {ingredientsFailed && !ingredients.length &&
+      {ingredientsFailed && !ingredients?.length &&
         <h1 className={`text text_type_main-large ${styles.error}`}>Произошла ошибка! Попробуйте перезагрузить.</h1>
       }
-      {!!ingredients.length &&
+      {!!ingredients?.length &&
       <>
         <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
         <div className={styles.links}>
@@ -81,7 +81,7 @@ function BurgerIngredients() {
           <h2 id='bun' className="text text_type_main-medium mb-6" ref={bunRef}>Булки</h2>
           <ul className={styles['ingredients-type']}>
             {bun.map((item: TIngredient) => (
-              <li className={styles['ingredients-item']} key={item._id}>
+              <li className={styles['ingredients-item']} key={item?._id}>
                 <IngredientsElement
                   data={item}
                 />

@@ -1,13 +1,5 @@
 import type { Middleware, MiddlewareAPI } from 'redux';
-import type { AppDispatch, RootState } from '../types';
-
-type wsActionsType = {
-  wsInit: "WS_CONNECTION_START" | "WS_CONNECTION_MY_START";
-  onOpen: "WS_CONNECTION_SUCCESS" | "WS_CONNECTION_MY_SUCCESS";
-  onClose: "WS_CONNECTION_CLOSED" | "WS_CONNECTION_MY_CLOSED";
-  onError: "WS_CONNECTION_ERROR" | "WS_CONNECTION_MY_ERROR";
-  onMessage: "WS_GET_MESSAGE" | "WS_GET_MY_MESSAGE";
-};
+import type { AppDispatch, RootState, wsActionsType } from '../types';
 
 export const socketMiddleware = (wsUrl: string, wsActions: wsActionsType): Middleware => {
   return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
@@ -29,7 +21,6 @@ export const socketMiddleware = (wsUrl: string, wsActions: wsActionsType): Middl
         socket.onmessage = event => {
           const { data } = event;
           const parsedData = JSON.parse(data);
-          console.log(parsedData);
           dispatch({ type: onMessage, payload: parsedData });
         };
         socket.onclose = event => {

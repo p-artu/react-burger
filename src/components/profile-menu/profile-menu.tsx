@@ -7,7 +7,6 @@ import { logout } from '../../services/actions';
 function ProfileMenu() {
   const dispatch = useDispatch();
   const {pathname} = useLocation();
-  console.log(pathname);
 
   function signOut() {
     dispatch(logout());

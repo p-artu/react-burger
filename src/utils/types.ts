@@ -23,24 +23,9 @@ export interface ILocation {
   from: ILocation;
 }
 //////////////////////////
-export type TData = {
-  content: TIngredient[];
-  bun: TIngredient;
-};
-export type TDataStore = {
-  constructorIngredients: {
-    draggedIngredients: TData;
-  };
-};
-//////////////////////////
 export type TUser = {
   name: string;
   email: string;
-};
-export type TUserStore = {
-  user: {
-    user: TUser;
-  };
 };
 //////////////////////////
 export type TOrder = {
@@ -54,10 +39,10 @@ export type TOrder = {
   wsMyConnected: boolean;
   wsMyError: boolean;
 };
-export type TOrderStore = {
-  order: TOrder;
-};
 //////////////////////////
+export interface IOrdersElement {
+  data: TAllOrdersArr;
+}
 export type TAllOrders = {
   orders: TAllOrdersArr[];
   success: boolean;
@@ -95,13 +80,6 @@ export type TIngredients = {
   ingredientsRequest: boolean;
   ingredientsFailed: boolean;
 };
-export type TIngredientsStore = {
-  ingredients: {
-    ingredients: TIngredient[];
-    ingredientsRequest: boolean;
-    ingredientsFailed: boolean;
-  };
-};
 export interface IIngredientsElement {
   data: TIngredient;
 }
@@ -110,11 +88,6 @@ export interface ICellEmpty {
   height: string;
 }
 //////////////////////////
-export type TCounterListDataStore = {
-  constructorIngredients: {
-    counterList: TCounterListData;
-  };
-};
 export type TCounterListData = {
   [name: string]: number;
 };

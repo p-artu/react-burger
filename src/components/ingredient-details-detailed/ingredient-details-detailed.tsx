@@ -3,10 +3,11 @@ import {useParams} from 'react-router-dom';
 import styles from './ingredient-details-detailed.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getAllOrders, WSConnectionStart } from '../../services/actions';
+import { WSConnectionStart } from '../../services/actions';
 import { useSelector, useDispatch } from '../../services/hooks';
 import { formatRelative } from 'date-fns';
 import { ru } from "date-fns/locale";
+import { TIngredient } from '../../utils/types';
 
 function OrderDetailsDetailed() {
   const dispatch = useDispatch();
@@ -33,10 +34,12 @@ function OrderDetailsDetailed() {
       return item
     })},
     [uniqueOrderIngredients, orderIngredients]);
-  console.log(uniqueOrderIngredientsQuantity);
   const totalPrice = useMemo(() =>
-    orderIngredients?.reduce((acc: number, item: any) => {
-      return acc + item?.price
+    orderIngredients?.reduce((acc: number, item: TIngredient | undefined) => {
+      if (item) {
+        return acc + item?.price
+      }
+      return acc
     }, 0),
     [orderIngredients]);
 
@@ -46,20 +49,20 @@ function OrderDetailsDetailed() {
 
   return (
     <div className={styles.container}>
-      {wsConnected && !allOrders.orders.length &&
+      {wsConnected && !allOrders?.orders?.length &&
         <h1 className="text text_type_main-large mt-7">Идёт загрузка...</h1>
       }
-      {wsError && !allOrders.orders.length &&
+      {wsError && !allOrders?.orders?.length &&
         <h1 className={`text text_type_main-large mt-7 ${styles.error}`}>Произошла ошибка! Попробуйте перезагрузить.</h1>
       }
-      {!!allOrders.orders.length &&
+      {!!allOrders?.orders?.length &&
       <>
         <p className={`${styles.number} text text_type_digits-default mt-7 mb-10`}>{`#0${currentOrder?.number}`}</p>
         <h2 className={`${styles.title} text text_type_main-medium ml-10 mb-3`}>{currentOrder?.name}</h2>
         <p className={`${styles.status} text text_type_main-default ml-10 mb-15`}>{currentOrder?.status === 'done' ? 'Выполнен' : currentOrder?.status === 'pending' ? 'В работе' : 'Отменён'}</p>
         <p className={`${styles.title} text text_type_main-medium ml-10 mb-6`}>Состав:</p>
         <ul className={styles.list}>
-          {uniqueOrderIngredientsQuantity?.map((item: any, i: any) => (
+          {uniqueOrderIngredientsQuantity?.map((item: any, i: number) => (
             <li key={item?._id} className={styles.list_item}>
               <div className={styles.frame}>
                 <img className={styles.image} src={item?.image_mobile} alt={item?.name}/>

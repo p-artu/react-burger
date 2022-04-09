@@ -6,8 +6,9 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { useSelector } from '../../services/hooks';
 import { formatRelative } from 'date-fns';
 import { ru } from "date-fns/locale";
+import { IOrdersElement, TIngredient } from '../../utils/types';
 
-const MyOrdersElement: FC<any> = ({data}) => {
+const MyOrdersElement: FC<IOrdersElement> = ({data}) => {
   const createdAt = formatRelative(new Date(data.createdAt), new Date(), { locale: ru });
   const {ingredients} = useSelector(store => store.ingredients);
   const location = useLocation();
@@ -21,8 +22,11 @@ const MyOrdersElement: FC<any> = ({data}) => {
   );
   const uniqueOrderIngredients = [...new Set(orderIngredients)];
   const totalPrice = useMemo(() =>
-    orderIngredients.reduce((acc: number, item: any) => {
-      return acc + item?.price
+    orderIngredients.reduce((acc: number, item: TIngredient | undefined) => {
+      if (item) {
+        return acc + item?.price
+      }
+      return acc
     }, 0),
     [orderIngredients]);
 
@@ -37,7 +41,7 @@ const MyOrdersElement: FC<any> = ({data}) => {
       <p className={`${styles.status} text text_type_main-default mt-2 mb-6`}>{data.status === 'done' ? 'Выполнен' : data.status === 'pending' ? 'В работе' : 'Отменён'}</p>
       <div className={styles.content}>
         <div className={styles.images}>
-          {uniqueOrderIngredients.map((item: any, i: any) => (
+          {uniqueOrderIngredients.map((item: any, i: number) => (
             <div key={item?._id} className={styles.frame} style={i>5 ? {'display': 'none'} : {'zIndex': 6-i}}>
               <img className={styles.image} src={item?.image_mobile} alt={item?.name}/>
               <p className={`${styles.image_text} text text_type_main-default`} style={(i===5 && uniqueOrderIngredients.length>6) ? {} : {'display': 'none'}}>{`+${uniqueOrderIngredients.length-6}`}</p>

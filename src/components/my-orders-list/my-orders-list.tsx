@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import styles from './my-orders-list.module.css';
 import MyOrdersElement from '../my-orders-element/my-orders-element';
 import { useSelector, useDispatch } from '../../services/hooks';
-import { getAllMyOrders, WSConnectionMyStart } from '../../services/actions';
+import { WSConnectionMyStart } from '../../services/actions';
 
 function MyOrdersList() {
   const dispatch = useDispatch();
@@ -12,24 +12,24 @@ function MyOrdersList() {
 
   useEffect(() => {
     const accessToken: any = localStorage.getItem('accessToken');
-    const authToken = accessToken.split('Bearer ')[1];
+    const authToken = accessToken && accessToken.split('Bearer ')[1];
     dispatch(WSConnectionMyStart(`?token=${authToken}`));
   }, []); 
 
   return (
     <div className={styles.orders_container}>
-      {wsMyConnected && !allMyOrders.orders.length &&
+      {wsMyConnected && !allMyOrders?.orders?.length &&
         <h1 className="text text_type_main-large mt-7">Идёт загрузка...</h1>
       }
-      {wsMyError && !allMyOrders.orders.length &&
+      {wsMyError && !allMyOrders?.orders?.length &&
         <h1 className={`text text_type_main-large mt-7 ${styles.error}`}>Произошла ошибка! Попробуйте перезагрузить.</h1>
       }
-      {!!allMyOrders.orders.length &&
+      {!!allMyOrders?.orders?.length &&
       <>
         <ul className={styles.orders} ref={ingredientsRef}>
           {allMyOrders !== null &&
           MyOrders.map((item: any) => (
-            <li className={styles['ingredients-item']} key={item._id}>
+            <li className={styles['ingredients-item']} key={item?._id}>
               <MyOrdersElement
                 data={item}
               />

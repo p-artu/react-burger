@@ -9,7 +9,7 @@ import ProtectedRoute from '../protected-route/protected-route';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetailsDetailed from '../ingredient-details-detailed/ingredient-details-detailed';
 import MyOrderDetailsDetailed from '../my-ingredient-details-detailed/my-ingredient-details-detailed';
-import { getIngredients, getUserInfo, getAllOrders, getAllMyOrders, WSConnectionStart, WSConnectionMyStart } from '../../services/actions';
+import { getIngredients, getUserInfo, WSConnectionStart, WSConnectionMyStart } from '../../services/actions';
 import { ILocation } from '../../utils/types';
 
 function App(): JSX.Element {
@@ -29,7 +29,7 @@ function App(): JSX.Element {
   }, []);
   useEffect(() => {
     const accessToken: any = localStorage.getItem('accessToken');
-    const authToken = accessToken.split('Bearer ')[1];
+    const authToken = accessToken && accessToken.split('Bearer ')[1];
     dispatch(WSConnectionMyStart(`?token=${authToken}`));
   }, []); 
 

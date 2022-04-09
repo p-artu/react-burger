@@ -116,7 +116,7 @@ const BurgerConstructor = () => {
       {orderRequest ?
         <h2 className="text text_type_main-medium">Идёт загрузка...</h2>
       :
-        (data.bun !== null || !!data.content.length) &&
+        (data?.bun !== null || !!data?.content?.length) &&
         <>
           {orderFailed &&
             <>
@@ -135,7 +135,7 @@ const BurgerConstructor = () => {
               </div>
             </div>
             <CellEmpty height="ml-10"/>
-            {data.bun !== null && !!data.content.length &&
+            {data?.bun !== null && !!data.content.length &&
             <Button type="primary" size="large" onClick={openModal}>
               Оформить заказ
             </Button>}
