@@ -4,16 +4,11 @@ import CellEmpty from '../cell-empty/cell-empty';
 import styles from './orders-element.module.css';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from '../../services/hooks';
-import dayjs from 'dayjs';
 import { formatRelative } from 'date-fns';
 import { ru } from "date-fns/locale";
-// require('dayjs/locale/ru');
-// var calendar = require('dayjs/plugin/calendar');
-// dayjs.extend(calendar);
 
 const OrdersElement: FC<any> = ({data}) => {
-  // dayjs.locale('ru');
-  // console.log(dayjs().calendar(dayjs(data.createdAt)));
+  console.log(data);
   const createdAt = formatRelative(new Date(data.createdAt), new Date(), { locale: ru });
   const {ingredients} = useSelector(store => store.ingredients);
   const location = useLocation();
@@ -28,7 +23,7 @@ const OrdersElement: FC<any> = ({data}) => {
   const uniqueOrderIngredients = [...new Set(orderIngredients)];
   const totalPrice = useMemo(() =>
     orderIngredients.reduce((acc: number, item: any) => {
-      return acc + item.price
+      return acc + item?.price
     }, 0),
     [orderIngredients]);
 
@@ -43,8 +38,8 @@ const OrdersElement: FC<any> = ({data}) => {
       <div className={styles.content}>
         <div className={styles.images}>
           {uniqueOrderIngredients.map((item: any, i: any) => (
-            <div key={item._id} className={styles.frame} style={i>5 ? {'display': 'none'} : {'zIndex': 6-i}}>
-              <img className={styles.image} src={item.image_mobile} alt={item.name}/>
+            <div key={item?._id} className={styles.frame} style={i>5 ? {'display': 'none'} : {'zIndex': 6-i}}>
+              <img className={styles.image} src={item?.image_mobile} alt={item?.name}/>
               <p className={`${styles.image_text} text text_type_main-default`} style={(i===5 && uniqueOrderIngredients.length>6) ? {} : {'display': 'none'}}>{`+${uniqueOrderIngredients.length-6}`}</p>
             </div>
           ))}

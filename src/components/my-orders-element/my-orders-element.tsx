@@ -22,7 +22,7 @@ const MyOrdersElement: FC<any> = ({data}) => {
   const uniqueOrderIngredients = [...new Set(orderIngredients)];
   const totalPrice = useMemo(() =>
     orderIngredients.reduce((acc: number, item: any) => {
-      return acc + item.price
+      return acc + item?.price
     }, 0),
     [orderIngredients]);
 
@@ -38,8 +38,8 @@ const MyOrdersElement: FC<any> = ({data}) => {
       <div className={styles.content}>
         <div className={styles.images}>
           {uniqueOrderIngredients.map((item: any, i: any) => (
-            <div key={item._id} className={styles.frame} style={i>5 ? {'display': 'none'} : {'zIndex': 6-i}}>
-              <img className={styles.image} src={item.image_mobile} alt={item.name}/>
+            <div key={item?._id} className={styles.frame} style={i>5 ? {'display': 'none'} : {'zIndex': 6-i}}>
+              <img className={styles.image} src={item?.image_mobile} alt={item?.name}/>
               <p className={`${styles.image_text} text text_type_main-default`} style={(i===5 && uniqueOrderIngredients.length>6) ? {} : {'display': 'none'}}>{`+${uniqueOrderIngredients.length-6}`}</p>
             </div>
           ))}

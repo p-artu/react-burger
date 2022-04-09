@@ -2,24 +2,26 @@ import React, { useRef, useEffect } from 'react';
 import styles from './my-orders-list.module.css';
 import MyOrdersElement from '../my-orders-element/my-orders-element';
 import { useSelector, useDispatch } from '../../services/hooks';
-import { getAllMyOrders } from '../../services/actions';
+import { getAllMyOrders, WSConnectionMyStart } from '../../services/actions';
 
 function MyOrdersList() {
   const dispatch = useDispatch();
-  const { allMyOrders, allMyOrdersRequest, allMyOrdersFailed } = useSelector(store => store.order);
+  const { allMyOrders, wsMyConnected, wsMyError } = useSelector(store => store.order);
   const ingredientsRef = useRef<HTMLUListElement>(null);
-  const MyOrders = allMyOrders.orders.slice(0).reverse();
+  const MyOrders = allMyOrders.orders && allMyOrders.orders.slice(0).reverse();
 
   useEffect(() => {
-    dispatch(getAllMyOrders());
+    const accessToken: any = localStorage.getItem('accessToken');
+    const authToken = accessToken.split('Bearer ')[1];
+    dispatch(WSConnectionMyStart(`?token=${authToken}`));
   }, []); 
 
   return (
     <div className={styles.orders_container}>
-      {allMyOrdersRequest &&
+      {wsMyConnected && !allMyOrders.orders.length &&
         <h1 className="text text_type_main-large mt-7">Идёт загрузка...</h1>
       }
-      {allMyOrdersFailed && !allMyOrders.orders.length &&
+      {wsMyError && !allMyOrders.orders.length &&
         <h1 className={`text text_type_main-large mt-7 ${styles.error}`}>Произошла ошибка! Попробуйте перезагрузить.</h1>
       }
       {!!allMyOrders.orders.length &&

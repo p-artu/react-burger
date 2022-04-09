@@ -13,7 +13,17 @@ import {
   GET_ORDERS_FAILED,
   GET_MY_ORDERS_REQUEST,
   GET_MY_ORDERS_SUCCESS,
-  GET_MY_ORDERS_FAILED
+  GET_MY_ORDERS_FAILED,
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_ERROR,
+  WS_CONNECTION_START,
+  WS_CONNECTION_SUCCESS,
+  WS_GET_MESSAGE,
+  WS_GET_MY_MESSAGE,
+  WS_CONNECTION_MY_CLOSED,
+  WS_CONNECTION_MY_ERROR,
+  WS_CONNECTION_MY_START,
+  WS_CONNECTION_MY_SUCCESS
 } from '../constants';
 import {
   IGetOrderRequest,
@@ -25,7 +35,17 @@ import {
   IGetOrdersFailed,
   IGetMyOrdersRequest,
   IGetMyOrdersSuccess,
-  IGetMyOrdersFailed
+  IGetMyOrdersFailed,
+  IWSConnectionClosed,
+  IWSConnectionError,
+  IWSConnectionStart,
+  IWSConnectionSuccess,
+  IWSConnectionMessage,
+  IWSConnectionMyClosed,
+  IWSConnectionMyError,
+  IWSConnectionMyStart,
+  IWSConnectionMySuccess,
+  IWSConnectionMyMessage
 } from '../types';
 
 export const getOrderRequest = (): IGetOrderRequest => ({type: GET_ORDER_REQUEST});
@@ -40,6 +60,18 @@ export const getOrdersFailed = (): IGetOrdersFailed => ({type: GET_ORDERS_FAILED
 export const getMyOrdersRequest = (): IGetMyOrdersRequest => ({type: GET_MY_ORDERS_REQUEST});
 export const getMyOrdersSuccess = (allMyOrders: TAllOrders): IGetMyOrdersSuccess => ({type: GET_MY_ORDERS_SUCCESS, allMyOrders});
 export const getMyOrdersFailed = (): IGetMyOrdersFailed => ({type: GET_MY_ORDERS_FAILED});
+
+export const WSConnectionClosed = (): IWSConnectionClosed => ({type: WS_CONNECTION_CLOSED});
+export const WSConnectionError = (): IWSConnectionError => ({type: WS_CONNECTION_ERROR});
+export const WSConnectionStart = (payload: string): IWSConnectionStart => ({type: WS_CONNECTION_START, payload});
+export const WSConnectionSuccess = (): IWSConnectionSuccess => ({type: WS_CONNECTION_SUCCESS});
+export const WSConnectionMessage = (payload: TAllOrders): IWSConnectionMessage => ({type: WS_GET_MESSAGE, payload});
+
+export const WSConnectionMyClosed = (): IWSConnectionMyClosed => ({type: WS_CONNECTION_MY_CLOSED});
+export const WSConnectionMyError = (): IWSConnectionMyError => ({type: WS_CONNECTION_MY_ERROR});
+export const WSConnectionMyStart = (payload: string): IWSConnectionMyStart => ({type: WS_CONNECTION_MY_START, payload});
+export const WSConnectionMySuccess = (): IWSConnectionMySuccess => ({type: WS_CONNECTION_MY_SUCCESS});
+export const WSConnectionMyMessage = (payload: TAllOrders): IWSConnectionMyMessage => ({type: WS_GET_MY_MESSAGE, payload});
 
 export const getNumber: AppThunk = (dataIds) => (dispatch: AppDispatch) => {
   dispatch(getOrderRequest());

@@ -4,15 +4,15 @@ import OrdersElement from '../orders-element/orders-element';
 import { useSelector } from '../../services/hooks';
 
 function OrdersList() {
-  const { allOrders, allOrdersRequest, allOrdersFailed } = useSelector(store => store.order);
+  const { allOrders, wsConnected, wsError } = useSelector(store => store.order);
   const ingredientsRef = useRef<HTMLUListElement>(null);
 
   return (
     <div className={styles.orders_container}>
-      {allOrdersRequest &&
+      {wsConnected && !allOrders.orders.length &&
         <h1 className="text text_type_main-large mt-7">Идёт загрузка...</h1>
       }
-      {allOrdersFailed && !allOrders.orders.length &&
+      {wsError && !allOrders.orders.length &&
         <h1 className={`text text_type_main-large mt-7 ${styles.error}`}>Произошла ошибка! Попробуйте перезагрузить.</h1>
       }
       {!!allOrders.orders.length &&

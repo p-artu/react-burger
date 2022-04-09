@@ -3,14 +3,14 @@ import {useParams} from 'react-router-dom';
 import styles from './ingredient-details-detailed.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getAllOrders } from '../../services/actions';
+import { getAllOrders, WSConnectionStart } from '../../services/actions';
 import { useSelector, useDispatch } from '../../services/hooks';
 import { formatRelative } from 'date-fns';
 import { ru } from "date-fns/locale";
 
 function OrderDetailsDetailed() {
   const dispatch = useDispatch();
-  const { allOrders, allOrdersRequest, allOrdersFailed } = useSelector(store => store.order);
+  const { allOrders, wsConnected, wsError } = useSelector(store => store.order);
   const {ingredients} = useSelector(store => store.ingredients);
   const {id}: {id: string} = useParams();
   const currentOrder = allOrders.orders.find(item => item._id === id);
@@ -41,15 +41,15 @@ function OrderDetailsDetailed() {
     [orderIngredients]);
 
   useEffect(() => {
-    dispatch(getAllOrders());
+    dispatch(WSConnectionStart('/all'));
   }, []);
 
   return (
     <div className={styles.container}>
-      {allOrdersRequest &&
+      {wsConnected && !allOrders.orders.length &&
         <h1 className="text text_type_main-large mt-7">Идёт загрузка...</h1>
       }
-      {allOrdersFailed && !allOrders.orders.length &&
+      {wsError && !allOrders.orders.length &&
         <h1 className={`text text_type_main-large mt-7 ${styles.error}`}>Произошла ошибка! Попробуйте перезагрузить.</h1>
       }
       {!!allOrders.orders.length &&
@@ -61,7 +61,7 @@ function OrderDetailsDetailed() {
         <ul className={styles.list}>
           {uniqueOrderIngredientsQuantity?.map((item: any, i: any) => (
             <li key={item?._id} className={styles.list_item}>
-              <div key={item?._id} className={styles.frame}>
+              <div className={styles.frame}>
                 <img className={styles.image} src={item?.image_mobile} alt={item?.name}/>
               </div>
               <p className={`${styles.image_title} text text_type_main-default ml-4`}>{item?.name}</p>

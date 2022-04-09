@@ -11,7 +11,7 @@ import {
 
 export type RootState = ReturnType<typeof store.getState>;
 
-type TApplicationActions =
+export type TApplicationActions =
   TConstructorIngredientsActions
   | TIngredientsActions
   | TOrderActions

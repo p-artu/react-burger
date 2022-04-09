@@ -3,14 +3,14 @@ import {useParams} from 'react-router-dom';
 import styles from './my-ingredient-details-detailed.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getAllMyOrders } from '../../services/actions';
+import { getAllMyOrders, WSConnectionMyStart } from '../../services/actions';
 import { useSelector, useDispatch } from '../../services/hooks';
 import { formatRelative } from 'date-fns';
 import { ru } from "date-fns/locale";
 
 function MyOrderDetailsDetailed() {
   const dispatch = useDispatch();
-  const { allMyOrders, allMyOrdersRequest, allMyOrdersFailed } = useSelector(store => store.order);
+  const { allMyOrders, wsMyConnected, wsMyError } = useSelector(store => store.order);
   const {ingredients} = useSelector(store => store.ingredients);
   const {id}: {id: string} = useParams();
   const currentOrder = allMyOrders.orders.find(item => item._id === id);
@@ -35,20 +35,22 @@ function MyOrderDetailsDetailed() {
     [uniqueOrderIngredients, orderIngredients]);
   const totalPrice = useMemo(() =>
     orderIngredients?.reduce((acc: number, item: any) => {
-      return acc + item.price
+      return acc + item?.price
     }, 0),
     [orderIngredients]);
 
     useEffect(() => {
-      dispatch(getAllMyOrders());
+      const accessToken: any = localStorage.getItem('accessToken');
+      const authToken = accessToken.split('Bearer ')[1];
+      dispatch(WSConnectionMyStart(`?token=${authToken}`));
     }, []); 
 
   return (
     <div className={styles.container}>
-      {allMyOrdersRequest &&
+      {wsMyConnected && !allMyOrders.orders.length &&
         <h1 className="text text_type_main-large mt-7">Идёт загрузка...</h1>
       }
-      {allMyOrdersFailed && !allMyOrders.orders.length &&
+      {wsMyError && !allMyOrders.orders.length &&
         <h1 className={`text text_type_main-large mt-7 ${styles.error}`}>Произошла ошибка! Попробуйте перезагрузить.</h1>
       }
       {!!allMyOrders.orders.length &&
@@ -60,7 +62,7 @@ function MyOrderDetailsDetailed() {
         <ul className={styles.list}>
           {uniqueOrderIngredientsQuantity?.map((item: any, i: any) => (
             <li key={item?._id} className={styles.list_item}>
-              <div key={item?._id} className={styles.frame}>
+              <div className={styles.frame}>
                 <img className={styles.image} src={item?.image_mobile} alt={item?.name}/>
               </div>
               <p className={`${styles.image_title} text text_type_main-default ml-4`}>{item?.name}</p>

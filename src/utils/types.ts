@@ -48,11 +48,11 @@ export type TOrder = {
   orderFailed: boolean;
   orderDetails: null | string;
   allOrders: TAllOrders;
-  allOrdersRequest: boolean;
-  allOrdersFailed: boolean;
+  wsConnected: boolean;
+  wsError: boolean;
   allMyOrders: TAllOrders;
-  allMyOrdersRequest: boolean;
-  allMyOrdersFailed: boolean;
+  wsMyConnected: boolean;
+  wsMyError: boolean;
 };
 export type TOrderStore = {
   order: TOrder;
