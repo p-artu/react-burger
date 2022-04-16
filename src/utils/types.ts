@@ -23,33 +23,40 @@ export interface ILocation {
   from: ILocation;
 }
 //////////////////////////
-export type TData = {
-  content: TIngredient[];
-  bun: TIngredient;
-};
-export type TDataStore = {
-  constructorIngredients: {
-    draggedIngredients: TData;
-  };
-};
-//////////////////////////
 export type TUser = {
   name: string;
   email: string;
 };
-export type TUserStore = {
-  user: {
-    user: TUser;
-  };
-};
 //////////////////////////
 export type TOrder = {
-  orderRequest: object;
-  orderFailed: object;
-  orderDetails: string;
+  orderRequest: boolean;
+  orderFailed: boolean;
+  orderDetails: null | string;
+  allOrders: TAllOrders;
+  wsConnected: boolean;
+  wsError: boolean;
+  allMyOrders: TAllOrders;
+  wsMyConnected: boolean;
+  wsMyError: boolean;
 };
-export type TOrderStore = {
-  order: TOrder;
+//////////////////////////
+export interface IOrdersElement {
+  data: TAllOrdersArr;
+}
+export type TAllOrders = {
+  orders: TAllOrdersArr[];
+  success: boolean;
+  total: number;
+  totalToday: number;
+};
+export type TAllOrdersArr = {
+  createdAt: string;
+  ingredients: string[];
+  name: string;
+  number: number;
+  status: string;
+  updatedAt: string;
+  _id: string;
 };
 //////////////////////////
 export type TIngredient = {
@@ -66,18 +73,12 @@ export type TIngredient = {
   image_large: string;
   unId: number;
   __v: number;
+  quantity?: number;
 };
 export type TIngredients = {
   ingredients: TIngredient[];
   ingredientsRequest: boolean;
   ingredientsFailed: boolean;
-};
-export type TIngredientsStore = {
-  ingredients: {
-    ingredients: TIngredient[];
-    ingredientsRequest: boolean;
-    ingredientsFailed: boolean;
-  };
 };
 export interface IIngredientsElement {
   data: TIngredient;
@@ -87,11 +88,6 @@ export interface ICellEmpty {
   height: string;
 }
 //////////////////////////
-export type TCounterListDataStore = {
-  constructorIngredients: {
-    counterList: TCounterListData;
-  };
-};
 export type TCounterListData = {
   [name: string]: number;
 };

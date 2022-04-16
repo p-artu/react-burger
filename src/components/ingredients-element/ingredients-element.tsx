@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDrag } from "react-dnd";
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks';
 import styles from './ingredients-element.module.css';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IIngredientsElement, TCounterListDataStore, TCounterListData } from '../../utils/types';
+import { IIngredientsElement } from '../../utils/types';
 
 const IngredientsElement: FC<IIngredientsElement> = ({data}) => {
   const location = useLocation();
-  const counterList: TCounterListData = useSelector<TCounterListDataStore, TCounterListData>(store => store.constructorIngredients.counterList);
+  const counterList = useSelector(store => store.constructorIngredients.counterList);
   const [{isDrag} , dragRef] = useDrag({
     type: "ingredient",
     item: data,

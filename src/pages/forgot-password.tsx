@@ -1,17 +1,17 @@
 import React, {useState, ChangeEvent, SyntheticEvent} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from '../services/hooks';
 import { Link, Redirect, useLocation, useHistory } from 'react-router-dom';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../components/cell-empty/cell-empty';
-import { recoverPassword } from '../services/actions/password-change';
+import { recoverPassword } from '../services/actions';
 import styles from './forgot-password.module.css';
-import { ILocation, TUserStore, TUser } from '../utils/types';
+import { ILocation } from '../utils/types';
 
 function ForgotPage() {
   const [form, setValue] = useState({email: '' });
   const location = useLocation<ILocation>();
   const dispatch = useDispatch();
-  const user = useSelector<TUserStore, TUser>(store => store.user.user);
+  const user = useSelector(store => store.user.user);
   const history = useHistory();
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +23,7 @@ function ForgotPage() {
     history.push({pathname: `/reset-password`, state: location});
   }
 
-  if (user.name) {
+  if (user.name !== '') {
     return <Redirect to={location.state?.from || '/'}/>
   }
 

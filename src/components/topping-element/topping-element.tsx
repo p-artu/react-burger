@@ -1,7 +1,7 @@
 import React, { useRef, FC } from 'react';
 import { useDrag, useDrop } from "react-dnd";
-import { useDispatch } from 'react-redux';
-import { deleteIngredient, reduceCounter } from '../../services/actions/constructor-ingredients';
+import { useDispatch } from '../../services/hooks';
+import { deleteIngredient, reduceCounter } from '../../services/actions';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import CellEmpty from '../cell-empty/cell-empty';
 import styles from './topping-element.module.css';

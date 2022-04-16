@@ -1,5 +1,5 @@
 import { useDrop } from "react-dnd";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/hooks';
 import { addIngredient, increaseCounter } from '../../services/actions/constructor-ingredients';
 import styles from './empty-burger-ingredients.module.css';
 import { TIngredient } from '../../utils/types';

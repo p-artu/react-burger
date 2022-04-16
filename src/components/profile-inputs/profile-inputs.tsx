@@ -1,13 +1,14 @@
 import React, {useState, useRef, useEffect, SyntheticEvent, ChangeEvent} from 'react';
-import { useDispatch, useSelector  } from 'react-redux';
+import {Switch, Route} from 'react-router-dom';
+import { useSelector, useDispatch } from '../../services/hooks';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './profile-inputs.module.css';
 import CellEmpty from '../cell-empty/cell-empty';
-import { editUserInfo } from '../../services/actions/user';
-import { TUserStore, TUser } from '../../utils/types';
+import MyOrdersList from '../my-orders-list/my-orders-list';
+import { editUserInfo } from '../../services/actions';
 
 function ProfileInputs() {
-  const {name, email} = useSelector<TUserStore, TUser>(store => store.user.user);
+  const {name, email} = useSelector(store => store.user.user);
   const [form, setValue] = useState({ name, email, password: '' });
   const [inputDisabled, setInputDisabled] = useState({ name: true, email: true, password: true });
   const [hasChanges, setHasChanges] = useState(false);
@@ -56,67 +57,74 @@ function ProfileInputs() {
 
   return (
     <div className={styles.profileInputs}>
-      <form className={styles.form} onSubmit={handleSubmit} noValidate>
-        <Input
-          type={'text'}
-          placeholder={'Имя'}
-          icon={'EditIcon'}
-          onIconClick={onNameIconClick}
-          onBlur={onNameBlur}
-          onChange={onChange}
-          value={form.name}
-          name={'name'}
-          error={false}
-          errorText={'Ошибка'}
-          size={'default'}
-          disabled={inputDisabled.name}
-          ref={nameRef}
-        />
-        <CellEmpty height="pt-6"/>
-        <Input
-          type={'email'}
-          placeholder={'Логин'}
-          icon={'EditIcon'}
-          onIconClick={onEmailIconClick}
-          onBlur={onEmailBlur}
-          onChange={onChange}
-          value={form.email}
-          name={'email'}
-          error={false}
-          errorText={'Ошибка'}
-          size={'default'}
-          disabled={inputDisabled.email}
-          ref={emailRef}
-        />
-        <CellEmpty height="pt-6"/>
-        <Input
-          type={'password'}
-          placeholder={'Пароль'}
-          icon={'EditIcon'}
-          onIconClick={onPasswordIconClick}
-          onBlur={onPasswordBlur}
-          onChange={onChange}
-          value={form.password}
-          name={'password'}
-          error={false}
-          errorText={'Ошибка'}
-          size={'default'}
-          disabled={inputDisabled.password}
-          ref={passwordRef}
-        />
-        <CellEmpty height="pt-6"/>
-        {hasChanges &&
-        <div className={styles.buttons}>
-          <div className={styles.buttonContainer}>
-            <Button onClick={undoChanges} type='secondary' size='medium'>
-              Отмена
-            </Button>
-          </div>
-          <Button type='primary' size='medium'>
-            Сохранить
-          </Button>
-        </div>}
-      </form>
+      <Switch>
+        <Route path="/profile" exact={true}>
+          <form className={styles.form} onSubmit={handleSubmit} noValidate>
+            <Input
+              type={'text'}
+              placeholder={'Имя'}
+              icon={'EditIcon'}
+              onIconClick={onNameIconClick}
+              onBlur={onNameBlur}
+              onChange={onChange}
+              value={form.name}
+              name={'name'}
+              error={false}
+              errorText={'Ошибка'}
+              size={'default'}
+              disabled={inputDisabled.name}
+              ref={nameRef}
+            />
+            <CellEmpty height="pt-6"/>
+            <Input
+              type={'email'}
+              placeholder={'Логин'}
+              icon={'EditIcon'}
+              onIconClick={onEmailIconClick}
+              onBlur={onEmailBlur}
+              onChange={onChange}
+              value={form.email}
+              name={'email'}
+              error={false}
+              errorText={'Ошибка'}
+              size={'default'}
+              disabled={inputDisabled.email}
+              ref={emailRef}
+            />
+            <CellEmpty height="pt-6"/>
+            <Input
+              type={'password'}
+              placeholder={'Пароль'}
+              icon={'EditIcon'}
+              onIconClick={onPasswordIconClick}
+              onBlur={onPasswordBlur}
+              onChange={onChange}
+              value={form.password}
+              name={'password'}
+              error={false}
+              errorText={'Ошибка'}
+              size={'default'}
+              disabled={inputDisabled.password}
+              ref={passwordRef}
+            />
+            <CellEmpty height="pt-6"/>
+            {hasChanges &&
+            <div className={styles.buttons}>
+              <div className={styles.buttonContainer}>
+                <Button onClick={undoChanges} type='secondary' size='medium'>
+                  Отмена
+                </Button>
+              </div>
+              <Button type='primary' size='medium'>
+                Сохранить
+              </Button>
+            </div>}
+          </form>
+        </Route>
+        <Route path="/profile/orders" exact={true}>
+          <MyOrdersList/>
+        </Route>
+      </Switch>
     </div>
   );
 }

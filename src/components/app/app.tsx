@@ -1,14 +1,15 @@
 import React, {useEffect} from 'react';
 import {Switch, Route, useLocation, useHistory} from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/hooks';
 import app from './app.module.css';
-import { HomePage, LoginPage, RegisterPage, ForgotPage, ResetPage, ProfilePage, PageNotFound } from '../../pages';
+import { HomePage, LoginPage, RegisterPage, ForgotPage, ResetPage, ProfilePage, OrderFeedPage, PageNotFound } from '../../pages';
 import AppHeader from '../app-header/app-header';
 import Modal from '../modal/modal';
 import ProtectedRoute from '../protected-route/protected-route';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { getIngredients } from '../../services/actions/ingredients';
-import { getUserInfo } from '../../services/actions/user';
+import OrderDetailsDetailed from '../ingredient-details-detailed/ingredient-details-detailed';
+import MyOrderDetailsDetailed from '../my-ingredient-details-detailed/my-ingredient-details-detailed';
+import { getIngredients, getUserInfo } from '../../services/actions';
 import { ILocation } from '../../utils/types';
 
 function App(): JSX.Element {
@@ -49,6 +50,12 @@ function App(): JSX.Element {
         </Route>
         <ProtectedRoute
           exact={true}
+          path="/profile/orders/:id"
+        >
+          <MyOrderDetailsDetailed/>
+        </ProtectedRoute>
+        <ProtectedRoute
+          exact={false}
           path="/profile"
         >
           <ProfilePage />
@@ -56,16 +63,37 @@ function App(): JSX.Element {
         <Route path="/ingredients/:id" exact={true}>
           <IngredientDetails/>
         </Route>
+        <Route path="/feed" exact={true}>
+          <OrderFeedPage />
+        </Route>
+        <Route path="/feed/:id" exact={true}>
+          <OrderDetailsDetailed/>
+        </Route>
         <Route>
           <PageNotFound />
         </Route>
       </Switch>
       {previousPath &&
-        <Route path="/ingredients/:id" exact={true}>
-          <Modal closePopup={closeIngredientPopup}>
-            <IngredientDetails/>
-          </Modal>
-        </Route>}
+        <Switch>
+          <Route path="/ingredients/:id" exact={true}>
+            <Modal closePopup={closeIngredientPopup}>
+              <IngredientDetails/>
+            </Modal>
+          </Route>
+          <Route path="/feed/:id" exact={true}>
+            <Modal closePopup={closeIngredientPopup}>
+              <OrderDetailsDetailed/>
+            </Modal>
+          </Route>
+          <ProtectedRoute
+            exact={true}
+            path="/profile/orders/:id"
+          >
+            <Modal closePopup={closeIngredientPopup}>
+              <MyOrderDetailsDetailed/>
+            </Modal>
+          </ProtectedRoute>
+        </Switch>}
     </div>
   );
 }

@@ -23,9 +23,12 @@ class Api implements IApi {
     })
     .then(this._checkResponse)
   }
-  public getNumberRequest(dataIds: string) {
+  public getNumberRequest(dataIds: string, accessToken: string) {
     return fetch(`${this._baseUrl}/orders`, {
-      headers: this._headers,
+      headers: {
+        ...this._headers,
+        authorization: accessToken
+      },
       method: 'POST',
       body: JSON.stringify({ 
         "ingredients": dataIds

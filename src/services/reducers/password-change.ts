@@ -1,3 +1,4 @@
+import { TPasswordChangeActions } from '../types';
 import {
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
@@ -5,11 +6,11 @@ import {
   SET_NEW_PASSWORD_REQUEST,
   SET_NEW_PASSWORD_SUCCESS,
   SET_NEW_PASSWORD_FAILED
-} from '../actions/password-change';
+} from '../constants';
 
 const initialState = {};
 
-export const passwordChangeReducer = (state = initialState, action) => {
+export const passwordChangeReducer = (state = initialState, action: TPasswordChangeActions) => {
   switch (action.type) {
     case RESET_PASSWORD_REQUEST:
       return state

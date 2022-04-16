@@ -1,3 +1,4 @@
+import { TConstructorIngredientsActions, TConstructorIngredientsState } from '../types';
 import {
   ADD_INGREDIENT,
   DELETE_INGREDIENT,
@@ -5,30 +6,44 @@ import {
   REDUCE_COUNTER,
   MOVE_INGREDIENT,
   CLEAR_INGREDIENTS
-} from '../actions/constructor-ingredients';
+} from '../constants';
 
-const initialState = {
+const initialState: TConstructorIngredientsState = {
   draggedIngredients: {
-    bun: {},
+    bun: null,
     content: []
   },
   counterList: {}
 };
 
-export const constructorIngredientsReducer = (state = initialState, action) => {
+export const constructorIngredientsReducer = (state = initialState, action: TConstructorIngredientsActions): TConstructorIngredientsState => {
   switch (action.type) {
     case ADD_INGREDIENT:
       if (action.item.type === 'bun') {
-        return {
-          ...state,
-          counterList: {
-            ...state.counterList,
-            [state.draggedIngredients.bun._id]: 0,
-            [action.item._id]: 2
-          },
-          draggedIngredients: {
-            ...state.draggedIngredients,
-            bun: action.item
+        if (state.draggedIngredients.bun !== null) {
+          return {
+            ...state,
+            counterList: {
+              ...state.counterList,
+              [state.draggedIngredients.bun._id]: 0,
+              [action.item._id]: 2
+            },
+            draggedIngredients: {
+              ...state.draggedIngredients,
+              bun: action.item
+            }
+          }
+        } else {
+          return {
+            ...state,
+            counterList: {
+              ...state.counterList,
+              [action.item._id]: 2
+            },
+            draggedIngredients: {
+              ...state.draggedIngredients,
+              bun: action.item
+            }
           }
         }
       }
@@ -84,7 +99,7 @@ export const constructorIngredientsReducer = (state = initialState, action) => {
         ...state,
         draggedIngredients: {
           ...state.draggedIngredients,
-          bun: {},
+          bun: null,
           content: []
         },
         counterList: {}
