@@ -17,7 +17,7 @@ import {
   LOGOUT_FAILED,
 } from '../constants';
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   user: {
     name: '',
     email: ''
