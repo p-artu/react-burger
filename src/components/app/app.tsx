@@ -33,7 +33,7 @@ function App(): JSX.Element {
     <div className={app.page}>
       <AppHeader />
       <Switch location={previousPath || location}>
-        <Route path="/" exact={true}>
+        <Route path={["/", "/react-burger"]} exact={true}>
           <HomePage />
         </Route>
         <Route path="/login" exact={true}>
