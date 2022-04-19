@@ -8,7 +8,7 @@ import {
   CLEAR_INGREDIENTS
 } from '../constants';
 
-const initialState: TConstructorIngredientsState = {
+export const initialState: TConstructorIngredientsState = {
   draggedIngredients: {
     bun: null,
     content: []
