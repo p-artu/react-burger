@@ -61,24 +61,24 @@ function BurgerIngredients() {
       <>
         <h1 className="text text_type_main-large mb-5">Соберите бургер</h1>
         <div className={styles.links}>
-          <a href="#bun" className={styles.link}>
+          <div className={styles.link} onClick={() => bunRef?.current?.scrollIntoView()}>
             <Tab value="Булки" active={current === 'Булки'} onClick={setCurrent}>
               Булки
             </Tab>
-          </a>
-          <a href="#sauce" className={styles.link}>
+          </div>
+          <div className={styles.link} onClick={() => sauceRef?.current?.scrollIntoView()}>
             <Tab value="Соусы" active={current === 'Соусы'} onClick={setCurrent}>
               Соусы
             </Tab>
-          </a>
-          <a href="#main" className={styles.link}>
+          </div>
+          <div className={styles.link} onClick={() => mainRef?.current?.scrollIntoView()}>
             <Tab value="Начинки" active={current === 'Начинки'} onClick={setCurrent}>
               Начинки
             </Tab>
-          </a>
+          </div>
         </div>
         <div className={styles.ingredients} onScroll={handleScroll} ref={ingredientsRef}>
-          <h2 id='bun' className="text text_type_main-medium mb-6" ref={bunRef}>Булки</h2>
+          <h2 className="text text_type_main-medium mb-6" ref={bunRef}>Булки</h2>
           <ul className={styles['ingredients-type']}>
             {bun.map((item: TIngredient) => (
               <li className={styles['ingredients-item']} key={item?._id}>
@@ -88,7 +88,7 @@ function BurgerIngredients() {
               </li>
             ))}
           </ul>
-          <h2 id='sauce' className="text text_type_main-medium mt-10 mb-6" ref={sauceRef}>Соусы</h2>
+          <h2 className="text text_type_main-medium mt-10 mb-6" ref={sauceRef}>Соусы</h2>
           <ul className={styles['ingredients-type']}>
             {sauce.map((item: TIngredient) => (
               <li className={styles['ingredients-item']} key={item._id}>
@@ -98,7 +98,7 @@ function BurgerIngredients() {
               </li>
             ))}
           </ul>
-          <h2 id='main' className="text text_type_main-medium mt-10 mb-6" ref={mainRef}>Начинки</h2>
+          <h2 className="text text_type_main-medium mt-10 mb-6" ref={mainRef}>Начинки</h2>
           <ul className={styles['ingredients-type']}>
             {main.map((item: TIngredient) => (
               <li className={styles['ingredients-item']} key={item._id}>
