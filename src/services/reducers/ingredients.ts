@@ -5,7 +5,7 @@ import {
   GET_INGREDIENTS_FAILED
 } from '../constants';
 
-const initialState: TIngredientsState = {
+export const initialState: TIngredientsState = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false

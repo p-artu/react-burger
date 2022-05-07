@@ -14,7 +14,7 @@ import {
   WS_GET_MY_MESSAGE
 } from '../constants';
 
-const initialState: TOrderState = {
+export const initialState: TOrderState = {
   orderRequest: false,
   orderFailed: false,
   orderDetails: null,

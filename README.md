@@ -1,46 +1,47 @@
-# Getting Started with Create React App
+# Stellar Burgers
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Это сайт космической бургерной под названием <a href="https://p-artu.github.io/react-burger/" target="_blank">Stellar Burgers</a>\
+Ссылка на проект - <a href="https://p-artu.github.io/react-burger/" target="_blank">https://p-artu.github.io/react-burger/</a>
 
-## Available Scripts
+## Описание
 
-In the project directory, you can run:
+На сайте можно заказать себе бургер, собрав его на свой вкус из доступных ингредиентов.\
+Для этого необходимо сперва зарегестрироваться.\
+Заказав бургер, можно в режиме реального времени отслеживать степень его готовности на странице "Лента заказов",
+содержащую информацию о последних заказах.\
+На странице своего профиля есть возможность редактировать свои личные данные: изменить имя, адрес электронной почты или пароль.\
+Там же можно проверить список собственных заказов и их готовность.
 
-### `npm start`
+## Технологии
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+При создании приложения использовались следующие технологии:
+  1. React
+  2. Redux
+  3. Drag-n-drop
+  4. React Router
+  5. Typescript
+  6. WebSockets
+  7. Jest
+  8. Cypress
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Установка, запуск приложения и тестов
 
-### `npm test`
+```
+# установка
+$ npm i
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# запуск
+$ npm run start
 
-### `npm run build`
+# сборка
+$ npm run build
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# тестирование конструктора заказов
+$ npm run cypress:open
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# тестирование бизнес-логики
+$ npm run test
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+# деплой приложения
+$ npm run deploy
+```

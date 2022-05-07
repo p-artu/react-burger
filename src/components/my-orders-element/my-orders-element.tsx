@@ -35,10 +35,10 @@ const MyOrdersElement: FC<IOrdersElement> = ({data}) => {
       <CellEmpty height="mt-6"/>
       <div className={styles.info}>
         <p className={`${styles.number} text text_type_digits-default`}>{`#0${data.number}`}</p>
-        <p className={`${styles.date} text text_type_main-default text_color_inactive`}>{createdAt}</p>
+        <time dateTime={data.createdAt} className={`${styles.date} text text_type_main-default text_color_inactive`}>{createdAt}</time>
       </div>
       <p className={`${styles.title} text text_type_main-medium mt-6`}>{data.name}</p>
-      <p className={`${styles.status} text text_type_main-default mt-2 mb-6`}>{data.status === 'done' ? 'Выполнен' : data.status === 'pending' ? 'В работе' : 'Отменён'}</p>
+      <p className={`${styles.status} text text_type_main-default mt-2 mb-6`} style={data.status === 'done' ? {'color': '#0cc'} : {}}>{data.status === 'done' ? 'Выполнен' : data.status === 'pending' ? 'В работе' : 'Отменён'}</p>
       <div className={styles.content}>
         <div className={styles.images}>
           {uniqueOrderIngredients.map((item: any, i: number) => (

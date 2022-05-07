@@ -5,12 +5,12 @@ import { useSelector } from '../../services/hooks';
 import { TAllOrdersArr} from '../../utils/types';
 
 function OrdersList() {
-  const { allOrders, wsConnected, wsError } = useSelector(store => store.order);
+  const { allOrders, wsError } = useSelector(store => store.order);
   const ingredientsRef = useRef<HTMLUListElement>(null);
 
   return (
     <div className={styles.orders_container}>
-      {wsConnected && !allOrders?.orders?.length &&
+      {!wsError && !allOrders?.orders?.length &&
         <h1 className="text text_type_main-large mt-7">Идёт загрузка...</h1>
       }
       {wsError && !allOrders?.orders?.length &&
