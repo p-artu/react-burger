@@ -35,7 +35,7 @@ const OrdersElement: FC<IOrdersElement> = ({data}) => {
       <CellEmpty height="mt-6"/>
       <div className={styles.info}>
         <p className={`${styles.number} text text_type_digits-default`}>{`#0${data.number}`}</p>
-        <p className={`${styles.date} text text_type_main-default text_color_inactive`}>{createdAt}</p>
+        <time dateTime={data.createdAt} className={`${styles.date} text text_type_main-default text_color_inactive`}>{createdAt}</time>
       </div>
       <p className={`${styles.title} text text_type_main-medium mt-6 mb-6`}>{data.name}</p>
       <div className={styles.content}>

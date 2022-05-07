@@ -5,7 +5,7 @@ import { useSelector } from '../../services/hooks';
 import { TAllOrdersArr} from '../../utils/types';
 
 function OrdersList() {
-  const { allOrders, wsConnected, wsError } = useSelector(store => store.order);
+  const { allOrders, wsError } = useSelector(store => store.order);
   const ingredientsRef = useRef<HTMLUListElement>(null);
 
   return (

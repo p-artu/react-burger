@@ -84,7 +84,7 @@ function OrderDetailsDetailed() {
           ))}
         </ul>
         <div className={styles.date_container}>
-          <p className={`${styles.date} text text_type_main-default text_color_inactive`}>{createdAt}</p>
+          <time dateTime={currentOrder?.createdAt} className={`${styles.date} text text_type_main-default text_color_inactive`}>{createdAt}</time>
           <div className={styles.price}>
             <p className={`${styles.number} text text_type_digits-default`}>{totalPrice}</p>
             <CellEmpty height="ml-2"/>
