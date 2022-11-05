@@ -22,7 +22,7 @@ function LoginPage() {
     dispatch(authorize(email, password));
   }
 
-  if (user.name !=='') {
+  if (user.name !== '') {
     return <Redirect to={location.state?.from || '/'}/>
   }
 

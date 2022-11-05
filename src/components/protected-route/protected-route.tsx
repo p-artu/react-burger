@@ -6,7 +6,8 @@ import { getUserInfo } from '../../services/actions';
 const ProtectedRoute: FC<RouteProps> = ({children, ...rest}) => {
   const user = useSelector(store => store.user.user);
   const dispatch = useDispatch();
-
+  console.log(user.name);
+  
   useEffect(() => {
     dispatch(getUserInfo());
   }, []);
